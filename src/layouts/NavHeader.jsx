@@ -5,9 +5,15 @@ import logo from "../assets/img/dashboards/LOGO.svg";
 import { PiBell, PiSquaresFour } from "react-icons/pi";
 import SideBar from "./SideBar";
 import { useSidebar } from "../context/SidebarContex";
+import Notifications from "../components/Notifications/Notifications";
 
 const NavHeader = ({ header }) => {
   const { toggleSidebar } = useSidebar();
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Toggle modal visibility
+  const toggleDropdown = () => setIsOpen(!isOpen);
+  const closeDropdown = () => setIsOpen(false);
   return (
     <header>
       <div className="flex justify-between items-center md:hidden !py-6">
@@ -15,7 +21,10 @@ const NavHeader = ({ header }) => {
           <img src={logo} alt="" />
         </div>
         <div className="flex gap-2.5">
-          <div className="!p-3  bg-white   rounded-[15px]  md:hidden">
+          <div
+            className="!p-3  bg-white   rounded-[15px]  md:hidden"
+            onClick={toggleDropdown}
+          >
             <PiBell size={20} />
           </div>
           <div
@@ -26,6 +35,7 @@ const NavHeader = ({ header }) => {
           </div>
 
           {/* {isOpen && <SideBar />} */}
+          {isOpen && <Notifications closeDropdown={closeDropdown} />}
         </div>
       </div>
       <nav className="flex flex-col-reverse gap-5 lg:flex-row lg:flex lg:justify-between lg:items-center ">

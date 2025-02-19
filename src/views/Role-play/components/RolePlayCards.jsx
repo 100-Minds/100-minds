@@ -53,7 +53,7 @@ const RolePlayCards = ({
               </span>
             </div>
             <Link
-              className={`bg-white  !p-2 !px-4 text-nowrap rounded-4xl  ${btnStyle}`}
+              className={`bg-white  !p-2 !px-4 text-nowrap rounded-4xl hover:scale-[1.02] transition  ${btnStyle}`}
             >
               {btntext}
             </Link>

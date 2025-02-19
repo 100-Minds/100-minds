@@ -34,7 +34,7 @@ const OngoingCard = ({
       </div>
       <Link
         to={"/courses"}
-        className="text-white bg-green-tint w-full block text-center rounded-3xl !py-3 text-sm  box-shadow !mt-3"
+        className="text-white bg-green-tint w-full block text-center rounded-3xl !py-3 text-sm  box-shadow !mt-3 hover:scale-[1.02] transition"
       >
         Continue Course
       </Link>
