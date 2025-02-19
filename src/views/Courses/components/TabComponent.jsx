@@ -14,7 +14,7 @@ const TabComponent = () => {
   return (
     <div>
       {/* Tabs */}
-      <div className="flex gap-7.5 !pb-6 text-gray-300">
+      <div className="flex lg:gap-7.5 gap-1.5 !pb-6 text-gray-300">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -34,8 +34,12 @@ const TabComponent = () => {
       <div className="p-4">
         <ProgressBar percentage={40} />
         {activeTab === "video" && <Video />}
-        {activeTab === "roleplay" && <p>🎭 Role Play content goes here...</p>}
-        {activeTab === "quiz" && <p>📝 Quiz content goes here...</p>}
+        {activeTab === "roleplay" && (
+          <p className="!py-3">🎭 Role Play content goes here...</p>
+        )}
+        {activeTab === "quiz" && (
+          <p className="!py-3">📝 Quiz content goes here...</p>
+        )}
       </div>
     </div>
   );

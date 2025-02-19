@@ -33,6 +33,9 @@ const ChapterList = () => {
           <NavHeader header={"DIFFICULT CONVERSATIONS"} />
 
           <div className="grid lg:grid-cols-5 gap-10 !py-8">
+            <h1 className="font-bebas text-2xl  text-nowrap lg:hidden">
+              DIFFICULT CONVERSATIONS
+            </h1>
             <div className="lg:col-span-3  col-span-5">
               <Link
                 to={"/"}

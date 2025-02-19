@@ -255,9 +255,11 @@ const CustomVideoPlayer = ({ src, poster }) => {
           </div>
         </div>
       </div>
-      <div className="!py-3 flex items-center justify-between">
-        <h1 className="font-bebas !mt-1">Chapter 1 - the beginners guide</h1>
-        <div className=" flex items-center gap-5 ">
+      <div className="!py-3 flex flex-col lg:flex-row items-start lg:items-center justify-between">
+        <h1 className="font-bebas !mt-1 text-nowrap">
+          Chapter 1 - the beginners guide
+        </h1>
+        <div className=" flex items-center w-full  justify-between lg:justify-end gap-5 !py-3 md:!py-0 ">
           <PiHeart className="bg-white text-black  rounded-2xl text-3xl !p-1.5" />
           <button
             className="flex items-center text-xs gap-2.5 py-1.5 rounded-full text-white font-semibold !p-2 !px-4 hover:scale-[1.02] transition"
