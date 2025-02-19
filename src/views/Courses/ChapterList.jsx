@@ -16,17 +16,6 @@ const ChapterList = () => {
   ];
 
   return (
-    // <div className="space-y-4">
-    //   {chapters.map((item, index) => (
-    //     <ChapterCard key={index} {...item} />
-    //   ))}
-
-    //   {/* Total Time Display */}
-    //   <div className="text-center font-semibold text-lg mt-4">
-    //     Total Time: <span className="text-blue-500">54:32 Mins</span>
-    //   </div>
-    // </div>
-
     <div className="h-full w-full overflow-hidden   !pt-4 ">
       <div className="bg-[#F3F3F3] overflow-scroll scroll-hide h-full rounded-3xl !mx-3">
         <div className="backdrop-blur-xs !py-4 lg:!px-10 px-4 sticky top-0 z-40">
