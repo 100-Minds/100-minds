@@ -1,0 +1,104 @@
+@import "tailwindcss";
+@font-face {
+  font-family: "Bebas Nueue";
+  src: url(./assets/fonts/Bebas_Neue/BebasNeue-Regular.ttf);
+}
+@font-face {
+  font-family: "nueue haas";
+  src: url(./assets/fonts/NHaasGroteskDSStd-55Rg.otf);
+}
+:root {
+  --bg-role-1: "./assets/img/dashboards/rolePlay/difficult\bg.png";
+}
+@theme {
+  --font-bebas: "Bebas Nueue", "sans-serif";
+  --font-nueue: "nueue haas", "sans-serif";
+  --color-whitish: #f3f3f3;
+  --color-green-tint: #509999;
+  --color-sidebar-color: #4f45f0;
+  --color-grey-tint: #7a7a7a;
+  --color-purple-shade: #978fed;
+  --color-yellow-tint: #fbde9d;
+  --color-blue-tint: #74b8ef;
+  --color-tint-orange: #fc8737;
+  --color-shade-green: #55c05b;
+  --color-shade-purple: #5755bb;
+}
+
+.box-shadow {
+  box-shadow: 5px 5px 10px #509999;
+}
+.bg-role-1 {
+  background-image: url(/src/assets/img/dashboards/rolePlay/difficult-convo.png);
+  background-size: cover;
+}
+.polygon-1 {
+  background-image: url(/src/assets/img/dashboards/rolePlay/difficult-bg.png);
+  background-size: cover;
+}
+.polygon-2 {
+  background-image: url(/src/assets/img/dashboards/rolePlay/active-bg.png);
+  background-size: cover;
+}
+.polygon-3 {
+  background-image: url(/src/assets/img/dashboards/rolePlay/giving-bg.png);
+  background-size: cover;
+}
+.bg-role-2 {
+  background-image: url("./assets/img/dashboards/rolePlay/active\ bg.png");
+}
+.custom-shadow {
+  box-shadow: 3px 3px 30px #00000080;
+}
+.clip-path {
+  /* clip-path: polygon(100% 49%, 100% 100%, 0 100%, 0 71%); */
+  clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 52%);
+  background: red;
+  width: 100%;
+  display: flex;
+  align-items: end;
+}
+.learning-module-1 {
+  background-image: url(/src/assets/img/dashboards/learningModules/module\ 1.svg);
+  background-size: cover;
+  object-position: center top;
+  background-color: #4f45f0;
+  position: relative;
+  border-radius: 20px;
+}
+.learning-module-1::before,
+.learning-module-2::before,
+.learning-module-3::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(#5045f086, #4f45f080, #4f45f0);
+  box-shadow: 0px 15.76px 49.26px 0px #4f45f080;
+  border-radius: 20px;
+}
+
+.learning-module-2 {
+  background-image: url(/src/assets/img/dashboards/learningModules/module\ 2.svg);
+  background-size: cover;
+  object-position: center top;
+  background-color: #4f45f0;
+  position: relative;
+  border-radius: 20px;
+}
+
+.learning-module-3 {
+  background-image: url(/src/assets/img/dashboards/learningModules/module\ 3.svg);
+  background-size: cover;
+  object-position: center top;
+  background-color: #4f45f0;
+  position: relative;
+  border-radius: 20px;
+}
+.drop {
+  box-shadow: 0px 3.47px 10.83px 0px #4f45f07a;
+}
+.custom-gradient {
+  background-image: linear-gradient(#5045f086, #4f45f080, #4f45f0);
+}
