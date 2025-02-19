@@ -33,7 +33,7 @@ const OngoingCard = ({
         </p>
       </div>
       <Link
-        to={"/"}
+        to={"/courses"}
         className="text-white bg-green-tint w-full block text-center rounded-3xl !py-3 text-sm  box-shadow !mt-3"
       >
         Continue Course

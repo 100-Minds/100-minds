@@ -47,7 +47,7 @@ const RolePlaySection = () => {
         />
       </div> */}
 
-      <div className="flex lg:grid lg:grid-cols-2 gap-[20px] overflow-x-auto lg:overflow-visible snap-x snap-mandatory scroll-smooth scrollbar-hide">
+      <div className="flex lg:grid lg:grid-cols-2 fl xxl:gap-14 gap-[20px] overflow-x-auto lg:overflow-visible snap-x snap-mandatory scroll-smooth scrollbar-hide">
         <RolePlayCards
           bgImg={difficult}
           colorBg={difficultbg}

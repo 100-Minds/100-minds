@@ -102,3 +102,44 @@
 .custom-gradient {
   background-image: linear-gradient(#5045f086, #4f45f080, #4f45f0);
 }
+
+/* Hide the default thumb in WebKit browsers */
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 0; /* Hides the thumb */
+  height: 0;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+/* Hide the thumb in Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+}
+
+/* Custom styles for the progress slider */
+
+/* WebKit (Chrome, Safari) */
+input[type="range"].progress-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Mozilla Firefox */
+input[type="range"].progress-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+}

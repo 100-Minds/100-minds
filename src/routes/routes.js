@@ -5,6 +5,7 @@ import Ongoing from "../views/Ongoing/Ongoing";
 import Settings from "../views/settings/Settings";
 import Support from "../views/support/Support";
 import Profile from "../views/profile/Profile";
+import ChapterList from "../views/Courses/ChapterList";
 
 const coreRoutes = [
   {
@@ -41,6 +42,11 @@ const coreRoutes = [
     path: "/profile",
     title: "Profile",
     component: Profile,
+  },
+  {
+    path: "/courses",
+    title: "courses",
+    component: ChapterList,
   },
 ];
 const routes = [...coreRoutes];
