@@ -44,9 +44,7 @@
   background-image: url(/src/assets/img/dashboards/rolePlay/giving-bg.png);
   background-size: cover;
 }
-.bg-role-2 {
-  background-image: url("./assets/img/dashboards/rolePlay/active\ bg.png");
-}
+
 .custom-shadow {
   box-shadow: 3px 3px 30px #00000080;
 }
