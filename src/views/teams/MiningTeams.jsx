@@ -1,47 +1,81 @@
 import React from "react";
-import { RiArrowLeftSLine } from "react-icons/ri";
+import {
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
+  RiScales2Line,
+  RiScales3Line,
+  RiScalesFill,
+} from "react-icons/ri";
 import { Link } from "react-router-dom";
 import Back from "../../components/Back";
 import profile from "./../../assets/img/dashboards/teams/avatar7.jpg";
-import { PiClock } from "react-icons/pi";
+import profile2 from "./../../assets/img/dashboards/teams/avatar2.jpg";
+import performance from "../../assets/img/dashboards/teams/3d-pt-box.svg";
+import userMinus from "../../assets/img/dashboards/teams/user-minus.svg";
+import leader from "../../assets/img/dashboards/teams/leadership.svg";
+import compare from "../../assets/img/dashboards/teams/performance.svg";
+import Miningcard from "./components/Miningcard";
+import KeyStats from "./components/KeyStats";
 
 const MiningTeams = () => {
+  const handleSeePerformance = () => {};
+  const handleRemoveUser = () => {};
+  const handleLeaderboardClick = () => {};
   return (
-    <section className="!px-10">
+    <section className="lg:!px-10 !px-4">
       <div>
         <Back route={"/teams"} />
       </div>
-      <div className="grid lg:grid-cols-5 gap-10 !py-8">
-        <div className="flex flex-col  gap-4 !p-4 bg-white  !mb-5 rounded-lg shadow-md lg:col-span-3  col-span-5 ">
-          <h1 className="text-2xl text-center font-bold font-nueue tracking-tight">
+      <div className="grid lg:grid-cols-5 gap-10 !py-8 font-nueue">
+        <div className="flex flex-col  gap-4 !p-4 bg-white  !mb-5 rounded-3xl shadow-md lg:col-span-3  col-span-5 ">
+          <h1 className="text-2xl text-center font-bold  tracking-tight !py-6">
             Mining Team
           </h1>
-          <div className="flex items-center bg-whitish !p-3 rounded-2xl">
-            {/* Image Section */}
-            <div className="w-12 h-12 flex-shrink-0">
-              <img
-                src={profile}
-                alt="Chapter"
-                className="w-full h-full object-cover rounded-md"
-              />
-              <div>
-                <h3>SARAH martins</h3>
-                <p>s</p>
-              </div>
-            </div>
-
-            {/* Text + Progress Section */}
-            <div className="flex-1">
-              <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold font-bebas">Chapter</h3>
-                <p className="text-sm text-gray-500 font-nueue flex gap-1.5 items-center">
-                  <PiClock /> Mins
-                </p>
-              </div>
-            </div>
-          </div>
+          <Miningcard
+            profile={profile}
+            email="Sarahmartins@gmail.com"
+            teamCount={1}
+            onSeePerformance={handleSeePerformance}
+            onRemove={handleRemoveUser}
+          />
+          <Miningcard
+            profile={profile2}
+            email="WilliamsJackob@gmail.com"
+            teamCount={3}
+            onSeePerformance={handleSeePerformance}
+            onRemove={handleRemoveUser}
+          />
+          <Miningcard
+            profile={profile}
+            email="Sarahmartins@gmail.com"
+            teamCount={1}
+            onSeePerformance={handleSeePerformance}
+            onRemove={handleRemoveUser}
+          />
+          <Miningcard
+            profile={profile2}
+            email="WilliamsJackob@gmail.com"
+            teamCount={3}
+            onSeePerformance={handleSeePerformance}
+            onRemove={handleRemoveUser}
+          />
         </div>
-        <div className="lg:col-span-2 col-span-5">Hello</div>
+        <div className="lg:col-span-2 col-span-5 self-start flex flex-col  gap-4 !p-4 bg-white rounded-3xl shadow-md !mb-5">
+          <h1 className="text-2xl text-center font-bold  tracking-tight !py-6">
+            Key Stats
+          </h1>
+
+          <KeyStats
+            icon={leader}
+            text="See Leadership boards"
+            onClick={handleLeaderboardClick}
+          />
+          <KeyStats
+            icon={compare}
+            text="Compare Performance"
+            onClick={handleLeaderboardClick}
+          />
+        </div>
       </div>
     </section>
   );

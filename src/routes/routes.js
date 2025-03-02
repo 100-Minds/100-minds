@@ -8,7 +8,8 @@ import Profile from "../views/profile/Profile";
 import ChapterList from "../views/Courses/ChapterList";
 import Teams from "../views/teams/Teams";
 import MiningTeams from "../views/teams/MiningTeams";
-import { Children } from "react";
+import Performance from "../views/teams/Performance";
+import LeaderBoard from "../views/teams/LeaderBoard";
 
 const coreRoutes = [
   {
@@ -57,9 +58,19 @@ const coreRoutes = [
     component: Teams,
     children: [
       {
-        path: "mining-teams", // No need to include "/teams" again
+        path: "mining-teams",
         title: "Mining Teams",
         component: MiningTeams,
+      },
+      {
+        path: "performance",
+        title: "Performance",
+        component: Performance,
+      },
+      {
+        path: "leader-board",
+        title: "Leader Board",
+        component: LeaderBoard,
       },
     ],
   },
