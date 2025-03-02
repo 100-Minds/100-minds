@@ -6,6 +6,9 @@ import Settings from "../views/settings/Settings";
 import Support from "../views/support/Support";
 import Profile from "../views/profile/Profile";
 import ChapterList from "../views/Courses/ChapterList";
+import Teams from "../views/teams/Teams";
+import MiningTeams from "../views/teams/MiningTeams";
+import { Children } from "react";
 
 const coreRoutes = [
   {
@@ -47,6 +50,18 @@ const coreRoutes = [
     path: "/courses",
     title: "courses",
     component: ChapterList,
+  },
+  {
+    path: "/teams",
+    title: "teams",
+    component: Teams,
+    children: [
+      {
+        path: "mining-teams", // No need to include "/teams" again
+        title: "Mining Teams",
+        component: MiningTeams,
+      },
+    ],
   },
 ];
 const routes = [...coreRoutes];

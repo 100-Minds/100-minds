@@ -12,7 +12,7 @@ import setting from "../assets/img/dashboards/settings.svg";
 import support from "../assets/img/dashboards/support.svg";
 import profile from "../assets/img/dashboards/sarah.png";
 import { useSidebar } from "../context/SidebarContex";
-
+import teams from "../assets/img/dashboards/teams/group-icon.svg";
 const SideBar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   return (
@@ -103,6 +103,28 @@ const SideBar = () => {
                   }`}
                 >
                   <img src={ongoing} alt="" /> Ongoing
+                </span>
+              )}
+            </NavLink>
+            <NavLink
+              to="/teams"
+              end={false}
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-2 border-sidebar-color"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+              onClick={closeSidebar}
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full items-center gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <img src={teams} alt="" /> Teams
                 </span>
               )}
             </NavLink>
@@ -263,6 +285,27 @@ const SideBar = () => {
                     }`}
                   >
                     <img src={ongoing} alt="" /> Ongoing
+                  </span>
+                )}
+              </NavLink>
+              <NavLink
+                to="/teams"
+                className={({ isActive, isPending }) =>
+                  `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
+                    isActive
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-2 border-sidebar-color"
+                      : ""
+                  } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+                }
+                onClick={closeSidebar}
+              >
+                {({ isActive }) => (
+                  <span
+                    className={`w-full items-center gap-2 flex !mx-4 !p-2 rounded-lg ${
+                      isActive ? "bg-whitish" : ""
+                    }`}
+                  >
+                    <img src={teams} alt="" /> Teams
                   </span>
                 )}
               </NavLink>

@@ -6,6 +6,7 @@ import { PiClock } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { RiArrowLeftLine, RiArrowLeftSLine } from "react-icons/ri";
 import TabComponent from "./components/TabComponent";
+import Back from "../../components/Back";
 
 const ChapterList = () => {
   const chapters = [
@@ -26,12 +27,7 @@ const ChapterList = () => {
               DIFFICULT CONVERSATIONS
             </h1>
             <div className="lg:col-span-3  col-span-5">
-              <Link
-                to={"/"}
-                className="inline-flex items-center justify-center font-bebas text-sm bg-white  rounded-2xl !p-1 !px-3 !mb-6"
-              >
-                <RiArrowLeftSLine /> BACK
-              </Link>
+              <Back route={"/"} />
 
               <TabComponent />
             </div>
