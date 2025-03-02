@@ -1,30 +1,29 @@
-import React from "react";
 import userImage from "../../../assets/img/dashboards/teams/avatar1.jpg";
 import userImage2 from "../../../assets/img/dashboards/teams/avatar3.jpg";
 import userImage3 from "../../../assets/img/dashboards/teams/avatar4.jpg";
-const leaderboardData = [
-  { rank: 1, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 2, name: "Drena Adams", points: 1234, image: userImage2 },
-  { rank: 3, name: "Drena Adams", points: 1234, image: userImage3 },
-  { rank: 4, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 5, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 6, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 7, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 8, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 9, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 10, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 11, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 12, name: "Drena Adams", points: 1234, image: userImage },
-  { rank: 13, name: "Drena Adams", points: 1234, image: userImage },
-];
+const LeaderboardItems = () => {
+  const leaderboardData = [
+    { rank: 1, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 2, name: "Drena Adams", points: 1234, image: userImage2 },
+    { rank: 3, name: "Drena Adams", points: 1234, image: userImage3 },
+    { rank: 4, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 5, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 6, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 7, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 8, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 9, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 10, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 11, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 12, name: "Drena Adams", points: 1234, image: userImage },
+    { rank: 13, name: "Drena Adams", points: 1234, image: userImage },
+  ];
 
-const rankColors = {
-  1: "#F5D23D",
-  2: "#C1D2E5",
-  3: "#DE9351",
-};
+  const rankColors = {
+    1: "#F5D23D",
+    2: "#C1D2E5",
+    3: "#DE9351",
+  };
 
-const LeaderboardItem = () => {
   return (
     <div className="lg:max-w-2/3 mx-auto space-y-3 bg-white lg:p-8 p-4 rounded-3xl">
       {leaderboardData.map(({ rank, name, points, image }) => (
@@ -41,7 +40,7 @@ const LeaderboardItem = () => {
               }`}
               style={{
                 backgroundColor: rankColors[rank] || "transparent", // Use color if exists, otherwise transparent
-                borderColor: "gray" || "transparent",
+                borderColor: rankColors[rank] ? "gray" : "transparent",
               }}
             >
               {rank}
@@ -64,4 +63,4 @@ const LeaderboardItem = () => {
   );
 };
 
-export default LeaderboardItem;
+export default LeaderboardItems;

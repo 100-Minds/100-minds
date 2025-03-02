@@ -1,13 +1,13 @@
 import React from "react";
 import Back from "../../components/Back";
-import LeaderboardItem from "./components/LeaderBoardItem";
+import LeaderboardItems from "./components/LeaderboardItems";
 
 const LeaderBoard = () => {
   return (
     <div className="lg:!px-10 !px-4 font-nueue !mb-12 ">
       <Back route={"../mining-teams"} />
       <div>
-        <LeaderboardItem />
+        <LeaderboardItems />
       </div>
     </div>
   );
