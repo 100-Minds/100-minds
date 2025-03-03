@@ -2,7 +2,7 @@ import React from "react";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
-const KeyStats = ({ icon, text, onClick }) => {
+const KeyStats = ({ icon, text, onClick, link }) => {
   return (
     <div
       className="bg-whitish !p-3 rounded-2xl flex justify-between items-center cursor-pointer"
@@ -14,7 +14,7 @@ const KeyStats = ({ icon, text, onClick }) => {
           alt="Leaderboard Icon"
           className="bg-white w-10 h-10 !p-2 rounded-xl"
         />
-        <Link to={"../leader-board"} className="text-sm font-bold">
+        <Link to={link} className="text-sm font-bold">
           {text}
         </Link>
       </div>

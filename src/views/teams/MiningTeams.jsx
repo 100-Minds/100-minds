@@ -69,11 +69,13 @@ const MiningTeams = () => {
             icon={leader}
             text="See Leadership boards"
             onClick={handleLeaderboardClick}
+            link={"../leader-board"}
           />
           <KeyStats
             icon={compare}
             text="Compare Performance"
             onClick={handleLeaderboardClick}
+            link={"../compare-stats"}
           />
         </div>
       </div>

@@ -10,6 +10,7 @@ import Teams from "../views/teams/Teams";
 import MiningTeams from "../views/teams/MiningTeams";
 import Performance from "../views/teams/Performance";
 import LeaderBoard from "../views/teams/LeaderBoard";
+import CompareStats from "../views/teams/CompareStats";
 
 const coreRoutes = [
   {
@@ -71,6 +72,11 @@ const coreRoutes = [
         path: "leader-board",
         title: "Leader Board",
         component: LeaderBoard,
+      },
+      {
+        path: "compare-stats",
+        title: "Compare Stats",
+        component: CompareStats,
       },
     ],
   },
