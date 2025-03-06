@@ -25,7 +25,9 @@
   --color-shade-green: #55c05b;
   --color-shade-purple: #5755bb;
 }
-
+.gradient {
+  background: linear-gradient(86.82deg, #a6a1fe -0.48%, #4f45f0 98.98%);
+}
 .box-shadow {
   box-shadow: 5px 5px 10px #509999;
 }

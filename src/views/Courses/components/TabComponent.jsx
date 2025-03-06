@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import Video from "./Video";
+import ChapterList from "../ChapterList";
+import Quiz from "./Quiz";
 
 const TabComponent = () => {
   const [activeTab, setActiveTab] = useState("video");
@@ -32,14 +34,17 @@ const TabComponent = () => {
 
       {/* Tab Content */}
       <div className="p-4">
-        <ProgressBar percentage={40} />
-        {activeTab === "video" && <Video />}
+        {/* <ProgressBar percentage={40} /> */}
+        {activeTab === "video" && (
+          <div>
+            <Video />
+            {/* <ChapterList /> */}
+          </div>
+        )}
         {activeTab === "roleplay" && (
           <p className="!py-3">🎭 Role Play content goes here...</p>
         )}
-        {activeTab === "quiz" && (
-          <p className="!py-3">📝 Quiz content goes here...</p>
-        )}
+        {activeTab === "quiz" && <Quiz />}
       </div>
     </div>
   );
