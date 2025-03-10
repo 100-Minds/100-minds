@@ -130,8 +130,8 @@ const Teams = () => {
                   <RiAddCircleFill color="black" fill="white" size={20} />
                 </button>
 
-                <div className="!py-6 flex gap-9  font-nueue">
-                  <div className="flex flex-col items-center  bg-white  !p-8 !px-8 w-1/3 rounded-2xl">
+                <div className="!py-6 flex flex-col lg:flex-row gap-9  font-nueue">
+                  <div className="flex flex-col items-center  bg-white  !p-8 !px-8 w-full lg:w-1/3 rounded-2xl ">
                     <h2 className="font-nueue lg:text-2xl  text-xl font-[900] text-center !py-6">
                       Mining team
                     </h2>
@@ -149,7 +149,7 @@ const Teams = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="flex flex-col items-center justify-between  bg-white  !p-8 !px-8 w-1/3 rounded-2xl">
+                  <div className="flex flex-col items-center justify-between  bg-white  !p-8 !px-8 w-full lg:w-1/3 rounded-2xl min-h-[40vh]">
                     <h2 className="font-nueue lg:text-2xl  text-xl font-[900] text-center !py-6">
                       Mining team
                     </h2>

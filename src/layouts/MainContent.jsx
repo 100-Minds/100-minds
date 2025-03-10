@@ -1,10 +1,7 @@
-import { PiBell, PiMagnifyingGlass } from "react-icons/pi";
-
 import OngoingActivities from "../views/dashboard/components/OngoingActivities";
 import DashboardCard from "../views/dashboard/components/DashboardCard";
 import RolePlaySection from "../views/dashboard/components/RolePlaySection";
 import LearningModule from "../components/Learning Modules/LearningModule";
-import Search from "../views/dashboard/components/Search";
 
 const MainContent = () => {
   return (
@@ -14,7 +11,10 @@ const MainContent = () => {
       <section className="w-full !pt-7 !pb-14">
         <DashboardCard />
       </section>
-      <OngoingActivities />
+      <div>
+        <h1 className=" text-3xl lg:text-5xl font-bebas">ONGOING ACTIVITIES</h1>
+        <OngoingActivities limit={4} />
+      </div>
       <RolePlaySection />
       <LearningModule />
     </div>
