@@ -73,7 +73,7 @@ const Teams = () => {
   return (
     <div className="h-full w-full overflow-hidden !pt-4">
       <div className="bg-[#F3F3F3] overflow-scroll scroll-hide h-full min-h-screen rounded-3xl !mx-3">
-        <div className="backdrop-blur-xs !py-4 !px-10 sticky top-0 z-40">
+        <div className="backdrop-blur-xs !py-4 lg:!px-10 px-6 sticky top-0 z-40">
           <NavHeader header={"YOUR TEAM"} />
         </div>
         {currentPath === "/teams" && !currentPath.includes("mining-teams") && (
@@ -108,7 +108,7 @@ const Teams = () => {
               </div>
             ) : (
               // Show this when teams are added
-              <div className="!p-10">
+              <div className="lg:!p-10 p-6">
                 {/* <h2 className="text-3xl font-bold mb-6">Your Teams</h2> */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {teams.map((team, index) => (
@@ -123,7 +123,7 @@ const Teams = () => {
                 </div>
 
                 <button
-                  className="bg-green-tint flex rounded-full gap-3 items-center !py-3 text-white !px-3 hover:opacity-85 hover:scale-105 transition"
+                  className="bg-green-tint flex rounded-full gap-3 items-center !py-3 text-white !px-3 hover:opacity-85 hover:scale-105 transition text-sm lg:text-base"
                   onClick={() => setIsModalOpen(true)}
                 >
                   Create new team{" "}
@@ -131,7 +131,7 @@ const Teams = () => {
                 </button>
 
                 <div className="!py-6 flex flex-col lg:flex-row gap-9  font-nueue">
-                  <div className="flex flex-col items-center  bg-white  !p-8 !px-8 w-full lg:w-1/3 rounded-2xl ">
+                  <div className="flex flex-col items-center  bg-white  !p-8 lg:!px-8  w-full lg:w-1/3 rounded-2xl ">
                     <h2 className="font-nueue lg:text-2xl  text-xl font-[900] text-center !py-6">
                       Mining team
                     </h2>
@@ -142,14 +142,14 @@ const Teams = () => {
                         className="w-ful h-full object-contain"
                       />
                     </div>
-                    <div className="flex justify-between gap-20 ">
+                    <div className="flex justify-between w-full ">
                       <p className="text-gray-500 !p-1 ">24 Members</p>
                       <button className="bg-green-tint tex-white  !p-1 !px-3 text-sm text-white rounded-2xl">
                         See details
                       </button>
                     </div>
                   </div>
-                  <div className="flex flex-col items-center justify-between  bg-white  !p-8 !px-8 w-full lg:w-1/3 rounded-2xl min-h-[40vh]">
+                  <div className="flex flex-col items-center justify-between  bg-white  !p-8 !px-8 w-full lg:w-1/3 rounded-2xl min-h-[50vh]">
                     <h2 className="font-nueue lg:text-2xl  text-xl font-[900] text-center !py-6">
                       Mining team
                     </h2>
@@ -159,7 +159,7 @@ const Teams = () => {
                         Invite <img src={userPlus} alt="" />{" "}
                       </button>
                     </div>
-                    <div className="flex justify-between gap-20 ">
+                    <div className="flex justify-between  w-full ">
                       <p className="text-gray-500 !p-1 ">24 Members</p>
                       <Link
                         to="mining-teams"

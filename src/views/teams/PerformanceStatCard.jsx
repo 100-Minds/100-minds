@@ -2,7 +2,7 @@ import React from "react";
 
 const PerformanceStatCard = ({ image, title, value, timeFrame }) => {
   return (
-    <div className="bg-white !p-4  rounded-2xl flex items-center justify-between shadow-md">
+    <div className="bg-white !p-4  rounded-2xl flex items-center justify-between shadow-md ">
       {/* Left Side - Icon & Text */}
       <div className="flex items-center gap-3">
         <img

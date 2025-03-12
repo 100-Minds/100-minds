@@ -21,7 +21,7 @@ const data = [
 const LeaderBarChart = () => {
   return (
     <div className="w-full flex justify-center">
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-2xl ">
         <ResponsiveContainer width="100%" height={400}>
           <BarChart
             data={data}

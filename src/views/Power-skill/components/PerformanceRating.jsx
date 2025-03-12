@@ -2,7 +2,7 @@ import React from "react";
 import star from "../../../assets/img/dashboards/star_perfomance.png";
 const PerformanceRating = () => {
   return (
-    <div className="flex items-center bg-white shadow-lg rounded-xl !p-4 w-full max-w-md font-nueue">
+    <div className="hidden lg:flex items-center bg-white shadow-lg rounded-3xl !p-4 w-full max-w-md font-nueue">
       {/* <Star className="text-yellow-500 w-10 h-10" /> */}
       <img
         src={star}

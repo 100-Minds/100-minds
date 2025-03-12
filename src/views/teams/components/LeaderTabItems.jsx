@@ -70,12 +70,12 @@ const LeaderTabItems = ({ tabs, tabContent, header }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
   return (
-    <div className="w-full lg:max-w-3xl text-nowrap mx-auto">
+    <div className="w-full lg:max-w-3xl text-nowrap mx-auto ">
       {/* Header Section (Passed as Prop) */}
-      {header && <div className="mb-4">{header}</div>}
+      {header && <div className="!mb-4 lg:!mb-2">{header}</div>}
 
       {/* Tabs */}
-      <div className="flex border-b justify-between border-gray-300 bg-white rounded-2xl py-2 px-4">
+      {/* <div className="flex  border-b justify-between border-gray-300 bg-white rounded-2xl py-2 px-4">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -90,10 +90,35 @@ const LeaderTabItems = ({ tabs, tabContent, header }) => {
             {tab}
           </button>
         ))}
+      </div> */}
+
+      <div className="relative flex  lg:border-b justify-between border-gray-300 bg-white rounded-2xl !py-2 !px-4 !mb-4">
+        {/* Left Fade */}
+        <div className="absolute left-0 top-0 h-full w-6 bg-gradient-to-r from-white to-transparent pointer-events-non rounded-2xl"></div>
+
+        <div className="flex justify-between overflow-x-auto whitespace-nowrap scrollbar-hide">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`!px-4 !py-2 text-sm font-medium focus:outline-none transition-all tracking-tight
+          ${
+            activeTab === tab
+              ? "bg-whitish text-black rounded-xl"
+              : "text-gray-500 hover:text-green-tint"
+          }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Right Fade */}
+        <div className="absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
       </div>
 
       {/* Tab Content */}
-      <div className="p-4 text-gray-700">{tabContent[activeTab]}</div>
+      <div className="lg:!p-4 text-gray-700">{tabContent[activeTab]}</div>
     </div>
   );
 };

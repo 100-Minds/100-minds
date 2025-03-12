@@ -27,7 +27,7 @@ const LeaderboardItems = () => {
 
   return (
     <div>
-      <div className="lg:w-full mx-auto space-y-3 bg-white lg:p-8 p-4 rounded-3xl">
+      <div className="lg:w-full mx-auto space-y-3 bg-white lg:!p-8 !p-4 rounded-3xl">
         {leaderboardData.map(({ rank, name, points, image }) => (
           <div
             key={rank}
@@ -35,7 +35,7 @@ const LeaderboardItems = () => {
           } border-b border-gray-300`}
           >
             {/* Left Section: Rank, Image, Name */}
-            <div className="flex items-center gap-3 p-4 ">
+            <div className="flex items-center gap-3 !p-4 ">
               <span
                 className={`text-sm !p-1 !px-1.5 w-6 h-6 rounded-full flex items-center justify-center font-bold border-2  ${
                   rankColors[rank] || "bg-whitish border-none"

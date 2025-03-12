@@ -5,27 +5,27 @@ import LeaderBarChart from "./LeaderBarChart";
 
 const CompareStatItems = () => {
   return (
-    <div className="lg:w-full mx-auto space-y-3 bg-white lg:p-8 p-4 rounded-3xl font-nueue">
+    <div className="lg:w-full !mx-auto space-y-3 bg-white lg:!p-8 !p-4 rounded-3xl font-nueue !mb-12">
       <p className=" tracking-tight text-gray-400">Comparing Stats</p>
-      <div className="mt-7 ">
-        <div className="flex gap-7 items-center pb-6">
+      <div className="!mt-7 ">
+        <div className="flex gap-7 items-center !pb-6">
           <div className="flex gap-3 items-center">
-            <div className="w-10 h-10 rounded-full bg-purple-shade"></div>
-            <p className="text-3xl text-black">Sandro Trey</p>
+            <div className="lg:w-10 w-5 h-5 lg:h-10 rounded-full bg-purple-shade"></div>
+            <p className="lg:text-3xl text-black">Sandro Trey</p>
           </div>
           <div>
             <img src={performance} alt="" />
           </div>
           <div className="flex gap-3 items-center">
-            <div className="w-10 h-10 rounded-full bg-light-purple-shade"></div>
-            <p className="text-3xl text-black">Andy Adams</p>
+            <div className="lg:w-10 w-5 h-5 lg:h-10 rounded-full bg-light-purple-shade"></div>
+            <p className="lg:text-3xl text-black">Andy Adams</p>
           </div>
         </div>
         <div>
           <LeaderBarChart />
         </div>
       </div>
-      <div className="flex items-center gap-3 py-4">
+      <div className="flex items-center gap-3 !pb-4">
         <img
           src={sandro}
           alt=""

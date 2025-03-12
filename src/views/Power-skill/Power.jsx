@@ -123,21 +123,21 @@ const Power = () => {
   return (
     <div className="h-full w-full overflow-hidden !pt-4">
       <div className="bg-[#F3F3F3] overflow-scroll scroll-hide h-full rounded-3xl !mx-3 !px-6">
-        <div className="backdrop-blur-xs !py-4 !px-10 sticky top-0 z-40">
+        <div className="backdrop-blur-xs !py-4  sticky top-0 z-40 !pt-5">
           <NavHeader header={"POWER SKILL"} />
         </div>
 
-        <div className="grid grid-cols-7 align-self-end gap-5 min-h-[80vh]">
+        <div className="grid lg:grid-cols-7 align-self-end gap-5 lg:!pt-7 ">
           {inCall ? (
             // Video Call UI
-            <div className="col-span-4 bg-white rounded-3xl !p-6 flex flex-col justify-center items-center relative">
+            <div className="col-span-4 bg-white rounded-3xl !p-6 flex flex-col justify-center items-center relative min-h-[60vh]">
               <video
                 ref={localVideoRef}
                 autoPlay
                 muted
                 className="w-full h-full object-cover rounded-3xl"
               />
-              <div className="absolute bottom-32 right-12 w-36 h-48 bg-white rounded-md shadow-md">
+              <div className="absolute bottom-32 right-12 lg:w-36 w-30 lg:h-48 h-30 bg-white rounded-md shadow-md">
                 <video
                   ref={remoteVideoRef}
                   autoPlay
@@ -167,7 +167,7 @@ const Power = () => {
             </div>
           ) : (
             // Get Started UI
-            <div className="col-span-4 bg-white rounded-3xl !p-6 flex flex-col justify-center items-center">
+            <div className="lg:col-span-4  col-span-7 bg-white rounded-3xl !p-6 flex flex-col justify-center items-center min-h-[60vh]">
               <div className="flex">
                 <img
                   src={starz}
@@ -180,7 +180,7 @@ const Power = () => {
                   className="w-18 h-20 object-cover rounded-full -translate-x-3 -translate-y-2"
                 />
               </div>
-              <h1 className="font-bebas text-3xl">
+              <h1 className="font-bebas text-xl lg:text-3xl">
                 How to integrate with ease
               </h1>
               <div className="font-nueue text-gray-400 flex gap-1.5 items-center !py-4 text-sm">
@@ -196,7 +196,7 @@ const Power = () => {
             </div>
           )}
 
-          <div className="col-span-3 flex flex-col gap-3.5">
+          <div className="lg:col-span-3 col-span-7 flex flex-col gap-3.5 ">
             <PerformanceRating />
             <AIChatIntro />
           </div>

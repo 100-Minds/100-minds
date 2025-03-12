@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Search from "../views/dashboard/components/Search";
-import logo from "../assets/img/dashboards/LOGO.svg";
+import logo from "../assets/img/dashboards/100minds-logo.png";
 import { PiBell, PiSquaresFour } from "react-icons/pi";
 import SideBar from "./SideBar";
 import { useSidebar } from "../context/SidebarContex";
@@ -16,9 +16,13 @@ const NavHeader = ({ header }) => {
   const closeDropdown = () => setIsOpen(false);
   return (
     <header>
-      <div className="flex justify-between items-center md:hidden !py-6">
+      <div className="flex justify-between items-center lg:hidden !py-6">
         <div className="">
-          <img src={logo} alt="" />
+          <img
+            src={logo}
+            alt=""
+            className=" w-30 h-10 object-contain -translate-x-5 "
+          />
         </div>
         <div className="flex gap-2.5">
           <div
