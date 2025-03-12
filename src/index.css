@@ -146,3 +146,11 @@ input[type="range"].progress-slider::-moz-range-thumb {
   border-radius: 50%;
   cursor: pointer;
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}

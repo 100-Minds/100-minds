@@ -20,7 +20,7 @@ const RolePlay = () => {
           <NavHeader header={"ROLE PLAY"} />
         </div>
 
-        <div className="lg:!px-10 px-4  h-full  bg-[#F3F3F3] rounded-xl   ">
+        <div className="lg:!px-6 px-4  h-full  bg-[#F3F3F3] rounded-xl   ">
           <div className="grid lg:grid-cols-3 gap-5 !py-8">
             <RolePlayCards
               bgImg={difficult}

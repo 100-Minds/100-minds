@@ -196,8 +196,8 @@ const SideBar = () => {
         </div>
       </div> */}
 
-      <div className="w-1/5  h-screen font-nueue hidden  lg:flex flex-col justify-between  text-nowrap">
-        <div className="!py-6 !pb-9 ">
+      <div className="w-1/4  h-screen font-nueue hidden  lg:flex flex-col justify-between  text-nowrap no-scrollbar">
+        <div className="!py-6 !pb-3">
           <img src={logo} alt="" className=" w-48 h-18 object-contain " />
         </div>
 
@@ -205,7 +205,7 @@ const SideBar = () => {
           <NavLink
             to="/"
             className={({ isActive, isPending }) =>
-              `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                 isActive
                   ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
                   : ""
@@ -226,7 +226,7 @@ const SideBar = () => {
           <NavLink
             to="/role-play"
             className={({ isActive, isPending }) =>
-              `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                 isActive
                   ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
                   : ""
@@ -246,7 +246,7 @@ const SideBar = () => {
           <NavLink
             to="/power"
             className={({ isActive, isPending }) =>
-              `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
+              `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
                 isActive
                   ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
                   : ""
@@ -266,7 +266,7 @@ const SideBar = () => {
           <NavLink
             to="/ongoing"
             className={({ isActive, isPending }) =>
-              `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                 isActive
                   ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
                   : ""
@@ -287,7 +287,7 @@ const SideBar = () => {
             to="/teams"
             end={false}
             className={({ isActive, isPending }) =>
-              `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
+              `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
                 isActive
                   ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
                   : ""
@@ -306,12 +306,12 @@ const SideBar = () => {
             )}
           </NavLink>
         </div>
-        <div className="flex flex-col justify-end h-7/9 !pb-6  ">
+        <div className="flex flex-col justify-end h-full !pb-6  ">
           <div>
             <NavLink
               to="/settings"
               className={({ isActive, isPending }) =>
-                `flex items-center gap-1 p-2 pl-4 text-apex_dashboard_blacktext ${
+                `flex items-center gap-1  text-apex_dashboard_blacktext ${
                   isActive
                     ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
                     : ""
@@ -332,7 +332,7 @@ const SideBar = () => {
             <NavLink
               to="/support"
               className={({ isActive, isPending }) =>
-                `flex items-center gap-1 p-2 pl-4 text-apex_dashboard_blacktext ${
+                `flex items-center gap-1 text-apex_dashboard_blacktext ${
                   isActive
                     ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
                     : ""

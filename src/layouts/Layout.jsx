@@ -24,7 +24,7 @@ const Layout = () => {
     return () => window.removeEventListener("load", handleLoad);
   }, []);
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen no-scrollbar">
       {loading ? (
         <Loader />
       ) : (

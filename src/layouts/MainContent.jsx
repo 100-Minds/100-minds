@@ -5,7 +5,7 @@ import LearningModule from "../components/Learning Modules/LearningModule";
 
 const MainContent = () => {
   return (
-    <div className=" !px-5 !lg:px-10 !py-7 h-full  overflow-scroll scrollbar-hide ">
+    <div className=" !px-5 !lg:px-10 !py-7 h-full  overflow-scroll scrollbar-hide  no-scrollbar ">
       <h1 className="font-bebas text-3xl  md:hidden">dashboard</h1>
       {/* Mobile maincontent menu */}
       <section className="w-full !pt-7 !pb-14">
