@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/img/dashboards/100minds-logo.png";
 import { PiSquaresFour, PiX } from "react-icons/pi";
 import { NavLink } from "react-router-dom";
@@ -15,11 +15,20 @@ import { useSidebar } from "../context/SidebarContex";
 import teams from "../assets/img/dashboards/teams/group-icon.svg";
 import ProfileModal from "../components/ProfileModal";
 import { AnimatePresence } from "framer-motion";
+import { useAuth } from "../context/AuthContext";
 const SideBar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeSidebarMenu = () => setIsSidebarOpen(false);
+  const { getProfileData } = useAuth();
+  useEffect(() => {
+    const fetchData = async () => {
+      await getProfileData();
+    };
+
+    fetchData();
+  }, []);
   return (
     <>
       {/* laptop screen */}

@@ -154,3 +154,14 @@ input[type="range"].progress-slider::-moz-range-thumb {
   -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
   scrollbar-width: none; /* Hide scrollbar for Firefox */
 }
+/* Force autofill background color */
+/* input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  background-color: #dc2626 !important;
+  color: white !important;
+  -webkit-text-fill-color: white !important;
+  box-shadow: 0 0 0px 1000px #dc2626 inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+} */

@@ -53,6 +53,7 @@ const coreRoutes = [
     title: "courses",
     component: ChapterList,
   },
+
   {
     path: "/teams",
     title: "teams",
