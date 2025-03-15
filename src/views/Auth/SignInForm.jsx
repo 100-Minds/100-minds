@@ -84,8 +84,8 @@
 
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext"; // Import Auth context
-import google from "../../assets/img/dashboards/google.png";
-import fb from "../../assets/img/dashboards/facebook.png";
+import google from "../../assets/img/dashboards/Google.png";
+import fb from "../../assets/img/dashboards/Facebook.png";
 import at from "../../assets/img/dashboards/at.png";
 import lock from "../../assets/img/dashboards/lock.png";
 import { Link, useNavigate } from "react-router-dom";

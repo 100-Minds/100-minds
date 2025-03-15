@@ -113,8 +113,8 @@
 import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-import google from "../../assets/img/dashboards/google.png";
-import fb from "../../assets/img/dashboards/facebook.png";
+import google from "../../assets/img/dashboards/Google.png";
+import fb from "../../assets/img/dashboards/Facebook.png";
 import user from "../../assets/img/dashboards/usericon.png";
 import at from "../../assets/img/dashboards/at.png";
 import lock from "../../assets/img/dashboards/lock.png";
