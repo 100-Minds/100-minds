@@ -43,8 +43,8 @@ export const AuthProvider = ({ children }) => {
         "https://backend-5781.onrender.com/api/v1/auth/sign-in",
         // JSON.stringify(formData),
         formData,
-
         {
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
@@ -90,6 +90,7 @@ export const AuthProvider = ({ children }) => {
         "https://backend-5781.onrender.com/api/v1/auth/sign-in",
         payload,
         {
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
