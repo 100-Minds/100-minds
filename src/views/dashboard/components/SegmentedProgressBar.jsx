@@ -127,9 +127,7 @@
 
 // export default SemiCircularProgressIndicator;
 
-import React from "react";
-
-const SemiCircularProgressIndicator = () => {
+const SegmentedProgressBar = () => {
   const progress = 100; // Progress between 0 - 100
 
   // SVG settings
@@ -225,4 +223,4 @@ const SemiCircularProgressIndicator = () => {
   );
 };
 
-export default SemiCircularProgressIndicator;
+export default SegmentedProgressBar;

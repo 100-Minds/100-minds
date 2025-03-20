@@ -1,11 +1,7 @@
-import React from "react";
-import content from "../../../assets/img/dashboards/dashboard component/Content.png";
-
-import star from "../../../assets/img/dashboards/dashboard component/star.png";
-import box from "../../../assets/img/dashboards/dashboard component/box.png";
 import percentage from "../../../assets/img/dashboards/dashboard component/percentage.png";
 import { PiCaretRight } from "react-icons/pi";
 import SegmentedProgressBar from "./SegmentedProgressbar";
+
 const DashboardCard = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
