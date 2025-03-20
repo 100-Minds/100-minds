@@ -128,7 +128,7 @@
 // export default SemiCircularProgressIndicator;
 
 const SegmentedProgressBar = () => {
-  const progress = 100; // Progress between 0 - 100
+  const progress = 222; // Progress between 0 - 100
 
   // SVG settings
   const size = 220;
@@ -216,8 +216,8 @@ const SegmentedProgressBar = () => {
         ))}
 
         {/* Indicator */}
-        <circle cx={indicatorX} cy={indicatorY} r={4} fill={dialColor} />
-        <circle cx={indicatorX} cy={indicatorY} r={2} fill="white" />
+        <circle cx={indicatorX} cy={indicatorY} r={5} fill={dialColor} />
+        <circle cx={indicatorX} cy={indicatorY} r={3} fill="white" />
       </svg>
     </div>
   );
