@@ -5,7 +5,7 @@ import profile from "../../assets/img/dashboards/profile-two.jpg";
 const Notifications = ({ closeDropdown }) => {
   return (
     <div
-      className="fixed left-0 inset-0 bg-black/50 h-screen to-0% z-[99999999999999] flex justify-end lg:justify-center items-start"
+      className="fixed w-full left-0 inset-0 bg-black/50 h-screen to-0% z-[99999999999999] flex justify-end lg:justify-center items-start"
       onClick={closeDropdown} // Close when clicking outside the modal
     >
       <div

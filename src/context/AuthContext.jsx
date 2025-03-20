@@ -115,7 +115,64 @@ export const AuthProvider = ({ children }) => {
       );
       throw error;
     } finally {
-      setLoading(true);
+      setLoading(false);
+    }
+  };
+  // Password-forgot
+  const forgotPassword = async (formData) => {
+    const payload = { email: formData.email };
+
+    try {
+      const response = await axios.post(
+        "https://backend-5781.onrender.com/api/v1/auth/password/forgot",
+        payload,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      // Ensure the response has data and is successful
+      if (response.status === 200 && response.data?.success) {
+        return response.data;
+      } else {
+        throw new Error("Unexpected response from server.");
+      }
+    } catch (error) {
+      console.error(
+        "Password reset request error:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  };
+
+  // LOGOUT
+  const signout = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        "https://backend-5781.onrender.com/api/v1/auth/sign-out",
+        { withCredentials: true }
+      );
+
+      console.log("Signout Data:", response.data);
+
+      // ✅ Clear user session & storage
+      sessionStorage.removeItem("loggedInUser");
+      sessionStorage.removeItem("user");
+      localStorage.removeItem("userToken");
+
+      // ✅ Reset user state
+      setUser(null);
+      return response.data;
+    } catch (error) {
+      console.error("Signout failed:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,6 +186,7 @@ export const AuthProvider = ({ children }) => {
         }
       );
       console.log("Profile Data:", response.data);
+      return response.data;
     } catch (error) {
       console.error(
         "Fetching profile failed:",
@@ -150,15 +208,45 @@ export const AuthProvider = ({ children }) => {
     return user || JSON.parse(localStorage.getItem("loggedInUser"));
   };
   console.log("user obj", user);
+
+  // Function to update user profile
+  const updateUserProfile = async (updatedData) => {
+    try {
+      const response = await axios.post(
+        "https://backend-5781.onrender.com/api/v1/user/update-user",
+        updatedData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // If your API requires authentication cookies
+        }
+      );
+
+      // Assuming API returns updated user data
+      if (response.data) {
+        setUser(response.data); // Update the context state
+      }
+
+      return response.data; // Return response in case we need it in ProfileModal
+    } catch (error) {
+      console.error("Failed to update user profile", error);
+      throw error; // Throw error to handle it in ProfileModal
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
         signUp,
         signIn,
+        signout,
+        forgotPassword,
         verifyOtp,
         getCurrentUser,
         getProfileData,
+        updateUserProfile,
         loading,
       }}
     >

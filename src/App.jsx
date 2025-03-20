@@ -12,6 +12,8 @@ import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./routes/ProtectedRoutes";
+import ForgotPassword from "./views/Auth/ForgotPassword";
+import ResetPassword from "./views/Auth/ResetPassword";
 
 function RenderRoutes(routeList) {
   return routeList.map(({ path, component: Component, children }, index) => (
@@ -43,6 +45,8 @@ function App() {
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/signin" element={<SignInForm />} />
             <Route path="/otp" element={<OTPPage />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token?" element={<ResetPassword />} />
             <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>

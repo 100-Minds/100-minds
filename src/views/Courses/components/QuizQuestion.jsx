@@ -35,10 +35,10 @@ const Quiz = () => {
           case 1:
             return (
               <div>
-                <h2 className="text-lg font-semibold mb-4">
+                <h2 className="text-lg font-semibold !mb-4">
                   What does "mining" in cryptocurrency refer to?
                 </h2>
-                <div className="space-y-3">
+                <div className="!space-y-3">
                   {[
                     { id: "A", text: "Digging physical coins" },
                     {
@@ -50,10 +50,10 @@ const Quiz = () => {
                   ].map((option) => (
                     <label
                       key={option.id}
-                      className="flex items-center justify-between bg-white p-3 rounded-2xl cursor-pointer hover:scale-[1.01]"
+                      className="flex items-center justify-between bg-white !p-3 rounded-2xl cursor-pointer hover:scale-[1.01]"
                     >
-                      <div className="flex items-center space-x-3">
-                        <span className="bg-gray-200 text-gray-800 font-semibold px-3 py-1 rounded-md">
+                      <div className="flex items-center !space-x-3">
+                        <span className="bg-gray-200 text-gray-800 font-semibold !px-3 !py-1 rounded-md">
                           {option.id}
                         </span>
                         <span className="text-gray-700">{option.text}</span>
@@ -74,10 +74,10 @@ const Quiz = () => {
                     </label>
                   ))}
                 </div>
-                <div className="flex justify-end mt-6">
+                <div className="flex justify-end !mt-6">
                   <button
                     onClick={handleNext}
-                    className="px-4 py-2 gradient text-sm  text-white rounded-4xl hover:scale-105"
+                    className="!px-4 !py-2 gradient text-sm  text-white rounded-4xl hover:scale-105"
                   >
                     Next
                   </button>
@@ -88,15 +88,15 @@ const Quiz = () => {
           case 2:
             return (
               <div>
-                <div className="flex lg:flex-row flex-col items-center lg:px-20 lg:gap-7">
-                  <h1 className="text-lg font-semibold font-bebas lg:text-4xl pb-2">
+                <div className="flex lg:flex-row flex-col items-center lg:!px-20 lg:gap-7">
+                  <h1 className="text-lg font-semibold font-bebas lg:text-4xl !pb-2">
                     What is the logo for Ethereum?
                   </h1>
-                  <div className="grid grid-cols-2 gap-12 py-8">
+                  <div className="grid grid-cols-2 gap-12 !py-8">
                     {options.map((option) => (
                       <label
                         key={option.id}
-                        className={`relative w-40 h-40 bg-white object-contain p-6 rounded-3xl cursor-pointer transition hover:scale-105 
+                        className={`relative w-40 h-40 bg-white object-contain !p-6 rounded-3xl cursor-pointer transition hover:scale-105 
               ${selectedOption2 === option.id ? "ring-4 ring-green-tint" : ""}`}
                       >
                         <img
@@ -116,25 +116,25 @@ const Quiz = () => {
                         {/* Checkmark Below */}
                         <div className="flex justify-center ">
                           {selectedOption2 === option.id ? (
-                            <BiCheckCircle className="text-green-tint w-5 h-5 mt-2" />
+                            <BiCheckCircle className="text-green-tint w-5 h-5 !mt-2" />
                           ) : (
-                            <div className="w-4 h-4 border border-gray-400 rounded-full mt-3"></div>
+                            <div className="w-4 h-4 border border-gray-400 rounded-full !mt-3"></div>
                           )}
                         </div>
                       </label>
                     ))}
                   </div>
                 </div>
-                <div className="flex justify-between mt-6">
+                <div className="flex justify-between !mt-6">
                   <button
                     onClick={() => console.log("Back")}
-                    className="px-4 py-1.5 bg-white text-sm rounded-4xl hover:scale-105"
+                    className="!px-4 !py-1.5 bg-white text-sm rounded-4xl hover:scale-105"
                   >
                     Back
                   </button>
                   <button
                     onClick={handleNext}
-                    className="px-4 py-2 gradient text-sm text-white rounded-4xl hover:scale-105"
+                    className="!px-4 !py-2 gradient text-sm text-white rounded-4xl hover:scale-105"
                     disabled={!selectedOption2} // Prevents moving forward without selecting an option
                   >
                     Next
@@ -239,7 +239,7 @@ const Quiz = () => {
           case 3:
             return (
               <div className="flex flex-col justify-center items-center">
-                <h2 className="text-lg font-semibold mb-4">
+                <h2 className="text-lg font-semibold !mb-4">
                   Does Bitcoin use a Proof of Work consensus mechanism?
                 </h2>
                 <div className="space-y-3 flex">
@@ -250,7 +250,7 @@ const Quiz = () => {
                     <div
                       key={option.id}
                       onClick={() => setSelectedOption3(option.id)}
-                      className={`flex mr-6 items-center justify-center  bg-white p-4 w-40 h-20 rounded-2xl cursor-pointer hover:scale-[1.02] transition-all duration-200 ${
+                      className={`flex !mr-6 items-center justify-center  bg-white !p-4 w-40 h-20 rounded-2xl cursor-pointer hover:scale-[1.02] transition-all duration-200 ${
                         selectedOption3 === option.id
                           ? "border-2 border-green-tint shadow-md"
                           : "border border-gray-300"
@@ -262,16 +262,16 @@ const Quiz = () => {
                     </div>
                   ))}
                 </div>
-                <div className="flex justify-between mt-6 gap-4">
+                <div className="flex justify-between !mt-6 gap-4">
                   <button
                     onClick={handleBack}
-                    className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:scale-105"
+                    className="!px-4 !py-2 bg-gray-400 text-white rounded-lg hover:scale-105"
                   >
                     Back
                   </button>
                   <button
                     onClick={() => setCurrentStep(4)} // Go to grading page
-                    className="px-4 py-2 bg-green-tint text-white rounded-lg hover:scale-105"
+                    className="!px-4 !py-2 bg-green-tint text-white rounded-lg hover:scale-105"
                     disabled={!selectedOption3} // Prevent Next if no selection
                   >
                     Next
@@ -283,7 +283,7 @@ const Quiz = () => {
           case 4:
             return (
               <div className="text-center min-h-60 flex  flex-col justify-center items-center">
-                <h2 className="text-xl font-semibold mb-4">
+                <h2 className="text-xl font-semibold !mb-4">
                   Quiz Complete! 🎉
                 </h2>
                 <p>
@@ -291,7 +291,7 @@ const Quiz = () => {
                 </p>
                 <button
                   onClick={() => console.log("Show Results")} // Replace with grading logic
-                  className="mt-4 px-4 py-2 bg-green-tint text-white rounded-lg hover:scale-105"
+                  className="!mt-4 !px-4 !py-2 bg-green-tint text-white rounded-lg hover:scale-105"
                 >
                   View Results
                 </button>

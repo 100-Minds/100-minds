@@ -179,18 +179,18 @@ const SignUpForm = () => {
           Let's get you started
         </p>
         <h1 className="text-3xl !pt-3">Create an account</h1>
-        <p className="text-gray-400 text-sm">
+        <p className="text-gray-400 text-sm !pb-5 !pt-4">
           Fill in your details and sign up to start exploring
         </p>
-        <div className="flex !py-6 gap-6">
+        {/* <div className="flex !py-6 gap-6">
           <div className="bg-whitish w-18 h-12 !p-3 !px-4 rounded-xl">
             <img src={google} alt="" className="w-full h-full object-contain" />
           </div>
           <div className="bg-whitish w-18 h-12 !p-3 !px-4 rounded-xl">
             <img src={fb} alt="" className="w-full h-full object-contain" />
           </div>
-        </div>
-        <p className="!pb-6 text-gray-400">OR</p>
+        </div> */}
+        {/* <p className="!pb-6 text-gray-400">OR</p> */}
         <div className="w-full lg:!px-10">
           {Object.keys(formData).map((key) => (
             <div key={key} className="relative !mb-5">
