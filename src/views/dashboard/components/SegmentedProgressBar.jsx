@@ -127,7 +127,7 @@
 
 // export default SemiCircularProgressIndicator;
 
-const SegmentedProgressBar = () => {
+const SegmentedProgressBars = () => {
   const progress = 222; // Progress between 0 - 100
 
   // SVG settings
@@ -223,4 +223,4 @@ const SegmentedProgressBar = () => {
   );
 };
 
-export default SegmentedProgressBar;
+export default SegmentedProgressBars;

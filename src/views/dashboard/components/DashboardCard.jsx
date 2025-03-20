@@ -1,6 +1,6 @@
 import percentage from "../../../assets/img/dashboards/dashboard component/percentage.png";
 import { PiCaretRight } from "react-icons/pi";
-import SegmentedProgressBar from "./SegmentedProgressbar";
+import SegmentedProgressBars from "./SegmentedProgressBars";
 
 const DashboardCard = () => {
   return (
@@ -72,7 +72,7 @@ const DashboardCard = () => {
             alt=""
             className="w-full h-full object-cover object-center"
           /> */}
-          <SegmentedProgressBar />
+          <SegmentedProgressBars />
         </div>
         <h4 className="font-nueue text-black text-4xl font-bold tracking-tight !-mt-11 !mb-2">
           660
