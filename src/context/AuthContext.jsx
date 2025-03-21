@@ -6,6 +6,8 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [courseJourney, setCourseJourney] = useState(null);
+
   //   const navigate = useNavigate();
 
   const signUp = async (formData) => {
@@ -197,13 +199,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("loggedInUser");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-
   const getCurrentUser = () => {
     return user || JSON.parse(localStorage.getItem("loggedInUser"));
   };
@@ -234,6 +229,57 @@ export const AuthProvider = ({ children }) => {
       throw error; // Throw error to handle it in ProfileModal
     }
   };
+  // Get courses
+  const getCourses = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        "https://backend-5781.onrender.com/api/v1/course/get-courses",
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("course Data:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching course failed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  const getLearningJourneyCourses = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        "https://backend-5781.onrender.com/api/v1/journey/all-course",
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("journey course Data:", response.data);
+      setCourseJourney(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching journey course failed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    const storedUser = localStorage.getItem("loggedInUser");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    if (courseJourney === null) {
+      getLearningJourneyCourses();
+    }
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -247,6 +293,10 @@ export const AuthProvider = ({ children }) => {
         getCurrentUser,
         getProfileData,
         updateUserProfile,
+        // courses
+        getCourses,
+        getLearningJourneyCourses,
+        courseJourney,
         loading,
       }}
     >

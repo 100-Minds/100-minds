@@ -1,23 +1,16 @@
 import React from "react";
 import { PiClock } from "react-icons/pi";
 import { Link } from "react-router-dom";
-import ask from "../../assets/img/dashboards/learningModules/starz.svg";
+import ask from "../../../assets/img/dashboards/learningModules/starz.svg";
 
-const LearningModuleCard = ({ bgModule = "" }) => {
+const RolePlayJourneyCards = ({ bgModule = "", courseName, courseId }) => {
   return (
     <div
-      className={`w-full h-96 rounded-[20px] min-w-[85%] lg:min-w-0 snap-start ${bgModule}`}
+      className={`w-full h-96 rounded-[20px] min-w-[85%] lg:min-w-0 snap-start ${bgModule} `}
     >
       <div className="!px-5 !pt-8 relative z-0 flex flex-col justify-between h-full">
         <div>
-          <p className="font-bebas text-3xl text-white">
-            How to integrate{" "}
-            <span>
-              {" "}
-              <br />{" "}
-            </span>{" "}
-            with ease
-          </p>
+          <p className="font-bebas text-3xl text-white">{courseName}</p>
           <p className="text-white font-nueue text-base !pt-2">
             Whether you’re using our API or{" "}
             <span>
@@ -40,6 +33,7 @@ const LearningModuleCard = ({ bgModule = "" }) => {
           </div>
           <Link
             className={`bg-white text-sidebar-color  font-semibold text-[9px] lg:text-sm !p-2 !px-3 rounded-4xl flex gap-1.5 items-center hover:scale-[1.02] transition`}
+            to={`/role-play/${courseId}`}
           >
             Get Started{" "}
             <img
@@ -54,4 +48,4 @@ const LearningModuleCard = ({ bgModule = "" }) => {
   );
 };
 
-export default LearningModuleCard;
+export default RolePlayJourneyCards;

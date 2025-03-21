@@ -11,6 +11,7 @@ import MiningTeams from "../views/teams/MiningTeams";
 import Performance from "../views/teams/Performance";
 import LeaderBoard from "../views/teams/LeaderBoard";
 import CompareStats from "../views/teams/CompareStats";
+import RolPlayChapters from "../views/Role-play/components/RolPlayChapters";
 
 const coreRoutes = [
   {
@@ -22,6 +23,11 @@ const coreRoutes = [
     path: "/role-play",
     title: "role-Play",
     component: RolePlay,
+  },
+  {
+    path: "/role-play/:courseId",
+    title: "Role-Play Chapters",
+    component: RolPlayChapters,
   },
   {
     path: "/power",

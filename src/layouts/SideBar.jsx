@@ -24,7 +24,8 @@ const SideBar = () => {
   const navigate = useNavigate();
   const closeSidebarMenu = () => setIsSidebarOpen(false);
   const [profile, setProfile] = useState(null);
-  const { getProfileData, signout } = useAuth();
+  const [courses, setCourses] = useState(null);
+  const { getProfileData, signout, getCourses } = useAuth();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,6 +37,18 @@ const SideBar = () => {
     };
 
     fetchData();
+
+    const fetchCourses = async () => {
+      try {
+        const data = await getCourses(); // Fetch profile data
+        setCourses(data); // Store it in state
+        console.log(courses);
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchCourses();
   }, []);
   // Handling logout
   const handleSignout = async () => {

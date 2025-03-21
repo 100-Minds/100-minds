@@ -20,7 +20,7 @@ const Miningcard = ({
             className="w-full h-full object-cover rounded-md"
           />
         </div>
-        <div>
+        <div className=" lg:w-40">
           <h3 className="font-extrabold text-sm">{email}</h3>
           <p className="text-gray-400 text-sm">
             In {teamCount} team{teamCount > 1 ? "s" : ""}

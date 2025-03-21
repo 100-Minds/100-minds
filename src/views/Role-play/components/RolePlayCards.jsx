@@ -7,6 +7,7 @@ const RolePlayCards = ({
   icon,
   shadowStyle = "",
   text1,
+  textStyle,
   text2,
   time,
   chapter,
@@ -39,16 +40,18 @@ const RolePlayCards = ({
                 className="w-full h-full !p-2 bg-black rounded-2xl custom-shadow"
               />
             </div>
-            <p className="text-md text-white font-extrabold z-10">
+            <p
+              className={`text-md text-white font-extrabold z-10 ${textStyle}`}
+            >
               {text1} <br /> {text2}
             </p>
           </div>
           <div className="flex justify-between items-center text-nowrap">
             <div className={`flex gap-3.5 items-center text-white ${smallTxt}`}>
-              <span className="flex gap-1.5 items-center bg-[#0000001F]  !p-2 !px-3 rounded-2xl">
+              <span className="flex gap-1.5 items-center bg-[#0000001F]  !p-2 !px-2 rounded-2xl">
                 <PiClock size={14} className="font-bold" /> {time} Mins
               </span>
-              <span className="flex gap-1.5 items-center bg-[#0000001F] !p-2 !px-3 rounded-2xl">
+              <span className="flex gap-1.5 items-center bg-[#0000001F] !p-2 !px-2 rounded-2xl">
                 <PiClock size={14} className="font-bold" /> {chapter} Chapters
               </span>
             </div>

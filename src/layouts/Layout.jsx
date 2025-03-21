@@ -4,6 +4,7 @@ import SideBar from "./SideBar";
 import NavHeader from "./NavHeader";
 import { useEffect, useState } from "react";
 import Loader from "../components/Loaders/Loader";
+import Loader2 from "../components/Loaders/Loader2";
 
 const Layout = () => {
   const [loading, setLoading] = useState(true);
@@ -26,7 +27,7 @@ const Layout = () => {
   return (
     <div className="flex h-screen no-scrollbar">
       {loading ? (
-        <Loader />
+        <Loader2 />
       ) : (
         <>
           <SideBar />
