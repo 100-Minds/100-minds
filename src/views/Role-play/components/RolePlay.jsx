@@ -15,8 +15,6 @@ import { useAuth } from "../../../context/AuthContext";
 import { useEffect, useState } from "react";
 
 import RolePlayJourneyCards from "./RolePlayJourneyCards";
-import { div } from "framer-motion/client";
-import Loader from "../../../components/Loaders/Loader";
 import Loader2 from "../../../components/Loaders/Loader2";
 
 const RolePlay = () => {
@@ -48,7 +46,6 @@ const RolePlay = () => {
         <div className="backdrop-blur-xs !py-4 !px-10 sticky top-0 z-40">
           <NavHeader header={"LEARNING JOURNEY"} />
         </div>
-
         <div className="flex lg:grid lg:grid-cols-3 gap-[20px] overflow-x-auto lg:overflow-visible snap-x snap-mandatory scroll-smooth scrollbar-hide !px-10 ">
           {journeyCourse?.length > 0 ? (
             journeyCourse?.map((module, index) => (

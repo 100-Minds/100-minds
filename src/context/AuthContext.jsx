@@ -6,8 +6,9 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [courses, setCourses] = useState(null);
   const [courseJourney, setCourseJourney] = useState(null);
-
+  const [rolePlay, setRolePlay] = useState(null);
   //   const navigate = useNavigate();
 
   const signUp = async (formData) => {
@@ -240,6 +241,7 @@ export const AuthProvider = ({ children }) => {
         }
       );
       console.log("course Data:", response.data);
+      setCourses(response.data);
       return response.data;
     } catch (error) {
       console.error(
@@ -271,6 +273,29 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  // Role plays
+  const getRolePlays = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        "https://backend-5781.onrender.com/api/v1/role-play/user",
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("Roleplay course Data:", response.data);
+      setRolePlay(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching roleplayfailed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
     if (storedUser) {
@@ -279,6 +304,7 @@ export const AuthProvider = ({ children }) => {
     if (courseJourney === null) {
       getLearningJourneyCourses();
     }
+    getCourses();
   }, []);
 
   return (
@@ -294,8 +320,11 @@ export const AuthProvider = ({ children }) => {
         getProfileData,
         updateUserProfile,
         // courses
+        courses,
         getCourses,
         getLearningJourneyCourses,
+        getRolePlays,
+        rolePlay,
         courseJourney,
         loading,
       }}

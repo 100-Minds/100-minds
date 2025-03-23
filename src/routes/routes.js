@@ -12,6 +12,9 @@ import Performance from "../views/teams/Performance";
 import LeaderBoard from "../views/teams/LeaderBoard";
 import CompareStats from "../views/teams/CompareStats";
 import RolPlayChapters from "../views/Role-play/components/RolPlayChapters";
+import { path } from "framer-motion/client";
+import RolePlayPage from "../views/Role-play/RolePlayPage";
+import Courses from "../views/Courses/Courses";
 
 const coreRoutes = [
   {
@@ -20,14 +23,25 @@ const coreRoutes = [
     component: Index,
   },
   {
-    path: "/role-play",
-    title: "role-Play",
+    path: "/courses",
+    title: "Courses",
+    component: Courses,
+  },
+  {
+    path: "/journey",
+    title: "Journey",
     component: RolePlay,
   },
   {
-    path: "/role-play/:courseId",
-    title: "Role-Play Chapters",
+    path: "/journey/:courseId",
+    title: "Journey Chapters",
     component: RolPlayChapters,
+  },
+  // New Actual roleplay content
+  {
+    path: "/role-play",
+    title: "Role Play",
+    component: RolePlayPage,
   },
   {
     path: "/power",

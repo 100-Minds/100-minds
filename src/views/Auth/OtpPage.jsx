@@ -83,7 +83,7 @@ export default function OTPPage() {
         </div>
         <button
           onClick={handleSubmit}
-          className="w-2/3 !my-6 bg-green-tint text-white !py-2 rounded-md hover:scale-105 transition"
+          className="w-2/3 !my-6 bg-green-tint text-white !py-2 rounded-full hover:scale-105 transition"
           disabled={loading}
         >
           {loading ? "Verifying..." : "Continue"}

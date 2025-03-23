@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import logo from "../assets/img/dashboards/100minds-logo.png";
-import { PiSquaresFour, PiX } from "react-icons/pi";
+import { PiBook, PiSquaresFour, PiX } from "react-icons/pi";
 import { NavLink, useNavigate } from "react-router-dom";
 import dashboard from "../assets/img/dashboards/dashboard.svg";
 import rolePlay from "../assets/img/dashboards/role play.svg";
@@ -18,6 +18,7 @@ import { AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { toast } from "react-toastify";
+import { FaBookBible } from "react-icons/fa6";
 const SideBar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -107,7 +108,7 @@ const SideBar = () => {
           </NavLink>
 
           <NavLink
-            to="/role-play"
+            to="/journey"
             className={({ isActive, isPending }) =>
               `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                 isActive
@@ -127,7 +128,29 @@ const SideBar = () => {
             )}
           </NavLink>
           <NavLink
-            to="/power"
+            to="/courses"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                isActive
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                  : ""
+              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <span
+                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                  isActive ? "bg-whitish" : ""
+                }`}
+              >
+                {/* <img src={rolePlay} alt="" />  */}
+                <PiBook />
+                Courses
+              </span>
+            )}
+          </NavLink>
+          <NavLink
+            to="/role-play"
             className={({ isActive, isPending }) =>
               `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
                 isActive
@@ -143,6 +166,26 @@ const SideBar = () => {
                 }`}
               >
                 <img src={power} alt="" /> Role Play
+              </span>
+            )}
+          </NavLink>
+          <NavLink
+            to="/power"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
+                isActive
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                  : ""
+              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <span
+                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                  isActive ? "bg-whitish" : ""
+                }`}
+              >
+                <img src={power} alt="" /> Power Skills
               </span>
             )}
           </NavLink>

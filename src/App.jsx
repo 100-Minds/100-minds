@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./routes/ProtectedRoutes";
 import ForgotPassword from "./views/Auth/ForgotPassword";
 import ResetPassword from "./views/Auth/ResetPassword";
+import { Toaster } from "sonner";
 
 function RenderRoutes(routeList) {
   return routeList.map(({ path, component: Component, children }, index) => (
@@ -30,6 +31,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <ToastContainer />
+          <Toaster richColors position="top-right" />
           <Routes>
             {/* The Layout should wrap all routes */}
             <Route element={<ProtectedRoute />}>

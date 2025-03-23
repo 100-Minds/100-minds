@@ -33,7 +33,7 @@ const RolePlayJourneyCards = ({ bgModule = "", courseName, courseId }) => {
           </div>
           <Link
             className={`bg-white text-sidebar-color  font-semibold text-[9px] lg:text-sm !p-2 !px-3 rounded-4xl flex gap-1.5 items-center hover:scale-[1.02] transition`}
-            to={`/role-play/${courseId}`}
+            to={`/journey/${courseId}`}
           >
             Get Started{" "}
             <img
