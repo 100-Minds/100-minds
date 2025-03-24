@@ -16,6 +16,7 @@ const RolePlayCards = ({
   override = " ",
   smallTxt = "",
   polygon,
+  route,
 }) => {
   return (
     <div
@@ -32,7 +33,7 @@ const RolePlayCards = ({
         className={`w-full  absolute bottom-0 lg:h-[220px] h-[180px] rounded-2xl z-0 flex flex-col justify-end ${polygon}`}
       >
         <div className={`relative z-10  !my-8  ${override} `}>
-          <div className="flex items-end gap-3.5 !mb-4">
+          <div className="flex items-center gap-3.5 !mb-4">
             <div className="w-18 h-18 ">
               <img
                 src={icon}
@@ -57,6 +58,7 @@ const RolePlayCards = ({
             </div>
             <Link
               className={`bg-white  !p-2 !px-4 text-nowrap rounded-4xl hover:scale-[1.02] transition  ${btnStyle}`}
+              to={route}
             >
               {btntext}
             </Link>

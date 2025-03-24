@@ -7,7 +7,7 @@ import Back from "../../components/Back";
 
 const ChapterList = () => {
   return (
-    <div className="h-full w-full overflow-hidden   !pt-4 ">
+    <div className="h-full w-full overflow-hidden   !py-4 scroll-hide ">
       <div className="bg-[#F3F3F3] overflow-scroll scroll-hide h-full rounded-3xl !mx-3">
         <div className="backdrop-blur-xs !py-4 lg:!px-10 px-4 sticky top-0 z-40">
           <NavHeader header={"DIFFICULT CONVERSATIONS"} />

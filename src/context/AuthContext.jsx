@@ -7,8 +7,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [courses, setCourses] = useState(null);
+  const [courseId, setCourseId] = useState(null);
   const [courseJourney, setCourseJourney] = useState(null);
   const [rolePlay, setRolePlay] = useState(null);
+  const [videoCourse, setVideoCourse] = useState(null);
   //   const navigate = useNavigate();
 
   const signUp = async (formData) => {
@@ -252,6 +254,28 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  //Get course lessons
+  const getCourseLessons = async (courseId) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/course/get-lessons?courseId=${courseId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("lesson Data:", response.data);
+      setVideoCourse(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching lesson failed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
   const getLearningJourneyCourses = async () => {
     setLoading(true);
     try {
@@ -305,7 +329,11 @@ export const AuthProvider = ({ children }) => {
       getLearningJourneyCourses();
     }
     getCourses();
-  }, []);
+    if (!courseId) return;
+
+    // Ensure courseId is passed to getCourseLessons
+    getCourseLessons(courseId);
+  }, [courseId]);
 
   return (
     <AuthContext.Provider
@@ -323,6 +351,9 @@ export const AuthProvider = ({ children }) => {
         courses,
         getCourses,
         getLearningJourneyCourses,
+        getCourseLessons,
+        setCourseId,
+        videoCourse,
         getRolePlays,
         rolePlay,
         courseJourney,

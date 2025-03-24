@@ -15,6 +15,7 @@ import RolPlayChapters from "../views/Role-play/components/RolPlayChapters";
 import { path } from "framer-motion/client";
 import RolePlayPage from "../views/Role-play/RolePlayPage";
 import Courses from "../views/Courses/Courses";
+import CourseLessons from "../views/Courses/CourseLessons";
 
 const coreRoutes = [
   {
@@ -26,6 +27,11 @@ const coreRoutes = [
     path: "/courses",
     title: "Courses",
     component: Courses,
+  },
+  {
+    path: "/courses/:courseId/lessons",
+    title: "Course Lessons",
+    component: CourseLessons, // This component should handle course lessons dynamically
   },
   {
     path: "/journey",
@@ -69,8 +75,13 @@ const coreRoutes = [
     component: Profile,
   },
   {
-    path: "/courses",
-    title: "courses",
+    path: "/courses/chapters",
+    title: "course",
+    component: ChapterList,
+  },
+  {
+    path: "/courses/chapters/:lessonId/video/:videoId",
+    title: "course",
     component: ChapterList,
   },
 

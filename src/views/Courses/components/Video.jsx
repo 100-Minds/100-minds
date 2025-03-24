@@ -17,15 +17,19 @@ import ChapterCard from "./ChapterCard";
 import profile from "../../../assets/img/dashboards/profile-image.jpg";
 import TabComponent from "./TabComponent";
 import ProgressBar from "./ProgressBar";
+import { useAuth } from "../../../context/AuthContext";
 
 const CustomVideoPlayer = ({ src, poster }) => {
+  const { videoCourse, getCourseLessons, loading } = useAuth();
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
   const [currentTime, setCurrentTime] = useState("0:00");
   const [duration, setDuration] = useState("0:00");
-
+  console.log("videocourse", videoCourse);
+  const videoURL = videoCourse?.data[0].chapters?.[0]?.videos?.[0]?.videoURL;
+  console.log("url", videoURL);
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -38,7 +42,6 @@ const CustomVideoPlayer = ({ src, poster }) => {
       return () => video.removeEventListener("timeupdate", updateCurrentTime);
     }
   }, []);
-
   // Toggle Play/Pause
   const togglePlay = () => {
     if (videoRef.current.paused) {
@@ -115,7 +118,7 @@ const CustomVideoPlayer = ({ src, poster }) => {
           {/* Video Element */}
           <video
             ref={videoRef}
-            src={vid}
+            src={videoURL}
             poster={video}
             onTimeUpdate={handleProgress}
             className="w-full rounded-lg"
