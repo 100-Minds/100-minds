@@ -3,11 +3,14 @@ import yourTeams from "../../../assets/img/dashboards/teams/team1.jpg";
 import { RiCloseLargeLine } from "react-icons/ri";
 import profileImg from "../../../assets/img/dashboards/teams/avatar7.jpg";
 import userPlus from "../../../assets/img/dashboards/teams/users-plus.svg";
+import { useAuth } from "../../../context/AuthContext";
+import { toast } from "sonner";
 
 const TeamsModal = ({ isOpen, setIsOpen }) => {
   const [step, setStep] = useState(1);
   const [teamName, setTeamName] = useState("");
   const [memberEmail, setMemberEmail] = useState("");
+  const { createTeam } = useAuth();
 
   // Reset step to 1 whenever the modal opens
   useEffect(() => {
@@ -15,6 +18,21 @@ const TeamsModal = ({ isOpen, setIsOpen }) => {
       setStep(1);
     }
   }, [isOpen]);
+  const handleCreateTeam = async () => {
+    if (!teamName.trim()) {
+      toast.error("Team name cannot be empty.");
+      return;
+    }
+
+    try {
+      await createTeam(teamName);
+      toast.success("Team created successfully!");
+      setStep(2); // Move to the next step if successful
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to create team. Please try again.");
+    }
+  };
 
   if (!isOpen) return null; // Hide modal when isOpen is false
 
@@ -29,7 +47,7 @@ const TeamsModal = ({ isOpen, setIsOpen }) => {
         </button>
         {step === 1 ? (
           <>
-            <h2 className="text-2xl font-bold text-center !my-8">
+            <h2 className="text-2xl font-bold text-center !my-8 font-nueue">
               Name your team
             </h2>
             <img
@@ -46,7 +64,8 @@ const TeamsModal = ({ isOpen, setIsOpen }) => {
             />
             <button
               className="bg-green-tint flex justify-center w-full rounded-full gap-3 items-center !py-3 text-white !px-3 mt-4 hover:opacity-85 hover:scale-105 transition"
-              onClick={() => setStep(2)}
+              // onClick={() => setStep(2)}
+              onClick={handleCreateTeam}
             >
               Continue
             </button>

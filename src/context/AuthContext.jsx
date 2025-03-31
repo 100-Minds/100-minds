@@ -11,6 +11,9 @@ export const AuthProvider = ({ children }) => {
   const [courseJourney, setCourseJourney] = useState(null);
   const [rolePlay, setRolePlay] = useState(null);
   const [videoCourse, setVideoCourse] = useState(null);
+  const [powerSkill, setPowerSkill] = useState(null);
+  const [ongoing, setOngoing] = useState(null);
+  const [allRoleplay, setAllRoleplay] = useState(null);
   //   const navigate = useNavigate();
 
   const signUp = async (formData) => {
@@ -319,9 +322,129 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  // Power skill all
+  const getAllPowerskill = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/skill/all`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("powerskill Data:", response.data);
+      setPowerSkill(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching lesson failed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Ongoing coming from the learning journey
+  const getOngoingUser = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/journey/all-user`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("Ongoing:", response.data);
+      setOngoing(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching lesson failed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Get scenario used as roleplay
+  const getAllRoleplays = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/scenario/all`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("All roleplays:", response.data);
+      setRolePlay(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching all roles failed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Create teams
+  const createTeam = async (formData) => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "https://backend-5781.onrender.com/api/v1/team/create-team",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+      console.log("form data", formData);
+
+      console.log("responssssssssse teammmms", response);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "create team error:",
+        error.response?.data || error.message
+      );
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+  // Get all teams
+  const getAllTeams = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/team/all`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("All teams:", response.data);
+      // setRolePlay(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching all teams failed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
+    console.log(storedUser);
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -329,11 +452,13 @@ export const AuthProvider = ({ children }) => {
       getLearningJourneyCourses();
     }
     getCourses();
-    if (!courseId) return;
+    // if (!courseId) return;
 
     // Ensure courseId is passed to getCourseLessons
-    getCourseLessons(courseId);
+    // getCourseLessons(courseId);
+    getAllPowerskill();
   }, [courseId]);
+  console.log("Updated videoCourse state:", videoCourse);
 
   return (
     <AuthContext.Provider
@@ -358,6 +483,20 @@ export const AuthProvider = ({ children }) => {
         rolePlay,
         courseJourney,
         loading,
+        // powerskill
+        powerSkill,
+
+        //
+        ongoing,
+        getOngoingUser,
+
+        // roleplay
+        getAllRoleplays,
+        allRoleplay,
+
+        // All teams
+        createTeam,
+        getAllTeams,
       }}
     >
       {children}

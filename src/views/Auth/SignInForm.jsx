@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext"; // Import Auth context
 import at from "../../assets/img/dashboards/at.png";
 import lock from "../../assets/img/dashboards/lock.png";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const SignInForm = () => {
   const { signIn, loading } = useAuth(); // Get signIn function from Auth context
@@ -93,7 +93,7 @@ const SignInForm = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-green-tint text-white !p-3 rounded-full box-shadow !mb-5"
+            className="w-full bg-green-tint hover:opacity-80 hover:scale-105  transition text-white !p-3 rounded-full box-shadow !mb-5"
             disabled={loading}
           >
             {loading ? "Logging in..." : "Login"}

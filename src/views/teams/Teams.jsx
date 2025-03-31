@@ -54,22 +54,39 @@ import TeamsModal from "./components/TeamsModal";
 import team2 from "../../assets/img/dashboards/teams/team2.jpg";
 import userPlus from "../../assets/img/dashboards/teams/users-plus.svg";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import Loader2 from "../../components/Loaders/Loader2";
 
 const Teams = () => {
+  const { getAllTeams, loading } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [teams, setTeams] = useState([]); // State to store created teams
   const location = useLocation();
   const [currentPath, setCurrentPath] = useState(location.pathname);
 
   useEffect(() => {
+    const fetchAllTeams = async () => {
+      try {
+        const data = await getAllTeams();
+        setTeams(data?.data || []);
+      } catch (error) {
+        console.error("Error fetching roleplays:", error);
+      }
+    };
+
+    fetchAllTeams();
+  }, []);
+
+  useEffect(() => {
     setCurrentPath(location.pathname); // Updates state on route change
   }, [location.pathname]);
   // Function to add a new team
+
   const addTeam = (teamName) => {
     setTeams([...teams, { name: teamName }]);
     setIsModalOpen(false); // Close modal after adding team
   };
-
+  console.log("teams from:", teams);
   return (
     <div className="h-full w-full overflow-hidden !py-4">
       <div className="bg-[#F3F3F3] overflow-scroll scroll-hide h-full rounded-3xl !mx-3 ">
@@ -78,7 +95,9 @@ const Teams = () => {
         </div>
         {currentPath === "/teams" && !currentPath.includes("mining-teams") && (
           <>
-            {teams.length === 1 ? (
+            {loading ? (
+              <Loader2 />
+            ) : teams.length === 0 ? (
               // Show this when no teams exist (default page)
               <div className="flex justify-center items-center h-[90vh]">
                 <div className="lg:w-2/3 h-3/4 lg:!mb-16 bg-white rounded-3xl flex flex-col items-center justify-center">
@@ -108,9 +127,10 @@ const Teams = () => {
               </div>
             ) : (
               // Show this when teams are added
-              <div className="lg:!p-10 p-6">
+
+              <div className="lg:!p-10 p-6 w-full">
                 {/* <h2 className="text-3xl font-bold mb-6">Your Teams</h2> */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {teams.map((team, index) => (
                     <div
                       key={index}
@@ -120,17 +140,44 @@ const Teams = () => {
                       <p className="text-gray-500">Members: 0</p>
                     </div>
                   ))}
-                </div>
+                </div> */}
 
                 <button
-                  className="bg-green-tint flex rounded-full gap-3 items-center !py-3 text-white !px-3 hover:opacity-85 hover:scale-105 transition text-sm lg:text-base"
+                  className="bg-green-tint flex rounded-full gap-3 items-center !py-3 text-white !px-3 hover:opacity-85 hover:scale-105 transition text-sm lg:text-base !mb-6"
                   onClick={() => setIsModalOpen(true)}
                 >
                   Create new team{" "}
                   <RiAddCircleFill color="black" fill="white" size={20} />
                 </button>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {teams.map((team) => (
+                    <div
+                      className="flex flex-col items-center  bg-white  !p-8 lg:!px-8  w-full lg:w-full rounded-2xl "
+                      key={team.id}
+                    >
+                      <h2 className="font-nueue lg:text-2xl  text-xl font-[900] text-center !py-6">
+                        {team.name}
+                      </h2>
+                      <div className="w-60 h-60">
+                        <img
+                          src={team2}
+                          alt=""
+                          className="w-ful h-full object-contain"
+                        />
+                      </div>
+                      <div className="flex justify-between w-full ">
+                        <p className="text-gray-500 !p-1 ">
+                          {team.members || " 0 Members"}
+                        </p>
+                        <Link className="bg-green-tint tex-white flex items-center  !p-1 !px-3 text-sm text-white rounded-2xl">
+                          See details
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-                <div className="!py-6 flex flex-col lg:flex-row gap-9  font-nueue">
+                {/* <div className="!py-6 flex flex-col lg:flex-row gap-9  font-nueue">
                   <div className="flex flex-col items-center  bg-white  !p-8 lg:!px-8  w-full lg:w-1/3 rounded-2xl ">
                     <h2 className="font-nueue lg:text-2xl  text-xl font-[900] text-center !py-6">
                       Mining team
@@ -169,7 +216,7 @@ const Teams = () => {
                       </Link>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             )}
           </>

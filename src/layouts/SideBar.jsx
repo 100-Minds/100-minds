@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/img/dashboards/100minds-logo.png";
 import { PiBook, PiSquaresFour, PiX } from "react-icons/pi";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import dashboard from "../assets/img/dashboards/dashboard.svg";
 import rolePlay from "../assets/img/dashboards/role play.svg";
 import power from "../assets/img/dashboards/power.svg";
@@ -51,6 +51,10 @@ const SideBar = () => {
 
     fetchCourses();
   }, []);
+
+  const location = useLocation();
+  console.log("Current Route:", location.pathname);
+
   // Handling logout
   const handleSignout = async () => {
     try {
@@ -88,6 +92,7 @@ const SideBar = () => {
         <div>
           <NavLink
             to="/"
+            end
             className={({ isActive, isPending }) =>
               `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                 isActive
@@ -170,7 +175,7 @@ const SideBar = () => {
             )}
           </NavLink>
           <NavLink
-            to="/power"
+            to="/powerskills"
             className={({ isActive, isPending }) =>
               `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
                 isActive
@@ -390,6 +395,28 @@ const SideBar = () => {
                     }`}
                   >
                     <img src={power} alt="" /> Role Play
+                  </span>
+                )}
+              </NavLink>
+
+              <NavLink
+                to="/powerskills"
+                className={({ isActive, isPending }) =>
+                  `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
+                    isActive
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                      : ""
+                  } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+                }
+                onClick={closeSidebar}
+              >
+                {({ isActive }) => (
+                  <span
+                    className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                      isActive ? "bg-whitish" : ""
+                    }`}
+                  >
+                    <img src={power} alt="" /> Power Skills
                   </span>
                 )}
               </NavLink>

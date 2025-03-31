@@ -3,7 +3,14 @@ import { PiClock } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import ask from "../../../assets/img/dashboards/learningModules/starz.svg";
 
-const RolePlayJourneyCards = ({ bgModule = "", courseName, courseId }) => {
+const RolePlayJourneyCards = ({
+  bgModule = "",
+  courseName,
+  courseId,
+  para1,
+  para2,
+  para3,
+}) => {
   return (
     <div
       className={`w-full h-96 rounded-[20px] min-w-[85%] lg:min-w-0 snap-start ${bgModule} `}
@@ -12,17 +19,17 @@ const RolePlayJourneyCards = ({ bgModule = "", courseName, courseId }) => {
         <div>
           <p className="font-bebas text-3xl text-white">{courseName}</p>
           <p className="text-white font-nueue text-base !pt-2">
-            Whether you’re using our API or{" "}
+            {para1}
             <span>
               {" "}
               <br />{" "}
             </span>{" "}
-            plugin, we’re here to help you every{" "}
+            {para2}
             <span>
               {" "}
               <br />{" "}
             </span>{" "}
-            step of the way
+            {para3}
           </p>
         </div>
         <div className="flex justify-between items-center !py-8 text-nowrap">

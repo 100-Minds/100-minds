@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom"; // Import navigation hook
-import "react-toastify/dist/ReactToastify.css";
+
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "sonner";
 
 export default function OTPPage() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -32,6 +32,10 @@ export default function OTPPage() {
   const handleKeyDown = (index, event) => {
     if (event.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
+    }
+
+    if (event.key === "Enter" && index === otp.length - 1) {
+      handleSubmit(); // Submit when pressing Enter on last input
     }
   };
 

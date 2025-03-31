@@ -16,6 +16,8 @@ import { path } from "framer-motion/client";
 import RolePlayPage from "../views/Role-play/RolePlayPage";
 import Courses from "../views/Courses/Courses";
 import CourseLessons from "../views/Courses/CourseLessons";
+import PowerskillPage from "../views/Power-skill/PowerskillPage";
+import TeamDetail from "../views/teams/TeamDetail";
 
 const coreRoutes = [
   {
@@ -50,6 +52,11 @@ const coreRoutes = [
     component: RolePlayPage,
   },
   {
+    path: "/powerskills",
+    title: "Power Skills",
+    component: PowerskillPage,
+  },
+  {
     path: "/power",
     title: "power",
     component: Power,
@@ -75,12 +82,13 @@ const coreRoutes = [
     component: Profile,
   },
   {
-    path: "/courses/chapters",
+    path: "/courses/lessons",
     title: "course",
     component: ChapterList,
   },
   {
-    path: "/courses/chapters/:lessonId/video/:videoId",
+    // path: "/courses/chapters/:lessonId/video/:videoId",
+    path: "/courses/:courseId/lessons/:lessonId",
     title: "course",
     component: ChapterList,
   },
@@ -94,6 +102,11 @@ const coreRoutes = [
         path: "mining-teams",
         title: "Mining Teams",
         component: MiningTeams,
+      },
+      {
+        path: "teams/:id",
+        title: "Teams Details",
+        component: TeamDetail,
       },
       {
         path: "performance",

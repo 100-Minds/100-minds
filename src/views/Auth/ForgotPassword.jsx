@@ -72,7 +72,7 @@ const ForgotPassword = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
-              className="w-full !p-3 !pr-10 !pl-5 rounded-full focus:ring-1 focus:ring-green-tint outline-none bg-gray-100"
+              className="w-full !p-3 !pr-10 !pl-5 rounded-full focus:ring-1 focus:ring-green-tint  outline-none bg-gray-100"
               autoComplete="off"
               required
             />
@@ -83,7 +83,7 @@ const ForgotPassword = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-green-tint text-white !p-3 rounded-full box-shadow !mb-5"
+            className="w-full bg-green-tint text-white !p-3 rounded-full transition box-shadow !mb-5 hover:scale-105 hover:opacity-80"
             disabled={loading}
           >
             {loading ? "Sending..." : "Send Reset Link"}

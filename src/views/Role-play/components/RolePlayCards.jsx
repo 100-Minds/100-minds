@@ -17,6 +17,7 @@ const RolePlayCards = ({
   smallTxt = "",
   polygon,
   route,
+  onClick,
 }) => {
   return (
     <div
@@ -42,7 +43,7 @@ const RolePlayCards = ({
               />
             </div>
             <p
-              className={`text-md text-white font-extrabold z-10 ${textStyle}`}
+              className={`text-md text-white font-extrabold z-10 cursor-pointer ${textStyle}`}
             >
               {text1} <br /> {text2}
             </p>
@@ -59,6 +60,7 @@ const RolePlayCards = ({
             <Link
               className={`bg-white  !p-2 !px-4 text-nowrap rounded-4xl hover:scale-[1.02] transition  ${btnStyle}`}
               to={route}
+              onClick={onClick}
             >
               {btntext}
             </Link>

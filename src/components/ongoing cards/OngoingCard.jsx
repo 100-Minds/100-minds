@@ -16,10 +16,12 @@ const OngoingCard = ({
   const location = useLocation();
 
   // Determine the destination route based on the current location
-  const destination =
-    location.pathname === "/"
-      ? `/courses/chapters`
-      : `/courses/${courseId}/lessons`;
+  // const destination =
+  //   location.pathname === "/"
+  //     ? `/courses/chapters`
+  //     : `/courses/${courseId}/lessons`;
+
+  const destination = `/courses/${courseId}/lessons`;
   return (
     <div
       className={`!p-2 !pb-8 bg-white  font-nueue rounded-xl min-w-[85%] md:min-w-0 snap-start ${className}`}
