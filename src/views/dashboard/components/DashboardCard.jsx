@@ -191,26 +191,26 @@ const DashboardCard = () => {
         <h1 className="font-nueue text-grey-tint tracking-tight !py-2 !pb-3 font-extrabold">
           LEARNING JOURNEY
         </h1>
-        <div className="w-full">
-          {["#55c05b", "#EE89DF", "#509999", "#FFA500", "#4f45f0"].map(
-            (color, index) => (
-              <motion.div
-                key={index}
-                variants={cardVariants}
-                className="flex bg-whitish justify-between items-center w-full rounded-2xl !p-3 !px-6 !mt-3"
+        <div className="w-full !pb-10  h-2/3">
+          {[
+            { color: "#55c05b", text: "Leading Self" },
+            { color: "#EE89DF", text: "Leading Others" },
+            { color: "#509999", text: "Leading Organizations" },
+          ].map((color, index) => (
+            <motion.div
+              key={index}
+              variants={cardVariants}
+              className="flex bg-whitish justify-between items-center w-full rounded-2xl !p-3 !px-6 !mt-6"
+            >
+              <p
+                style={{ backgroundColor: color.color }}
+                className="text-white !px-3 !p-1 text-center rounded-3xl text-xs"
               >
-                <p
-                  style={{ backgroundColor: color }}
-                  className="text-white !px-3 !p-1 text-center rounded-3xl text-xs"
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </p>
-                <p className="font-extrabold text-sm font-nueue">
-                  Total power skills
-                </p>
-              </motion.div>
-            )
-          )}
+                {String(index + 1).padStart(2, "0")}
+              </p>
+              <p className="font-extrabold text-sm font-nueue">{color.text}</p>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
 

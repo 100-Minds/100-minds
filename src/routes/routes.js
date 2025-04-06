@@ -99,7 +99,7 @@ const coreRoutes = [
     component: Teams,
     children: [
       {
-        path: "mining-teams",
+        path: "mining-teams/:teamId",
         title: "Mining Teams",
         component: MiningTeams,
       },

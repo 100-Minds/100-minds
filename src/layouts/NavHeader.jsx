@@ -32,7 +32,7 @@ const NavHeader = ({ header }) => {
             <PiBell size={20} />
           </div>
           <div
-            className="!p-3  bg-white   rounded-[15px]  md:hidden"
+            className="!p-3  bg-white   rounded-[15px]  md:hidden cursor-pointer"
             onClick={toggleSidebar}
           >
             <PiSquaresFour size={20} />

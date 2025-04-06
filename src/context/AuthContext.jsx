@@ -219,6 +219,7 @@ export const AuthProvider = ({ children }) => {
         {
           headers: {
             "Content-Type": "application/json",
+            accept: "application/json",
           },
           withCredentials: true, // If your API requires authentication cookies
         }
@@ -399,6 +400,8 @@ export const AuthProvider = ({ children }) => {
         "https://backend-5781.onrender.com/api/v1/team/create-team",
         formData,
         {
+          withCredentials: true,
+
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
@@ -424,7 +427,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://backend-5781.onrender.com/api/v1/team/all`,
+        `https://backend-5781.onrender.com/api/v1/team/user-teams`,
         {
           withCredentials: true,
         }
@@ -437,6 +440,59 @@ export const AuthProvider = ({ children }) => {
         "Fetching all teams failed:",
         error.response?.data || error.message
       );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // get team members
+  const getTeamMembers = async (teamId) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/team/team-members?teamId=${teamId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("All teams members:", response.data);
+      // setRolePlay(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching all teams members failed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  // invite team member
+  const inviteTeamMember = async (formData) => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "https://backend-5781.onrender.com/api/v1/team/invite-member",
+        formData,
+        {
+          withCredentials: true,
+
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+      console.log("form data", formData);
+
+      console.log("invitation response", response);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "invite team error:",
+        error.response?.data || error.message
+      );
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -459,7 +515,7 @@ export const AuthProvider = ({ children }) => {
     getAllPowerskill();
   }, [courseId]);
   console.log("Updated videoCourse state:", videoCourse);
-
+  console.log("USER DATA", user);
   return (
     <AuthContext.Provider
       value={{
@@ -497,6 +553,8 @@ export const AuthProvider = ({ children }) => {
         // All teams
         createTeam,
         getAllTeams,
+        getTeamMembers,
+        inviteTeamMember,
       }}
     >
       {children}

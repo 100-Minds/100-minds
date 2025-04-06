@@ -17,8 +17,10 @@ import ProfileModal from "../components/ProfileModal";
 import { AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { RiLogoutCircleLine } from "react-icons/ri";
-import { toast } from "react-toastify";
+
 import { FaBookBible } from "react-icons/fa6";
+import { toast } from "sonner";
+import EventBus from "../utils/EventBus";
 const SideBar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,16 +28,26 @@ const SideBar = () => {
   const closeSidebarMenu = () => setIsSidebarOpen(false);
   const [profile, setProfile] = useState(null);
   const [courses, setCourses] = useState(null);
-  const { getProfileData, signout, getCourses } = useAuth();
+  const { getProfileData, signout, getCourses, user } = useAuth();
+  console.log("user from sidebar", user);
+
+  const fetchData = async () => {
+    try {
+      const data = await getProfileData(); // Fetch profile data
+      setProfile(data); // Store it in state
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getProfileData(); // Fetch profile data
-        setProfile(data); // Store it in state
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      }
-    };
+    // const fetchData = async () => {
+    //   try {
+    //     const data = await getProfileData(); // Fetch profile data
+    //     setProfile(data); // Store it in state
+    //   } catch (error) {
+    //     console.error("Error fetching profile:", error);
+    //   }
+    // };
 
     fetchData();
 
@@ -50,6 +62,16 @@ const SideBar = () => {
     };
 
     fetchCourses();
+
+    const handleProfileUpdate = () => {
+      fetchData(); // 👈 re-fetch when profileUpdated event fires
+    };
+
+    EventBus.addEventListener("profileUpdated", handleProfileUpdate);
+
+    return () => {
+      EventBus.removeEventListener("profileUpdated", handleProfileUpdate);
+    };
   }, []);
 
   const location = useLocation();
@@ -80,6 +102,8 @@ const SideBar = () => {
     }
   };
 
+  // Check if the user is an admin
+  const isAdmin = profile?.data[0]?.role === "admin";
   return (
     <>
       {/* laptop screen */}
@@ -174,7 +198,7 @@ const SideBar = () => {
               </span>
             )}
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/powerskills"
             className={({ isActive, isPending }) =>
               `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
@@ -193,7 +217,7 @@ const SideBar = () => {
                 <img src={power} alt="" /> Power Skills
               </span>
             )}
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/ongoing"
             className={({ isActive, isPending }) =>
@@ -214,7 +238,7 @@ const SideBar = () => {
               </span>
             )}
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/teams"
             end={false}
             className={({ isActive, isPending }) =>
@@ -235,7 +259,31 @@ const SideBar = () => {
                 <img src={teams} alt="" /> Teams
               </span>
             )}
-          </NavLink>
+          </NavLink> */}
+          {isAdmin && (
+            <NavLink
+              to="/teams"
+              end={false}
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+              onClick={closeSidebar}
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full items-center gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <img src={teams} alt="" /> Teams
+                </span>
+              )}
+            </NavLink>
+          )}
         </div>
         <div className="flex flex-col justify-end h-full !pb-6  ">
           <div>
@@ -290,7 +338,13 @@ const SideBar = () => {
               className="flex items-center gap-2 bg-whitish rounded-xl !mx-4 !p-2 !px-3 !mt-4  cursor-pointer"
               onClick={() => setIsModalOpen(true)}
             >
-              <img src={profileimg} alt="" className="w-8 h-8 object-contain" />
+              <img
+                src={
+                  profile?.data[0]?.photo ? profile.data[0].photo : profileimg
+                }
+                alt=""
+                className="w-8 h-8 object-cover rounded-full"
+              />
               <div>
                 <h3>
                   {profile?.data[0]?.firstName || "User Name"}{" "}

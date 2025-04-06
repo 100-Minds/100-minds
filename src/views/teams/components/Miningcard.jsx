@@ -13,15 +13,15 @@ const Miningcard = ({
     <div className="flex flex-col lg:flex-row gap-4 items-center justify-between bg-whitish !p-3 rounded-2xl">
       {/* Image Section */}
       <div className="flex gap-2.5 items-center">
-        <div className="w-18 h-18 flex-shrink-0">
+        <div className="w-14 h-14 flex-shrink-0">
           <img
             src={profile}
             alt="Profile"
             className="w-full h-full object-cover rounded-md"
           />
         </div>
-        <div className=" lg:w-40">
-          <h3 className="font-extrabold text-sm">{email}</h3>
+        <div className=" lg:w-  text-wrap">
+          <h3 className="font-extrabold text-sm -2/3 !text-wrap  ">{email}</h3>
           <p className="text-gray-400 text-sm">
             In {teamCount} team{teamCount > 1 ? "s" : ""}
           </p>
@@ -34,7 +34,7 @@ const Miningcard = ({
           <Link
             to={"../performance"}
             onClick={onSeePerformance}
-            className="bg-green-tint !p-2 !px-4 rounded-3xl text-white text-xs flex items-center gap-2"
+            className="bg-green-tint !p-2 text-nowrap !px-4 rounded-3xl text-white text-xs flex items-center gap-2"
           >
             See Performance <RiScales2Line />
           </Link>
@@ -42,7 +42,7 @@ const Miningcard = ({
             onClick={onRemove}
             className="text-xs flex items-center bg-white !p-2 gap-2 !px-4 text-red-500 rounded-3xl"
           >
-            Remove <FiUserMinus className="w-4 h-4" />
+            Remove <FiUserMinus className="w-3 h-3" />
           </button>
         </div>
       </div>

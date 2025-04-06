@@ -25,7 +25,7 @@ const TeamsModal = ({ isOpen, setIsOpen }) => {
     }
 
     try {
-      await createTeam(teamName);
+      await createTeam({ name: teamName });
       toast.success("Team created successfully!");
       setStep(2); // Move to the next step if successful
     } catch (error) {

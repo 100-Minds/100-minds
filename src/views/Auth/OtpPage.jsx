@@ -8,7 +8,7 @@ import { toast } from "sonner";
 export default function OTPPage() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
-  const { verifyOtp, loading } = useAuth();
+  const { verifyOtp, loading, signIn } = useAuth();
   const navigate = useNavigate(); // Initialize navigation
 
   useEffect(() => {
@@ -39,6 +39,21 @@ export default function OTPPage() {
     }
   };
 
+  const handlePaste = (e) => {
+    e.preventDefault(); // Prevent default paste behavior
+    const pastedData = e.clipboardData.getData("Text").trim();
+
+    if (/^\d{6}$/.test(pastedData)) {
+      const newOtp = pastedData.split("");
+      setOtp(newOtp);
+
+      // Focus the last input (optional, or you can trigger submission)
+      inputRefs.current[5]?.focus();
+    } else {
+      toast.error("Please paste a valid 6-digit code.");
+    }
+  };
+
   const handleSubmit = async () => {
     const otpCode = otp.join(""); // Convert array to a single string
     if (otpCode.length !== 6) {
@@ -62,7 +77,17 @@ export default function OTPPage() {
       }
     }
   };
-
+  // Handle resend OTP functionality
+  const handleResendOtp = async () => {
+    try {
+      toast.info("Resending OTP...");
+      // Trigger sign-in to resend the OTP
+      await signIn({ email: "user_email@example.com" }); // Pass the user's email or the form data if necessary
+      toast.success("OTP resent successfully!");
+    } catch (error) {
+      toast.error("Failed to resend OTP.");
+    }
+  };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 !p-6 font-nueue">
       <div className="bg-white !p-6 !py-12 rounded-4xl shadow-2xl w-full max-w-md text-center">
@@ -78,6 +103,7 @@ export default function OTPPage() {
               type="text"
               maxLength="1"
               value={digit}
+              onPaste={index === 0 ? handlePaste : null}
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
               ref={(el) => (inputRefs.current[index] = el)}
@@ -94,7 +120,10 @@ export default function OTPPage() {
         </button>
         <div className="!mt-4 text-sm flex justify-center items-center gap-1">
           <p className="text-gray-600">Didn&apos;t get the code?</p>
-          <button className="border border-gray-200 !p-1 !px-4 transition hover:bg-green-tint hover:text-white hover:border-none rounded-2xl">
+          <button
+            className="border border-gray-200 !p-1 !px-4 transition hover:bg-green-tint hover:text-white hover:border-none rounded-2xl"
+            onClick={handleResendOtp}
+          >
             Resend
           </button>
         </div>

@@ -10,6 +10,7 @@ const SignInForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -68,13 +69,13 @@ const SignInForm = () => {
             />
             <img
               src={at}
-              className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 object-contain"
+              className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 object-contain"
             />
           </div>
 
           <div className="relative !mb-5">
             <input
-              type="password"
+              type={passwordVisible ? "text" : "password"} // Toggle password type
               name="password"
               value={formData.password}
               onChange={handleChange}
@@ -83,17 +84,27 @@ const SignInForm = () => {
               autoComplete="off"
               required
             />
-            <img
-              src={lock}
-              className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 object-contain"
-            />
+            <div
+              className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6 object-contain cursor-pointer"
+              onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility for password
+            >
+              <img
+                src={lock}
+                className="w-full h-full object-contain"
+                alt="lock icon"
+              />
+              {passwordVisible && (
+                <div className="absolute top-2 left-2 w-full h-full border-l-2 border-gray-300 rotate-45"></div> // Slash over the icon
+              )}
+            </div>
           </div>
+
           <div className="flex justify-end !pb-4 text-green-tint">
             <Link to={"/forgot-password"}>Forgot Password?</Link>
           </div>
           <button
             type="submit"
-            className="w-full bg-green-tint hover:opacity-80 hover:scale-105  transition text-white !p-3 rounded-full box-shadow !mb-5"
+            className="w-full bg-green-tint hover:opacity-80 hover:scale-105 transition text-white !p-3 rounded-full box-shadow !mb-5"
             disabled={loading}
           >
             {loading ? "Logging in..." : "Login"}
