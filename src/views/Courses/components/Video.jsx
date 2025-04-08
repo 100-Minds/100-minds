@@ -15,6 +15,7 @@ import ProgressBar from "./ProgressBar";
 import ChapterCard from "./ChapterCard";
 import {
   RiArrowGoBackLine,
+  RiFullscreenLine,
   RiReplyAllFill,
   RiReplyAllLine,
   RiResetLeftLine,
@@ -37,6 +38,8 @@ const CustomVideoPlayer = ({ src, poster }) => {
   const [videoId, setVideoId] = useState(null);
   const [currentLesson, setCurrentLesson] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  // const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
   const actualLesson = currentLesson?.lesson;
   console.log("actual less", actualLesson);
   // Get current lesson from session storage
@@ -47,6 +50,7 @@ const CustomVideoPlayer = ({ src, poster }) => {
       setCurrentLesson(parsedLesson);
 
       const storedVideoId = parsedLesson?.lesson?.videos[0]?.id;
+      console.log("stored videoId", storedVideoId);
       if (storedVideoId) {
         setVideoId(storedVideoId);
       }
@@ -93,7 +97,10 @@ const CustomVideoPlayer = ({ src, poster }) => {
 
     const handleLoadedMetadata = () => {
       if (lastWatched !== null && lastWatched > 0) {
-        console.log("Setting video currentTime to last watched:", lastWatched);
+        console.log(
+          `Setting video currentTime to last watched: ${videoId}`,
+          lastWatched
+        );
         video.currentTime = lastWatched;
       } else {
         console.log("No last watched timestamp found, starting from 0.");
@@ -130,14 +137,19 @@ const CustomVideoPlayer = ({ src, poster }) => {
               { videoId, courseId, duration: String(timestamp) },
               { withCredentials: true }
             )
-            .then(() => console.log("Successfully saved timestamp:", timestamp))
+            .then(() =>
+              console.log(
+                `Successfully saved timestamp for videoId: ${videoId}`,
+                timestamp
+              )
+            )
             .catch((error) =>
               console.error("Error saving last watched:", error)
             );
         }
       };
 
-      interval = setInterval(saveProgress, 15000); // Save every 15 seconds
+      interval = setInterval(saveProgress, 5000); // Save every 15 seconds
 
       return () => clearInterval(interval);
     }
@@ -161,7 +173,7 @@ const CustomVideoPlayer = ({ src, poster }) => {
       const timestamp = parseFloat(videoRef.current.currentTime.toFixed(2));
 
       console.log(
-        "Saving last watched before unload:",
+        `Saving last watched before unload: with video id ${videoId}`,
         timestamp,
         "for videoId:",
         videoId
@@ -174,7 +186,10 @@ const CustomVideoPlayer = ({ src, poster }) => {
           { withCredentials: true }
         )
         .then(() =>
-          console.log("Successfully saved last watched on unload:", timestamp)
+          console.log(
+            `Successfully saved last watched on unload: ${videoId}`,
+            timestamp
+          )
         )
         .catch((error) =>
           console.error(
@@ -202,15 +217,24 @@ const CustomVideoPlayer = ({ src, poster }) => {
     setShowModal(false);
   };
 
+  // const handleProgress = () => {
+  //   if (videoRef.current) {
+  //     const progress =
+  //       (videoRef.current.currentTime / videoRef.current.duration) * 100;
+  //     setProgress(progress);
+  //     setCurrentTime(formatTime(videoRef.current.currentTime));
+  //   }
+  // };
+
   const handleProgress = () => {
-    if (videoRef.current) {
-      const progress =
-        (videoRef.current.currentTime / videoRef.current.duration) * 100;
+    const video = videoRef.current;
+    if (video && video.duration > 0) {
+      const progress = (video.currentTime / video.duration) * 100;
       setProgress(progress);
-      setCurrentTime(formatTime(videoRef.current.currentTime));
+      setCurrentTime(formatTime(video.currentTime));
     }
   };
-
+  console.log("handles progress", progress);
   const handleSeek = (e) => {
     const newTime = (e.target.value / 100) * videoRef.current.duration;
     videoRef.current.currentTime = newTime;
@@ -301,16 +325,46 @@ const CustomVideoPlayer = ({ src, poster }) => {
     const seconds = totalSeconds % 60;
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds} Mins`;
   };
+  // const calculateProgress = (duration, lastWatched) => {
+  //   if (!duration || !lastWatched) return 0;
+
+  //   const [minutes, seconds] = duration.split(":").map(Number);
+  //   const totalDurationSeconds = minutes * 60 + seconds;
+
+  //   if (totalDurationSeconds === 0) return 0; // Avoid division by zero
+
+  //   const progress = (lastWatched / totalDurationSeconds) * 100;
+  //   return Math.min(progress, 100).toFixed(2); // Ensure it doesn't exceed 100%
+  // };
+
   const calculateProgress = (duration, lastWatched) => {
-    if (!duration || !lastWatched) return 0;
+    if (!duration || lastWatched === null) return 0;
 
-    const [minutes, seconds] = duration.split(":").map(Number);
-    const totalDurationSeconds = minutes * 60 + seconds;
+    // Split the duration into hours, minutes, and seconds
+    const [hours, minutes, seconds] = duration.split(":").map(Number);
 
-    if (totalDurationSeconds === 0) return 0; // Avoid division by zero
+    // Convert total duration into seconds
+    const totalDurationSeconds = hours * 3600 + minutes * 60 + seconds;
 
+    console.log("hours", hours);
+    console.log("minutes", minutes);
+    console.log("totalDurationSeconds", totalDurationSeconds);
+
+    // Return 0 if the total duration is 0
+    if (totalDurationSeconds === 0) return 0;
+
+    // Calculate the progress percentage
     const progress = (lastWatched / totalDurationSeconds) * 100;
-    return Math.min(progress, 100).toFixed(2); // Ensure it doesn't exceed 100%
+
+    return Math.min(progress, 100).toFixed(2); // Ensure the progress doesn't exceed 100%
+  };
+
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      videoRef.current.requestFullscreen().catch((err) => console.error(err));
+    } else {
+      document.exitFullscreen().catch((err) => console.error(err));
+    }
   };
 
   return (
@@ -419,6 +473,9 @@ const CustomVideoPlayer = ({ src, poster }) => {
 
             {/* Right Volume Control */}
             <div className="flex items-center gap-2 ">
+              <button onClick={toggleFullScreen} className="relative text-xl">
+                <RiFullscreenLine size={26} />
+              </button>
               <RiVolumeUpLine className="text-xl" />
               <input
                 type="range"
@@ -560,6 +617,8 @@ const CustomVideoPlayer = ({ src, poster }) => {
           {actualLesson?.videos && actualLesson.videos.length > 0 ? (
             actualLesson.videos.map((video, index) => {
               const progress = calculateProgress(video.duration, lastWatched);
+              console.log("video in progresssss", video.duration);
+              console.log("calculateProgress lastwatched", lastWatched);
               return (
                 <ChapterCard
                   key={video.id} // Unique key

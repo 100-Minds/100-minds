@@ -640,7 +640,7 @@ const ProfileModal = ({ onClose, refreshSidebar, profileInfoData }) => {
 
   useEffect(() => {
     const userFromSession = sessionStorage.getItem("loggedInUser");
-    console.log("profileInfoData", profileInfoData[0]);
+
     if (userFromSession) {
       try {
         const userData = JSON.parse(userFromSession);
@@ -674,17 +674,22 @@ const ProfileModal = ({ onClose, refreshSidebar, profileInfoData }) => {
     setLoading(true);
 
     try {
-      const updatedData = {};
+      // const updatedData = {};
 
-      if (firstName.trim() !== userRef.current?.firstName) {
-        updatedData.firstName = firstName.trim();
-      }
-      if (lastName.trim() !== userRef.current?.lastName) {
-        updatedData.lastName = lastName.trim();
-      }
-      if (username.trim() !== userRef.current?.username) {
-        updatedData.username = username.trim();
-      }
+      // if (firstName.trim() !== userRef.current?.firstName) {
+      //   updatedData.firstName = firstName.trim();
+      // }
+      // if (lastName.trim() !== userRef.current?.lastName) {
+      //   updatedData.lastName = lastName.trim();
+      // }
+      // if (username.trim() !== userRef.current?.username) {
+      //   updatedData.username = username.trim();
+      // }
+      const updatedData = {
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        username: username.trim(),
+      };
 
       await updateUserProfile(updatedData);
 
@@ -720,17 +725,6 @@ const ProfileModal = ({ onClose, refreshSidebar, profileInfoData }) => {
           const uploadedPhoto = uploadResponse.data.data[0]?.photo;
           updatedData.photo = uploadedPhoto;
 
-          // ✅ Immediately update session photo
-          // const updatedSessionUser = {
-          //   ...userRef.current,
-          //   photo: uploadResponse.data.profilePicture,
-          // };
-          // sessionStorage.setItem(
-          //   "loggedInUser",
-          //   JSON.stringify(updatedSessionUser)
-          // );
-          // userRef.current = updatedSessionUser; // Update ref for consistency
-
           const updatedSessionUser = {
             ...userRef.current,
             ...updatedData,
@@ -740,7 +734,7 @@ const ProfileModal = ({ onClose, refreshSidebar, profileInfoData }) => {
             "loggedInUser",
             JSON.stringify(updatedSessionUser)
           );
-          setUser(updatedSessionUser);
+          // setUser(updatedSessionUser);
           userRef.current = updatedSessionUser; // ✅ <-- This line fixes it
           setImagePreview(uploadedPhoto);
         }
@@ -784,7 +778,7 @@ const ProfileModal = ({ onClose, refreshSidebar, profileInfoData }) => {
             <h1 className="text-3xl py-4 tracking-tight">Profile Info</h1>
 
             {/* Profile Image */}
-            <div className="relative">
+            {/* <div className="relative">
               <img
                 src={imagePreview || img} // ✅ Always fallback to default image
                 alt="Profile"
@@ -792,10 +786,34 @@ const ProfileModal = ({ onClose, refreshSidebar, profileInfoData }) => {
               />
               <button
                 onClick={() => fileInputRef.current.click()}
-                className="absolute bottom-0 right-0 bg-green-tint text-white text-sm font-bold px-3 py-1 rounded-full hover:scale-105 transition-all"
+                className="absolute w-20 h-20 top-0 right-0 bg-gray-400 hidden text-white text-sm font-bold px-3 py-1 rounded-full hover:scale-105 transition-all hover:block"
               >
                 Change
               </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </div> */}
+
+            {/* Profile Image */}
+            <div className="relative group">
+              <img
+                src={imagePreview || img}
+                alt="Profile"
+                className="w-20 h-20 bg-gray-300 rounded-full mb-2 object-cover"
+              />
+
+              <button
+                onClick={() => fileInputRef.current.click()}
+                className="absolute w-20 h-20 top-0 right-0 bg-black bg-opacity-50 text-white text-sm font-bold rounded-full transition-all hidden group-hover:flex items-center justify-center"
+              >
+                Change
+              </button>
+
               <input
                 type="file"
                 ref={fileInputRef}

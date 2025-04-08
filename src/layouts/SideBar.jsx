@@ -1,8 +1,18 @@
 /* eslint-disable */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "../assets/img/dashboards/100minds-logo.png";
-import { PiBook, PiSquaresFour, PiX } from "react-icons/pi";
+import {
+  PiBook,
+  PiCalendar,
+  PiCalendarDot,
+  PiCalendarDots,
+  PiHeartFill,
+  PiHouse,
+  PiQuestionBold,
+  PiSquaresFour,
+  PiX,
+} from "react-icons/pi";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import dashboard from "../assets/img/dashboards/dashboard.svg";
 import rolePlay from "../assets/img/dashboards/role play.svg";
@@ -21,6 +31,7 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 import { FaBookBible } from "react-icons/fa6";
 import { toast } from "sonner";
 import EventBus from "../utils/EventBus";
+import { BiChevronDown } from "react-icons/bi";
 const SideBar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +41,9 @@ const SideBar = () => {
   const [courses, setCourses] = useState(null);
   const { getProfileData, signout, getCourses, user } = useAuth();
   console.log("user from sidebar", user);
+  const sidebarRef = useRef(null);
+
+  const [showArrow, setShowArrow] = useState(true);
 
   const fetchData = async () => {
     try {
@@ -74,6 +88,31 @@ const SideBar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sidebarRef.current && sidebarRef.current.scrollTop > 10) {
+        setShowArrow(false);
+      } else {
+        setShowArrow(true);
+      }
+    };
+
+    const sidebarEl = sidebarRef.current;
+    if (!sidebarEl) return; // Safety check
+
+    sidebarEl.addEventListener("scroll", handleScroll);
+
+    return () => {
+      sidebarEl.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollSidebarDown = () => {
+    if (sidebarRef.current) {
+      sidebarRef.current.scrollBy({ top: 100, behavior: "smooth" });
+    }
+  };
+
   const location = useLocation();
   console.log("Current Route:", location.pathname);
 
@@ -108,19 +147,40 @@ const SideBar = () => {
     <>
       {/* laptop screen */}
 
-      <div className="w-1/4  h-screen font-nueue hidden  lg:flex flex-col justify-between  text-nowrap no-scrollbar">
-        <div className="!py-6 !pb-3">
+      <div className="w-1/4  max-h-screen  font-nueue hidden  lg:flex flex-col justify-between  text-nowrap no-scrollbar">
+        <div className="!py-6 !pb-3  top-2.5">
           <img src={logo} alt="" className=" w-48 h-18 object-contain " />
         </div>
 
-        <div>
+        <div className="h-full overflow-y-scroll no-scrollbar">
+          <NavLink
+            to="/home"
+            end
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                isActive
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                  : ""
+              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <span
+                className={`w-full  items-start  gap-2 flex !mx-4 !p-2 rounded-lg  ${
+                  isActive ? "bg-whitish" : ""
+                }`}
+              >
+                <PiHouse size={20} color="#509999" /> Home
+              </span>
+            )}
+          </NavLink>
           <NavLink
             to="/"
             end
             className={({ isActive, isPending }) =>
               `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                 isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                   : ""
               } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
             }
@@ -141,7 +201,7 @@ const SideBar = () => {
             className={({ isActive, isPending }) =>
               `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                 isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                   : ""
               } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
             }
@@ -152,7 +212,8 @@ const SideBar = () => {
                   isActive ? "bg-whitish" : ""
                 }`}
               >
-                <img src={rolePlay} alt="" /> Journey
+                <img src={rolePlay} alt="" />
+                My Journey Map
               </span>
             )}
           </NavLink>
@@ -161,7 +222,7 @@ const SideBar = () => {
             className={({ isActive, isPending }) =>
               `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                 isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                   : ""
               } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
             }
@@ -173,8 +234,8 @@ const SideBar = () => {
                 }`}
               >
                 {/* <img src={rolePlay} alt="" />  */}
-                <PiBook />
-                Courses
+                <PiBook color="#509999" size={18} />
+                Course Library
               </span>
             )}
           </NavLink>
@@ -183,7 +244,7 @@ const SideBar = () => {
             className={({ isActive, isPending }) =>
               `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
                 isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                   : ""
               } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
             }
@@ -203,7 +264,7 @@ const SideBar = () => {
             className={({ isActive, isPending }) =>
               `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
                 isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                   : ""
               } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
             }
@@ -223,7 +284,7 @@ const SideBar = () => {
             className={({ isActive, isPending }) =>
               `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                 isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                   : ""
               } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
             }
@@ -244,7 +305,7 @@ const SideBar = () => {
             className={({ isActive, isPending }) =>
               `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
                 isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                   : ""
               } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
             }
@@ -267,7 +328,7 @@ const SideBar = () => {
               className={({ isActive, isPending }) =>
                 `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
                   isActive
-                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                     : ""
                 } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
               }
@@ -284,15 +345,151 @@ const SideBar = () => {
               )}
             </NavLink>
           )}
+
+          <NavLink
+            to="/Calendar"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                isActive
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                  : ""
+              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <span
+                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                  isActive ? "bg-whitish" : ""
+                }`}
+              >
+                <PiCalendarDots color="#509999" size={22} /> Calendar
+              </span>
+            )}
+          </NavLink>
+          <NavLink
+            to="/favourites"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                isActive
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                  : ""
+              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <span
+                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                  isActive ? "bg-whitish" : ""
+                }`}
+              >
+                <PiHeartFill color="#509999" size={22} /> Favourites
+              </span>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/ongoing"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                isActive
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                  : ""
+              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <span
+                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                  isActive ? "bg-whitish" : ""
+                }`}
+              >
+                <PiQuestionBold color="#509999" size={22} /> Q&A
+              </span>
+            )}
+          </NavLink>
+          <NavLink
+            to="/ongoing"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                isActive
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                  : ""
+              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <span
+                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                  isActive ? "bg-whitish" : ""
+                }`}
+              >
+                <PiQuestionBold color="#509999" size={22} /> Q&A
+              </span>
+            )}
+          </NavLink>
+          <NavLink
+            to="/ongoing"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                isActive
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                  : ""
+              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <span
+                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                  isActive ? "bg-whitish" : ""
+                }`}
+              >
+                <PiQuestionBold color="#509999" size={22} /> Q&A
+              </span>
+            )}
+          </NavLink>
+          <NavLink
+            to="/ongoing"
+            className={({ isActive, isPending }) =>
+              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                isActive
+                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                  : ""
+              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <span
+                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                  isActive ? "bg-whitish" : ""
+                }`}
+              >
+                <PiQuestionBold color="#509999" size={22} /> Q&A
+              </span>
+            )}
+          </NavLink>
+
+          {/* Gradient Fade at Bottom */}
+          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent z-10" />
+
+          {/* Scroll Down Arrow */}
+          {showArrow && (
+            <div
+              className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 cursor-pointer text-gray-400 animate-bounce"
+              onClick={scrollSidebarDown}
+            >
+              <BiChevronDown className="w-6 h-6" />
+            </div>
+          )}
         </div>
-        <div className="flex flex-col justify-end h-full !pb-6  ">
+
+        <div className="flex flex-col justify-end  !pb-6   ">
           <div>
             <NavLink
               to="/settings"
               className={({ isActive, isPending }) =>
                 `flex items-center gap-1  text-apex_dashboard_blacktext ${
                   isActive
-                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                     : ""
                 } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
               }
@@ -313,7 +510,7 @@ const SideBar = () => {
               className={({ isActive, isPending }) =>
                 `flex items-center gap-1 text-apex_dashboard_blacktext ${
                   isActive
-                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                     : ""
                 } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
               }
@@ -392,7 +589,7 @@ const SideBar = () => {
                 className={({ isActive, isPending }) =>
                   `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
                     isActive
-                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                       : ""
                   } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
                 }
@@ -414,7 +611,7 @@ const SideBar = () => {
                 className={({ isActive, isPending }) =>
                   `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
                     isActive
-                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                       : ""
                   } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
                 }
@@ -436,7 +633,7 @@ const SideBar = () => {
                 className={({ isActive, isPending }) =>
                   `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
                     isActive
-                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                       : ""
                   } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
                 }
@@ -458,7 +655,7 @@ const SideBar = () => {
                 className={({ isActive, isPending }) =>
                   `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
                     isActive
-                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                       : ""
                   } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
                 }
@@ -480,7 +677,7 @@ const SideBar = () => {
                 className={({ isActive, isPending }) =>
                   `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
                     isActive
-                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                       : ""
                   } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
                 }
@@ -501,7 +698,7 @@ const SideBar = () => {
                 className={({ isActive, isPending }) =>
                   `flex items-center gap-1 p-2 pl-4 !mb-2 text-apex_dashboard_blacktext ${
                     isActive
-                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                       : ""
                   } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
                 }
@@ -525,7 +722,7 @@ const SideBar = () => {
                 className={({ isActive, isPending }) =>
                   `flex items-center gap-1 p-2 pl-4 text-apex_dashboard_blacktext ${
                     isActive
-                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                       : ""
                   } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
                 }
@@ -547,7 +744,7 @@ const SideBar = () => {
                 className={({ isActive, isPending }) =>
                   `flex items-center gap-1 p-2 pl-4 text-apex_dashboard_blacktext ${
                     isActive
-                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-sidebar-color"
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                       : ""
                   } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
                 }

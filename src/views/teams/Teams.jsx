@@ -42,23 +42,25 @@ const Teams = () => {
 
   const { user } = useAuth(); // Get the current user from context
   const storedUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+  console.log("stored user", storedUser);
   const currentUser = user || storedUser; // Get the user from context or sessionStorage
+  console.log("current user");
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!currentUser?.id) {
       // Redirect to the signin page if not authenticated
-      navigate("/signin");
+      navigate("/");
     } else if (currentUser?.role !== "admin") {
       // Redirect to the homepage if the user is not an admin
-      navigate("/");
+      navigate("/teams");
     }
-  }, [currentUser, navigate]);
+  }, []);
 
-  if (!currentUser?.id || currentUser?.role !== "admin") {
-    // Optional: Render a loading or fallback UI while the user is redirected
-    return null;
-  }
+  // if (!currentUser?.id || currentUser?.role !== "admin") {
+  //   // Optional: Render a loading or fallback UI while the user is redirected
+  //   return null;
+  // }
   return (
     <div className="h-full w-full overflow-hidden !py-4">
       <div className="bg-[#F3F3F3] overflow-scroll scroll-hide h-full rounded-3xl !mx-3 ">

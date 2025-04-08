@@ -9,8 +9,9 @@ const TabComponent = () => {
 
   const tabs = [
     { name: "Video", key: "video" },
-    { name: "Role Play", key: "roleplay" },
+
     { name: "Quiz", key: "quiz" },
+    { name: "Role Play", key: "roleplay" },
   ];
 
   return (

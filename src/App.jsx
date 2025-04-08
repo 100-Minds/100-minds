@@ -15,6 +15,10 @@ import ProtectedRoute from "./routes/ProtectedRoutes";
 import ForgotPassword from "./views/Auth/ForgotPassword";
 import ResetPassword from "./views/Auth/ResetPassword";
 import { Toaster } from "sonner";
+import TeamJoin from "./views/teams/TeamJoin";
+import PrivacyPolicy from "./views/legal/PrivacyPolicy";
+import TermsAndCondition from "./views/legal/TermsAndCondition";
+import CustomerAgreement from "./views/legal/CustomerAgreement";
 
 function RenderRoutes(routeList) {
   return routeList.map(({ path, component: Component, children }, index) => (
@@ -49,6 +53,11 @@ function App() {
             <Route path="/otp" element={<OTPPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token?" element={<ResetPassword />} />
+            <Route path="/join-team" element={<TeamJoin />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-condition" element={<TermsAndCondition />} />
+            <Route path="/customer-agreement" element={<CustomerAgreement />} />
+
             <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>

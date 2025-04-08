@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
   const [courses, setCourses] = useState(null);
   const [courseId, setCourseId] = useState(null);
   const [courseJourney, setCourseJourney] = useState(null);
@@ -468,15 +469,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
   // invite team member
+
   const inviteTeamMember = async (formData) => {
-    setLoading(true);
+    setModalLoading(true); // Set loading state before request
+
     try {
       const response = await axios.post(
         "https://backend-5781.onrender.com/api/v1/team/invite-member",
         formData,
         {
           withCredentials: true,
-
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
@@ -484,7 +486,6 @@ export const AuthProvider = ({ children }) => {
         }
       );
       console.log("form data", formData);
-
       console.log("invitation response", response);
       return response.data;
     } catch (error) {
@@ -492,11 +493,50 @@ export const AuthProvider = ({ children }) => {
         "invite team error:",
         error.response?.data || error.message
       );
-      throw error;
+      throw error; // Propagate the error
+    } finally {
+      setModalLoading(false); // Reset loading state after request
+    }
+  };
+
+  // Remove team member
+
+  const removeTeamMember = async (teamId, memberId) => {
+    setLoading(true);
+
+    try {
+      const formData = {
+        teamId: teamId,
+        memberId: memberId,
+      };
+
+      const response = await axios.post(
+        "https://backend-5781.onrender.com/api/v1/team/remove-member",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      console.log("remove member response", response);
+
+      return response.data; // Returns the response data from the API
+    } catch (error) {
+      console.error(
+        "remove team member error:",
+        error.response?.data || error.message
+      );
+      throw error; // Propagate the error for further handling
     } finally {
       setLoading(false);
     }
   };
+
+  // Get quiz by chapter
 
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
@@ -539,6 +579,8 @@ export const AuthProvider = ({ children }) => {
         rolePlay,
         courseJourney,
         loading,
+        modalLoading,
+        setModalLoading,
         // powerskill
         powerSkill,
 
@@ -555,6 +597,7 @@ export const AuthProvider = ({ children }) => {
         getAllTeams,
         getTeamMembers,
         inviteTeamMember,
+        removeTeamMember,
       }}
     >
       {children}

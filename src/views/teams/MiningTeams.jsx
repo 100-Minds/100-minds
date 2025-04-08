@@ -20,15 +20,15 @@ import { useAuth } from "../../context/AuthContext";
 import Loader2 from "../../components/Loaders/Loader2";
 import Modal from "./components/Modal";
 import TeamInvite from "./components/TeamInvite";
+import { toast } from "sonner";
 
 const MiningTeams = () => {
   const handleSeePerformance = () => {};
-  const handleRemoveUser = () => {};
   const handleLeaderboardClick = () => {};
   const { teamId } = useParams(); // Get team ID from the URL
   const location = useLocation();
   const teamName = location.state?.teamName || "Unknown Team";
-  const { getTeamMembers, loading } = useAuth();
+  const { getTeamMembers, loading, removeTeamMember } = useAuth();
   const [teamMembers, setTeamMembers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -49,6 +49,31 @@ const MiningTeams = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
+  // const handleRemoveMember = async (member) => {
+  //   try {
+  //     // const res = await removeTeamMember(member); // use member.userId and member.id
+  //     const res = await removeTeamMember({ teamId, userId });
+  //     toast.success("Member removed successfully");
+  //     console.log("res", res);
+
+  //     // Filter out the removed member
+  //     setTeamMembers((prev) => prev.filter((m) => m.userId !== member.userId));
+  //   } catch (err) {
+  //     console.error("Error:", err);
+  //     toast.error(err?.response?.data?.message || "There was a problem");
+  //   }
+  // };
+  // Function to handle removing a member
+  const handleRemoveMember = async (teamId, memberId) => {
+    try {
+      const response = await removeTeamMember(teamId, memberId); // Call removeTeamMember function with teamId and memberId
+      console.log("Member removed:", response);
+      // Filter out the removed member from the teamMembers state
+      setTeamMembers((prev) => prev.filter((m) => m.userId !== memberId));
+    } catch (error) {
+      console.error("Error removing member:", error);
+    }
+  };
   return (
     <section className="lg:!px-10 !px-4">
       {loading ? (
@@ -80,8 +105,10 @@ const MiningTeams = () => {
                     profile={profile}
                     email={member.email}
                     teamCount={1}
+                    member={member}
                     onSeePerformance={handleSeePerformance}
-                    onRemove={handleRemoveUser}
+                    teamId={teamId} // Pass teamId to Miningcard
+                    onRemove={handleRemoveMember}
                   />
                 ))
               )}
@@ -116,7 +143,11 @@ const MiningTeams = () => {
 
             {/* Modal for inviting members */}
             {isModalOpen && (
-              <TeamInvite isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+              <TeamInvite
+                isOpen={isModalOpen}
+                setIsOpen={setIsModalOpen}
+                teamName={teamName}
+              />
             )}
           </div>
         </>

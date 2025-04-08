@@ -26,8 +26,16 @@ const ChapterCard = ({ imgSrc, chapter, time, progress }) => {
 
         {/* Progress Bar */}
         <div className="w-full bg-gray-300 rounded-full h-1.5 !mt-2">
-          <div
+          {/* <div
             className="bg-sidebar-color h-1.5 rounded-full"
+            style={{ width: `${progress}%` }}
+          ></div> */}
+          <div
+            className={`h-1.5 rounded-full ${
+              progress >= 75 || progress === 100
+                ? "bg-green-tint"
+                : "bg-sidebar-color"
+            } transition-width`}
             style={{ width: `${progress}%` }}
           ></div>
         </div>

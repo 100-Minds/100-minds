@@ -18,6 +18,8 @@ import Courses from "../views/Courses/Courses";
 import CourseLessons from "../views/Courses/CourseLessons";
 import PowerskillPage from "../views/Power-skill/PowerskillPage";
 import TeamDetail from "../views/teams/TeamDetail";
+import TeamJoin from "../views/teams/TeamJoin";
+import Home from "../views/Guest/Home";
 
 const coreRoutes = [
   {
@@ -87,6 +89,11 @@ const coreRoutes = [
     component: ChapterList,
   },
   {
+    path: "/home",
+    title: "Home",
+    component: Home,
+  },
+  {
     // path: "/courses/chapters/:lessonId/video/:videoId",
     path: "/courses/:courseId/lessons/:lessonId",
     title: "course",
@@ -123,6 +130,11 @@ const coreRoutes = [
         title: "Compare Stats",
         component: CompareStats,
       },
+      // {
+      //   path: "join-team",
+      //   title: "Teams Join",
+      //   component: TeamJoin,
+      // },
     ],
   },
 ];
