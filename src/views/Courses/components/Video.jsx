@@ -325,17 +325,62 @@ const CustomVideoPlayer = ({ src, poster }) => {
     setShowModal(true); // Show the modal
   };
 
-  const calculateTotalDuration = (videos) => {
-    if (!videos || videos.length === 0) return "00:00";
+  // const calculateTotalDuration = (videos) => {
+  //   if (!videos || videos.length === 0) return "00:00";
 
-    let totalSeconds = videos.reduce((sum, video) => {
-      const [minutes, seconds] = video.duration.split(":").map(Number);
-      return sum + minutes * 60 + seconds;
-    }, 0);
+  //   let totalSeconds = videos.reduce((sum, video) => {
+  //     const [minutes, seconds] = video.duration.split(":").map(Number);
+  //     return sum + minutes * 60 + seconds;
+  //   }, 0);
 
-    const minutes = Math.floor(totalSeconds / 60);
+  //   const minutes = Math.floor(totalSeconds / 60);
+  //   const seconds = totalSeconds % 60;
+  //   return `${minutes}:${seconds < 10 ? "0" : ""}${seconds} Mins`;
+  // };
+
+  const calculateTotalDuration = (videoCourseLesson) => {
+    if (!videoCourseLesson || !videoCourseLesson[0]?.chapters) return "00:00";
+
+    let totalSeconds = 0;
+
+    videoCourseLesson[0].chapters.forEach((chapter) => {
+      chapter.videos?.forEach((video) => {
+        const [hoursOrMinutes, minutesOrSeconds, maybeSeconds] = video.duration
+          .split(":")
+          .map(Number);
+
+        let videoSeconds = 0;
+
+        if (video.duration.split(":").length === 3) {
+          // Format is HH:MM:SS
+          const [hours, minutes, seconds] = [
+            hoursOrMinutes,
+            minutesOrSeconds,
+            maybeSeconds,
+          ];
+          videoSeconds = hours * 3600 + minutes * 60 + seconds;
+        } else {
+          // Format is MM:SS
+          const [minutes, seconds] = [hoursOrMinutes, minutesOrSeconds];
+          videoSeconds = minutes * 60 + seconds;
+        }
+
+        totalSeconds += videoSeconds;
+      });
+    });
+
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds} Mins`;
+
+    const formatted =
+      hours > 0
+        ? `${hours}:${minutes.toString().padStart(2, "0")}:${seconds
+            .toString()
+            .padStart(2, "0")} Hrs`
+        : `${minutes}:${seconds.toString().padStart(2, "0")} Mins`;
+
+    return formatted;
   };
 
   const calculateProgress = (duration, lastWatched) => {
@@ -637,7 +682,7 @@ const CustomVideoPlayer = ({ src, poster }) => {
             <div className="flex justify-between  w-full  font-nueue font-bold text-lg !my-4 !mt-8 gap-3.5 absolute bottom-0">
               Total Time:{" "}
               <span className="text-grey-tint flex items-center gap-1 text-sm mr-10">
-                <PiClock /> {calculateTotalDuration(actualLesson?.videos)}
+                <PiClock /> {calculateTotalDuration(videoCourseLesson)}
               </span>
             </div>
           </div>
