@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [quizLoading, setQuizLoading] = useState(false);
+  const [courseVideoLoading, setCourseVideoLoading] = useState(false);
   const [courses, setCourses] = useState(null);
   const [courseId, setCourseId] = useState(null);
   const [courseJourney, setCourseJourney] = useState(null);
@@ -280,6 +281,27 @@ export const AuthProvider = ({ children }) => {
       );
     } finally {
       setLoading(false);
+    }
+  };
+  const getCourseLessonsVideo = async (courseId) => {
+    setCourseVideoLoading(true);
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/course/get-lessons?courseId=${courseId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("lesson Data video:", response.data);
+      setVideoCourse(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching lesson failed:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setCourseVideoLoading(false);
     }
   };
   const getLearningJourneyCourses = async () => {
@@ -560,6 +582,7 @@ export const AuthProvider = ({ children }) => {
 
   // AuthContext.js
   const submitQuizAnswers = async ({ courseId, chapterId, answers }) => {
+    setQuizLoading(true);
     try {
       const response = await axios.post(
         "https://backend-5781.onrender.com/api/v1/quiz-score/create",
@@ -581,6 +604,8 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Error submitting quiz:", error);
       throw error;
+    } finally {
+      setQuizLoading(false);
     }
   };
 
@@ -650,6 +675,7 @@ export const AuthProvider = ({ children }) => {
         courseJourney,
         loading,
         modalLoading,
+        getCourseLessonsVideo,
         setModalLoading,
         // powerskill
         powerSkill,

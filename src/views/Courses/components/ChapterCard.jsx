@@ -1,9 +1,13 @@
 import React from "react";
 import { PiClock } from "react-icons/pi";
 
-const ChapterCard = ({ imgSrc, chapter, time, progress }) => {
+const ChapterCard = ({ imgSrc, chapter, time, isActive, progress }) => {
   return (
-    <div className="flex items-center gap-4 !p-4 bg-gray-100  !mb-5 rounded-lg shadow-md">
+    <div
+      className={`flex items-center gap-4 !p-4 bg-gray-100  !mb-5 rounded-lg shadow-md cursor-pointer ${
+        isActive ? "border border-green-tint" : ""
+      }`}
+    >
       {/* Image Section */}
       <div className="w-12 h-12 flex-shrink-0">
         <img

@@ -35,7 +35,8 @@ const coreRoutes = [
   {
     path: "/courses/:courseId/lessons",
     title: "Course Lessons",
-    component: CourseLessons, // This component should handle course lessons dynamically
+    component: CourseLessons,
+    // component: ChapterList,
   },
   {
     path: "/journey",

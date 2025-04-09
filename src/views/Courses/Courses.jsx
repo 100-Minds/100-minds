@@ -63,10 +63,10 @@ const Courses = () => {
               <NavHeader header={"Courses"} />
             </div>
             <div
-              className={`!mt-4 gap-4 scrollbar-hide ${
+              className={`!mt-4 gap-4 scrollbar-hide  ${
                 isHomePage
                   ? "flex overflow-x-auto snap-x snap-mandatory scroll-smooth"
-                  : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 "
+                  : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-y-16 "
               } `}
             >
               {paginatedCourses?.length > 0 ? (
@@ -102,7 +102,7 @@ const Courses = () => {
 
             {/* Conditional Pagination Controls */}
             {totalCourses > coursesPerPage && (
-              <div className="flex items-center justify-center !mt-10 gap-4 text-sm font-nueue">
+              <div className="flex items-center justify-center !mt-16 gap-4 text-sm font-nueue">
                 <button
                   onClick={() =>
                     setCurrentPage((prev) => Math.max(prev - 1, 1))

@@ -26,7 +26,7 @@ import {
 const BASE_URL = "https://backend-5781.onrender.com/api/v1/last-watched";
 
 const CustomVideoPlayer = ({ src, poster }) => {
-  const { loading } = useAuth();
+  const { loading, getCourseLessonsVideo } = useAuth();
   const videoRef = useRef(null);
   const { courseId, lessonId } = useParams();
   const [playing, setPlaying] = useState(false);
@@ -38,6 +38,9 @@ const CustomVideoPlayer = ({ src, poster }) => {
   const [videoId, setVideoId] = useState(null);
   const [currentLesson, setCurrentLesson] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [videoCourseLesson, setVideoCourseLesson] = useState([]);
+  const [selectedChapter, setSelectedChapter] = useState(null);
+
   // const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   const actualLesson = currentLesson?.lesson;
@@ -166,6 +169,12 @@ const CustomVideoPlayer = ({ src, poster }) => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [videoId, courseId]);
+
+  useEffect(() => {
+    if (actualLesson && !selectedChapter) {
+      setSelectedChapter(actualLesson);
+    }
+  }, [actualLesson, selectedChapter]);
 
   // Save last watched function
   const saveLastWatched = () => {
@@ -299,6 +308,15 @@ const CustomVideoPlayer = ({ src, poster }) => {
       };
     }
   }, []);
+  // display video course lessons for each course
+  useEffect(() => {
+    if (courseId) {
+      getCourseLessonsVideo(courseId).then((data) => {
+        setVideoCourseLesson(data?.data || []);
+      });
+    }
+  }, [courseId]);
+  console.log("videeeeeooo lessooon", videoCourseLesson);
   if (!currentLesson) {
     return <p>Loading lesson...</p>;
   }
@@ -306,12 +324,6 @@ const CustomVideoPlayer = ({ src, poster }) => {
     setPlaying(false); // Ensure video stops
     setShowModal(true); // Show the modal
   };
-  const chapters = [
-    { imgSrc: profile, chapter: 1, time: "34:55", progress: 60 },
-    { imgSrc: profile, chapter: 2, time: "30:20", progress: 40 },
-    { imgSrc: profile, chapter: 3, time: "28:10", progress: 80 },
-    { imgSrc: profile, chapter: 4, time: "45:00", progress: 20 },
-  ];
 
   const calculateTotalDuration = (videos) => {
     if (!videos || videos.length === 0) return "00:00";
@@ -325,17 +337,6 @@ const CustomVideoPlayer = ({ src, poster }) => {
     const seconds = totalSeconds % 60;
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds} Mins`;
   };
-  // const calculateProgress = (duration, lastWatched) => {
-  //   if (!duration || !lastWatched) return 0;
-
-  //   const [minutes, seconds] = duration.split(":").map(Number);
-  //   const totalDurationSeconds = minutes * 60 + seconds;
-
-  //   if (totalDurationSeconds === 0) return 0; // Avoid division by zero
-
-  //   const progress = (lastWatched / totalDurationSeconds) * 100;
-  //   return Math.min(progress, 100).toFixed(2); // Ensure it doesn't exceed 100%
-  // };
 
   const calculateProgress = (duration, lastWatched) => {
     if (!duration || lastWatched === null) return 0;
@@ -367,6 +368,8 @@ const CustomVideoPlayer = ({ src, poster }) => {
     }
   };
 
+  console.log("selected chapts", selectedChapter);
+
   return (
     <div className="grid lg:grid-cols-5 gap-10">
       <div className="lg:col-span-3  col-span-5">
@@ -378,7 +381,7 @@ const CustomVideoPlayer = ({ src, poster }) => {
 
           <div className="w-full relative">
             <video
-              className="w-full h-72 object-cover rounded-2xl"
+              className="w-full h-80 max-h-96 object-contain shadow rounded-2xl"
               ref={videoRef}
               src={src || actualLesson?.videos[0]?.videoURL}
               poster={poster}
@@ -593,53 +596,50 @@ const CustomVideoPlayer = ({ src, poster }) => {
         </div>
         <p className="text-gray-500">{actualLesson?.description}</p>
       </div>
-      <div className="lg:col-span-2 col-span-5 lg:-translate-y-5">
+      <div className="lg:col-span-2 col-span-5 lg:-translate-y-5 ">
         <h3 className="font-bebas text-2xl flex items-center gap-2.5 !pb-3">
           CHAPTERS{" "}
           <span className="bg-white !p-1 !px-2 rounded-xl text-lg">
-            {actualLesson?.chapterNumber}
+            {videoCourseLesson[0]?.chapters.length}
           </span>
         </h3>
-        {/* <div className="space-y-4 bg-white !p-5 rounded-2xl ">
-          {chapters.map((item, index) => (
-            <ChapterCard key={index} {...item} />
-          ))}
 
-          <div className="flex justify-between font-nueue font-bold text-lg !my-4 !mt-8">
-            Total Time:{" "}
-            <span className="text-grey-tint flex items-center gap-1 text-sm">
-              <PiClock /> 54:32 Mins
-            </span>
-          </div>
-        </div> */}
+        <div className="space-y-4 bg-white w-full h-80 max-h-80 overflow-y-hidden flex flex-col justify-between !p-5 rounded-2xl relative overflow-x-hidden">
+          <div className="overflow-scroll no-hide no-scrollbar !mb-8 ">
+            {videoCourseLesson[0] ? (
+              videoCourseLesson[0]?.chapters.map((video, index) => {
+                const progress = calculateProgress(video.duration, lastWatched);
+                console.log("video in progresssss", video.duration);
+                console.log("calculateProgress lastwatched", lastWatched);
+                return (
+                  <ChapterCard
+                    key={video.id} // Unique key
+                    imgSrc={profile} // Thumbnail or placeholder
+                    chapter={video.chapterNumber}
+                    time={video.videos[0].duration} // Use actual video duration
+                    progress={progress} // Dynamically calculated progress
+                    onClick={() => {
+                      console.log("selecrrrr", selectedChapter);
+                      setSelectedChapter(video);
+                    }}
+                    isActive={
+                      actualLesson?.chapterNumber === video.chapterNumber
+                    }
+                  />
+                );
+              })
+            ) : (
+              <p className="text-gray-500">
+                No videos available for this lesson.
+              </p>
+            )}
 
-        <div className="space-y-4 bg-white lg:min-h-72 flex flex-col justify-between !p-5 rounded-2xl ">
-          {actualLesson?.videos && actualLesson.videos.length > 0 ? (
-            actualLesson.videos.map((video, index) => {
-              const progress = calculateProgress(video.duration, lastWatched);
-              console.log("video in progresssss", video.duration);
-              console.log("calculateProgress lastwatched", lastWatched);
-              return (
-                <ChapterCard
-                  key={video.id} // Unique key
-                  imgSrc={profile} // Thumbnail or placeholder
-                  chapter={actualLesson.chapterNumber}
-                  time={video.duration} // Use actual video duration
-                  progress={progress} // Dynamically calculated progress
-                />
-              );
-            })
-          ) : (
-            <p className="text-gray-500">
-              No videos available for this lesson.
-            </p>
-          )}
-
-          <div className="flex justify-between font-nueue font-bold text-lg !my-4 !mt-8">
-            Total Time:{" "}
-            <span className="text-grey-tint flex items-center gap-1 text-sm">
-              <PiClock /> {calculateTotalDuration(actualLesson?.videos)}
-            </span>
+            <div className="flex justify-between  w-full  font-nueue font-bold text-lg !my-4 !mt-8 gap-3.5 absolute bottom-0">
+              Total Time:{" "}
+              <span className="text-grey-tint flex items-center gap-1 text-sm mr-10">
+                <PiClock /> {calculateTotalDuration(actualLesson?.videos)}
+              </span>
+            </div>
           </div>
         </div>
       </div>
