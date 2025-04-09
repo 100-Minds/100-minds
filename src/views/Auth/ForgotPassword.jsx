@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import at from "../../assets/img/dashboards/at.png";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const ForgotPassword = () => {
   const { forgotPassword, loading } = useAuth(); // Get forgotPassword function from Auth context

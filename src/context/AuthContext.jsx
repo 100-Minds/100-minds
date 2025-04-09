@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
+  const [quizLoading, setQuizLoading] = useState(false);
   const [courses, setCourses] = useState(null);
   const [courseId, setCourseId] = useState(null);
   const [courseJourney, setCourseJourney] = useState(null);
@@ -537,7 +538,76 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Get quiz by chapter
+  const getQuizByChapter = async (courseId, chapterId) => {
+    setQuizLoading(true);
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/course/get-lesson?courseId=${courseId}&chapterId=${chapterId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Fetching quiz by chapter:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setQuizLoading(false);
+    }
+  };
 
+  // AuthContext.js
+  const submitQuizAnswers = async ({ courseId, chapterId, answers }) => {
+    try {
+      const response = await axios.post(
+        "https://backend-5781.onrender.com/api/v1/quiz-score/create",
+        {
+          chapterId,
+          courseId,
+          answers, // should already be an array of { quizId, selectedOption }
+        },
+
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error("Error submitting quiz:", error);
+      throw error;
+    }
+  };
+
+  const getQuizScore = async (chapterId) => {
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/quiz-score/chapter/user/score?chapterId=${chapterId}`,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data; // The quiz score data
+    } catch (error) {
+      console.error("Error fetching quiz score:", error);
+      throw error;
+    }
+  };
+
+  const getAverageCourseScore = async (courseId) => {
+    // const response = await axios.get(
+    //   `/quiz-score/course/user/average?courseId=${courseId}`
+    // );
+    // return response.data;
+  };
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
     console.log(storedUser);
@@ -598,6 +668,14 @@ export const AuthProvider = ({ children }) => {
         getTeamMembers,
         inviteTeamMember,
         removeTeamMember,
+
+        // Quiz
+        getQuizByChapter,
+        quizLoading,
+        setQuizLoading,
+        submitQuizAnswers,
+        getQuizScore,
+        getAverageCourseScore,
       }}
     >
       {children}

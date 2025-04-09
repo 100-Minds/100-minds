@@ -31,7 +31,8 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 import { FaBookBible } from "react-icons/fa6";
 import { toast } from "sonner";
 import EventBus from "../utils/EventBus";
-import { BiChevronDown } from "react-icons/bi";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+
 const SideBar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,25 +45,18 @@ const SideBar = () => {
   const sidebarRef = useRef(null);
 
   const [showArrow, setShowArrow] = useState(true);
-
+  const [isAtBottom, setIsAtBottom] = useState(false);
   const fetchData = async () => {
     try {
       const data = await getProfileData(); // Fetch profile data
-      setProfile(data); // Store it in state
+      if (JSON.stringify(data) !== JSON.stringify(profile)) {
+        setProfile(data);
+      }
     } catch (error) {
       console.error("Error fetching profile:", error);
     }
   };
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const data = await getProfileData(); // Fetch profile data
-    //     setProfile(data); // Store it in state
-    //   } catch (error) {
-    //     console.error("Error fetching profile:", error);
-    //   }
-    // };
-
     fetchData();
 
     const fetchCourses = async () => {
@@ -87,31 +81,6 @@ const SideBar = () => {
       EventBus.removeEventListener("profileUpdated", handleProfileUpdate);
     };
   }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (sidebarRef.current && sidebarRef.current.scrollTop > 10) {
-        setShowArrow(false);
-      } else {
-        setShowArrow(true);
-      }
-    };
-
-    const sidebarEl = sidebarRef.current;
-    if (!sidebarEl) return; // Safety check
-
-    sidebarEl.addEventListener("scroll", handleScroll);
-
-    return () => {
-      sidebarEl.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  const scrollSidebarDown = () => {
-    if (sidebarRef.current) {
-      sidebarRef.current.scrollBy({ top: 100, behavior: "smooth" });
-    }
-  };
 
   const location = useLocation();
   console.log("Current Route:", location.pathname);
@@ -143,6 +112,31 @@ const SideBar = () => {
 
   // Check if the user is an admin
   const isAdmin = profile?.data[0]?.role === "admin";
+
+  const scrollSidebarDown = () => {
+    if (sidebarRef.current) {
+      sidebarRef.current.scrollBy({ top: 100, behavior: "smooth" }); // Scroll down by 100px
+    }
+  };
+
+  const scrollSidebarUp = () => {
+    if (sidebarRef.current) {
+      sidebarRef.current.scrollBy({ top: -100, behavior: "smooth" }); // Scroll up by 100px
+    }
+  };
+
+  const handleScroll = () => {
+    if (sidebarRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = sidebarRef.current;
+
+      // If we're at the bottom of the container, set isAtBottom to true
+      if (scrollTop + clientHeight >= scrollHeight) {
+        setIsAtBottom(true);
+      } else {
+        setIsAtBottom(false);
+      }
+    }
+  };
   return (
     <>
       {/* laptop screen */}
@@ -152,114 +146,119 @@ const SideBar = () => {
           <img src={logo} alt="" className=" w-48 h-18 object-contain " />
         </div>
 
-        <div className="h-full overflow-y-scroll no-scrollbar">
-          <NavLink
-            to="/home"
-            end
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
+        <div className="h-full overflow-y-scroll no-scrollbar relative w-full">
+          <div
+            ref={sidebarRef}
+            className="h-full overflow-y-scroll no-scrollbar"
+            // onScroll={handleScroll}
           >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-start  gap-2 flex !mx-4 !p-2 rounded-lg  ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <PiHouse size={20} color="#509999" /> Home
-              </span>
-            )}
-          </NavLink>
-          <NavLink
-            to="/"
-            end
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <img src={dashboard} alt="" /> Dashboard
-              </span>
-            )}
-          </NavLink>
+            <NavLink
+              to="/home"
+              end
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full  items-start  gap-2 flex !mx-4 !p-2 rounded-lg  ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <PiHouse size={20} color="#509999" /> Home
+                </span>
+              )}
+            </NavLink>
+            <NavLink
+              to="/"
+              end
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <img src={dashboard} alt="" /> Dashboard
+                </span>
+              )}
+            </NavLink>
 
-          <NavLink
-            to="/journey"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <img src={rolePlay} alt="" />
-                My Journey Map
-              </span>
-            )}
-          </NavLink>
-          <NavLink
-            to="/courses"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                {/* <img src={rolePlay} alt="" />  */}
-                <PiBook color="#509999" size={18} />
-                Course Library
-              </span>
-            )}
-          </NavLink>
-          <NavLink
-            to="/role-play"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <img src={power} alt="" /> Role Play
-              </span>
-            )}
-          </NavLink>
-          {/* <NavLink
+            <NavLink
+              to="/journey"
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <img src={rolePlay} alt="" />
+                  My Journey Map
+                </span>
+              )}
+            </NavLink>
+            <NavLink
+              to="/courses"
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  {/* <img src={rolePlay} alt="" />  */}
+                  <PiBook color="#509999" size={18} />
+                  Course Library
+                </span>
+              )}
+            </NavLink>
+            <NavLink
+              to="/role-play"
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <img src={power} alt="" /> Role Play
+                </span>
+              )}
+            </NavLink>
+            {/* <NavLink
             to="/powerskills"
             className={({ isActive, isPending }) =>
               `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
@@ -279,27 +278,27 @@ const SideBar = () => {
               </span>
             )}
           </NavLink> */}
-          <NavLink
-            to="/ongoing"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <img src={ongoing} alt="" /> Ongoing
-              </span>
-            )}
-          </NavLink>
-          {/* <NavLink
+            <NavLink
+              to="/ongoing"
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <img src={ongoing} alt="" /> Ongoing
+                </span>
+              )}
+            </NavLink>
+            {/* <NavLink
             to="/teams"
             end={false}
             className={({ isActive, isPending }) =>
@@ -321,165 +320,118 @@ const SideBar = () => {
               </span>
             )}
           </NavLink> */}
-          {isAdmin && (
+            {isAdmin && (
+              <NavLink
+                to="/teams"
+                end={false}
+                className={({ isActive, isPending }) =>
+                  `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
+                    isActive
+                      ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                      : ""
+                  } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+                }
+                onClick={closeSidebar}
+              >
+                {({ isActive }) => (
+                  <span
+                    className={`w-full items-center gap-2 flex !mx-4 !p-2 rounded-lg ${
+                      isActive ? "bg-whitish" : ""
+                    }`}
+                  >
+                    <img src={teams} alt="" /> Teams
+                  </span>
+                )}
+              </NavLink>
+            )}
+
             <NavLink
-              to="/teams"
-              end={false}
+              to="/Calendar"
               className={({ isActive, isPending }) =>
-                `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
+                `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
                   isActive
                     ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
                     : ""
                 } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
               }
-              onClick={closeSidebar}
             >
               {({ isActive }) => (
                 <span
-                  className={`w-full items-center gap-2 flex !mx-4 !p-2 rounded-lg ${
+                  className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
                     isActive ? "bg-whitish" : ""
                   }`}
                 >
-                  <img src={teams} alt="" /> Teams
+                  <PiCalendarDots color="#509999" size={22} /> Calendar
                 </span>
               )}
             </NavLink>
-          )}
-
-          <NavLink
-            to="/Calendar"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <PiCalendarDots color="#509999" size={22} /> Calendar
-              </span>
-            )}
-          </NavLink>
-          <NavLink
-            to="/favourites"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <PiHeartFill color="#509999" size={22} /> Favourites
-              </span>
-            )}
-          </NavLink>
-
-          <NavLink
-            to="/ongoing"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <PiQuestionBold color="#509999" size={22} /> Q&A
-              </span>
-            )}
-          </NavLink>
-          <NavLink
-            to="/ongoing"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <PiQuestionBold color="#509999" size={22} /> Q&A
-              </span>
-            )}
-          </NavLink>
-          <NavLink
-            to="/ongoing"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <PiQuestionBold color="#509999" size={22} /> Q&A
-              </span>
-            )}
-          </NavLink>
-          <NavLink
-            to="/ongoing"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <PiQuestionBold color="#509999" size={22} /> Q&A
-              </span>
-            )}
-          </NavLink>
-
-          {/* Gradient Fade at Bottom */}
-          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent z-10" />
-
-          {/* Scroll Down Arrow */}
-          {showArrow && (
-            <div
-              className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 cursor-pointer text-gray-400 animate-bounce"
-              onClick={scrollSidebarDown}
+            <NavLink
+              to="/favourites"
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
             >
-              <BiChevronDown className="w-6 h-6" />
-            </div>
-          )}
+              {({ isActive }) => (
+                <span
+                  className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <PiHeartFill color="#509999" size={22} /> Favourites
+                </span>
+              )}
+            </NavLink>
+
+            <NavLink
+              to="/ongoing"
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1  !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <PiQuestionBold color="#509999" size={22} /> Q&A
+                </span>
+              )}
+            </NavLink>
+            {/* Gradient Fade at the top */}
+            {isAtBottom && (
+              <div className="pointer-events-none sticky top-0 left-0 right-0 h-12 bg-gradient-to-b from-white to-transparent z-10" />
+            )}
+
+            {/* Gradient Fade at the bottom */}
+            {!isAtBottom && (
+              <div className="pointer-events-none sticky bottom-0 left-0 right-0 h-12 bg-white z-10" />
+            )}
+            {/* Scroll Arrow (Down or Up) */}
+            {!isAtBottom ? (
+              <div
+                className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 cursor-pointer text-gray-400 animate-bounce"
+                onClick={scrollSidebarDown}
+              >
+                <BiChevronDown className="w-6 h-6" />
+              </div>
+            ) : (
+              <div
+                className="absolute top-3 left-1/2 -translate-x-1/2 z-20 cursor-pointer text-gray-400 animate-bounce"
+                onClick={scrollSidebarUp}
+              >
+                <BiChevronUp className="w-6 h-6" />
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col justify-end  !pb-6   ">

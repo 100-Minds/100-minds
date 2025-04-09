@@ -1,4 +1,3 @@
-import React from "react";
 import coin1 from "../../../assets/img/dashboards/quiz/coins1.png";
 import ProgressBar from "./ProgressBar";
 import QuizQuestion from "./QuizQuestion";
@@ -8,7 +7,7 @@ const Quiz = () => {
     <div className="bg-white !p-4 lg:!px-10 min-h-96 w-full rounded-3xl overflow-clip flex flex-col justify-center items-center relative">
       <div className="flex justify-center items-center  !py-7 ">
         <div className="absolute w-1/4  h-50 -top-10 -left-10">
-          <img src={coin1} alt="" className="w-full  h-full object-cover" />
+          {/* <img src={coin1} alt="" className="w-full  h-full object-cover" /> */}
         </div>
         <div className="flex flex-col justify-center items-center font-nueue">
           <h1 className="font-bebas lg:text-3xl !pb-2">MINING QUIZ</h1>
@@ -24,7 +23,7 @@ const Quiz = () => {
           </div>
         </div>
         <div className="absolute -top-10 right-0 w-1/3 h-84 ">
-          <img src={coin1} alt="" className="w-full  h-full object-cover" />
+          {/* <img src={coin1} alt="" className="w-full  h-full object-cover" /> */}
         </div>
       </div>
       <div className="w-2/3">
