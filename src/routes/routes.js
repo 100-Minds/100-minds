@@ -32,12 +32,18 @@ const coreRoutes = [
     title: "Courses",
     component: Courses,
   },
+
   {
-    path: "/courses/:courseId/lessons",
-    title: "Course Lessons",
-    component: CourseLessons,
-    // component: ChapterList,
+    path: "/home",
+    title: "Home",
+    component: Home,
   },
+  {
+    path: "/courses/:courseId/lessons/:lessonId",
+    title: "course",
+    component: ChapterList,
+  },
+
   {
     path: "/journey",
     title: "Journey",
@@ -48,6 +54,7 @@ const coreRoutes = [
     title: "Journey Chapters",
     component: RolPlayChapters,
   },
+
   // New Actual roleplay content
   {
     path: "/role-play",
@@ -83,22 +90,6 @@ const coreRoutes = [
     path: "/profile",
     title: "Profile",
     component: Profile,
-  },
-  {
-    path: "/courses/lessons",
-    title: "course",
-    component: ChapterList,
-  },
-  {
-    path: "/home",
-    title: "Home",
-    component: Home,
-  },
-  {
-    // path: "/courses/chapters/:lessonId/video/:videoId",
-    path: "/courses/:courseId/lessons/:lessonId",
-    title: "course",
-    component: ChapterList,
   },
 
   {

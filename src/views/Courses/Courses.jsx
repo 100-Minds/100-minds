@@ -31,7 +31,7 @@ const Courses = () => {
     { percentage: 20, color: "#60A5FA" },
     { percentage: 50, color: "#F87171" },
   ];
-
+  console.log("whole courses to check if it has chapters", courses);
   const learningActivities = [
     { img: difficult, icon: icondifficult },
     { img: active, icon: iconactive },

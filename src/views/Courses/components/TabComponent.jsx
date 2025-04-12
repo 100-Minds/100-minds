@@ -5,7 +5,12 @@ import ChapterList from "../ChapterList";
 import Quiz from "./Quiz";
 import { div } from "framer-motion/client";
 
-const TabComponent = () => {
+const TabComponent = ({
+  courseName,
+  chapterName,
+  isChapterLoading,
+  videoCourseLesson,
+}) => {
   const [activeTab, setActiveTab] = useState("video");
 
   const tabs = [
@@ -48,7 +53,12 @@ const TabComponent = () => {
         {/* <ProgressBar percentage={40} /> */}
         {activeTab === "video" && (
           <div>
-            <Video />
+            <Video
+              courseName={courseName}
+              chapterName={chapterName}
+              isChapterLoading={isChapterLoading}
+              videoCourseLesson={videoCourseLesson}
+            />
             {/* <ChapterList /> */}
           </div>
         )}

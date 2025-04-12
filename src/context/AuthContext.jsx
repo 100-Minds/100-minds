@@ -613,6 +613,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.get(
         `https://backend-5781.onrender.com/api/v1/quiz-score/chapter/user/score?chapterId=${chapterId}`,
+
         {
           withCredentials: true,
           headers: {
@@ -620,6 +621,7 @@ export const AuthProvider = ({ children }) => {
           },
         }
       );
+      console.log("quiz scorez aut", response.data);
       return response.data; // The quiz score data
     } catch (error) {
       console.error("Error fetching quiz score:", error);

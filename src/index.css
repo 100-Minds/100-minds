@@ -32,7 +32,8 @@
 }
 .box-shadow {
   box-shadow: 5px 5px 10px #509999;
-  /* background-color: #ecececc5; */
+  /* background-color: #265959; */
+  /* color: #5099993d; */
 }
 .bg-role-1 {
   background-image: url(/src/assets/img/dashboards/rolePlay/difficult-convo.png);
@@ -165,4 +166,18 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: white !important;
   box-shadow: 0 0 0px 1000px #dc2626 inset !important;
   transition: background-color 5000s ease-in-out 0s !important;
+} */
+/* j {
+  color: #50999914;
+} */
+/* .challenge {
+  background-image: url(../src/assets/img/dashboards/quiz/question.gif);
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.challenge-img {
 } */

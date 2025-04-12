@@ -12,6 +12,7 @@ const OngoingCard = ({
   className,
   textsty = "",
   courseId,
+  lessonId,
 }) => {
   const location = useLocation();
 
@@ -21,7 +22,8 @@ const OngoingCard = ({
   //     ? `/courses/chapters`
   //     : `/courses/${courseId}/lessons`;
 
-  const destination = `/courses/${courseId}/lessons`;
+  // const destination = `/courses/${courseId}/lessons`;
+  const destination = `/courses/${courseId}/lessons/${lessonId}`;
   return (
     <div
       className={`!p-2 !pb-8 bg-white  font-nueue rounded-xl min-w-[85%] md:min-w-0 snap-start ${className}`}
