@@ -181,11 +181,11 @@ const Quiz = () => {
             </div> */}
             {quizScore.score >= 75 && (
               <div className="absolute top-0 left-0 w-full h-full opacity-30">
-                <img
+                {/* <img
                   src={confetti}
                   alt=""
                   className="w-full h-full object-cover"
-                />
+                /> */}
               </div>
             )}
           </>

@@ -739,36 +739,45 @@ const CustomVideoPlayer = ({
     }
   };
 
-  // const markChapterCompleted = () => {
-  //   if (currentChapterId && !completedChapters.includes(currentChapterId)) {
-  //     setCompletedChapters((prev) => [...prev, currentChapterId]);
-  //     setMarkasCompleted(true); // Set flag for next API call
-
-  //     // Trigger an immediate save with the completed flag
-  //     saveProgress();
-  //     console.log(`Marked chapter ${currentChapterId} as completed`);
-  //   }
-  // };
-
   const markChapterCompleted = () => {
     if (currentChapterId && videoRef.current) {
-      // Set completion flags
       setCompletedChapters((prev) =>
         prev.includes(currentChapterId) ? prev : [...prev, currentChapterId]
       );
-      setMarkasCompleted(true); // Set flag for next API call
+      setMarkasCompleted(true);
 
-      // For visual feedback, set the progress UI to 100%
       setProgress(100);
+      setChapterProgress((prevProgress) => {
+        const newProgress = { ...prevProgress };
+        newProgress[currentChapterId] = {
+          ...newProgress[currentChapterId],
+          progress: 100,
+          isCompleted: true,
+        };
+        return newProgress;
+      });
 
-      // Save progress immediately with the completed flag
+      if (videoRef.current && videoId) {
+        setTest((prevTest) => {
+          return prevTest.map((item) => {
+            if (item.videoId === videoId) {
+              return {
+                ...item,
+                duration: String(videoRef.current.duration || 0),
+                isChapterCompleted: true,
+              };
+            }
+            return item;
+          });
+        });
+      }
+
       saveProgress();
 
       toast.success("Chapter marked as completed!");
       console.log(`Marked chapter ${currentChapterId} as completed`);
     }
   };
-
   // --- Chapter Navigation ---
   const handleChapterClick = (clickedChapterId) => {
     const targetChapterIdStr = clickedChapterId.toString();
@@ -796,9 +805,9 @@ const CustomVideoPlayer = ({
     if (currentIndex >= 0 && currentIndex < chapterName.length - 1) {
       const nextChapter = chapterName[currentIndex + 1];
       handleChapterClick(nextChapter.id);
+      setShowModal(false);
     } else {
       console.log("This is the last chapter.");
-      // Optionally show a course completion message
     }
   };
 
@@ -1167,17 +1176,7 @@ const CustomVideoPlayer = ({
             >
               {isFavourite ? <PiHeartFill /> : <PiHeart />}
             </div>
-            {/* <PiHeart className="bg-white text-black rounded-2xl text-3xl !p-1.5 cursor-pointer hover:text-red-500" /> */}
-            {/* <button
-              className="flex items-center text-xs gap-2.5 py-1.5 rounded-full text-white font-semibold !p-2 !px-4 hover:scale-[1.02] transition"
-              style={{
-                boxShadow: "0px 7px 17.4px 0px #8B73FF80",
-                backgroundImage:
-                  "linear-gradient(86.82deg, #A6A1FE -0.48%, #4F45F0 98.98%)",
-              }}
-            >
-              Mark as completed <PiCheckCircleBold />
-            </button> */}
+
             <button
               onClick={markChapterCompleted}
               className="flex items-center text-xs gap-2.5 py-1.5 rounded-full text-white font-semibold !p-2 !px-4 hover:scale-[1.02] transition"
@@ -1200,7 +1199,6 @@ const CustomVideoPlayer = ({
       {/* End Left Column */}
       {/* Chapters List Section */}
       <div className="lg:col-span-2 col-span-5 lg:-translate-y-5">
-        {/* ... Chapter list rendering ... (no changes needed here from previous version) */}
         <h3 className="font-bebas text-2xl flex items-center gap-2.5 !pb-3">
           CHAPTERS{" "}
           <span className="bg-white !p-1 !px-2 rounded-xl text-lg">

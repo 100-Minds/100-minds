@@ -579,6 +579,7 @@ export const AuthProvider = ({ children }) => {
       setQuizLoading(false);
     }
   };
+  // get quizscore
 
   // AuthContext.js
   const submitQuizAnswers = async ({ courseId, chapterId, answers }) => {

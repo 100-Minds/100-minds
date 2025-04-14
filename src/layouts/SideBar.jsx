@@ -143,7 +143,7 @@ const SideBar = () => {
 
       <div className="w-1/4  max-h-screen  font-nueue hidden  lg:flex flex-col justify-between  text-nowrap no-scrollbar">
         <div className="!py-6 !pb-3  top-2.5">
-          <img src={logo} alt="" className=" w-48 h-18 object-contain " />
+          <img src={logo} alt="" className="pl-4 w-40 h-18 object-contain " />
         </div>
 
         <div className="h-full overflow-y-scroll no-scrollbar relative w-full">
