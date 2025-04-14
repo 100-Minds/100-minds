@@ -29,12 +29,20 @@ const Quiz = () => {
   const [quizCourses, setQuizCourses] = useState(null);
 
   useEffect(() => {
-    if (courseId) {
-      getQuizByChapter(courseId, lessonId).then((data) => {
-        setQuestions(data?.data[0]?.quiz || []);
-        setQuizCourses(data?.data[0]);
-      });
-    }
+    const fetchQuizData = async () => {
+      try {
+        if (courseId && lessonId) {
+          const data = await getQuizByChapter(lessonId);
+          setQuestions(data?.data || []);
+          setQuizCourses(data?.data[0]);
+          console.log("data from quiz question", data);
+        }
+      } catch (error) {
+        console.error("Error fetching quiz data:", error);
+      }
+    };
+
+    fetchQuizData();
   }, [courseId, lessonId]);
 
   const handleOptionSelect = (questionId, selected) => {
@@ -92,7 +100,7 @@ const Quiz = () => {
       toast.error(err.response.data.message);
     }
   };
-
+  console.log("questions from quiz question", questions);
   if (quizLoading) return <Loader2 />;
   console.log("questions", questions);
   console.log("all courses, qiz", quizCourses);
@@ -241,51 +249,51 @@ const Quiz = () => {
 
   // Render question UI
   const renderQuestionUI = (question, index) => {
-    if (index === 1) {
-      return (
-        <div className="flex lg:flex-row flex-col items-center lg:!px-20 lg:gap-7">
-          <h1 className="text-lg font-semibold font-bebas lg:text-4xl !pb-2">
-            {question.question}
-          </h1>
-          <div className="grid grid-cols-2 gap-12 !py-8">
-            {options.map(({ key, image }) => {
-              // Remove the question[key] part, we don't need that for images
-              return (
-                <label
-                  key={key}
-                  className={`relative w-40 h-40 bg-white !p-6 rounded-3xl cursor-pointer transition hover:scale-105 ${
-                    selectedAnswers[question.id] === key
-                      ? "ring-4 ring-green-tint"
-                      : ""
-                  }`}
-                >
-                  <img
-                    src={image} // Directly use the image from options array
-                    alt={`Option ${key}`}
-                    className="w-full h-[85%] object-contain"
-                  />
-                  <input
-                    type="radio"
-                    name={`question-${question.id}`}
-                    value={key}
-                    checked={selectedAnswers[question.id] === key}
-                    onChange={() => handleOptionSelect(question.id, key)}
-                    className="hidden"
-                  />
-                  <div className="flex justify-center">
-                    {selectedAnswers[question.id] === key ? (
-                      <BiCheckCircle className="text-green-tint w-5 h-5 !mt-2" />
-                    ) : (
-                      <div className="w-4 h-4 border border-gray-400 rounded-full !mt-3"></div>
-                    )}
-                  </div>
-                </label>
-              );
-            })}
-          </div>
-        </div>
-      );
-    }
+    // if (index === 1) {
+    //   return (
+    //     <div className="flex lg:flex-row flex-col items-center lg:!px-20 lg:gap-7">
+    //       <h1 className="text-lg font-semibold font-bebas lg:text-4xl !pb-2">
+    //         {question.question}
+    //       </h1>
+    //       <div className="grid grid-cols-2 gap-12 !py-8">
+    //         {options.map(({ key, image }) => {
+    //           // Remove the question[key] part, we don't need that for images
+    //           return (
+    //             <label
+    //               key={key}
+    //               className={`relative w-40 h-40 bg-white !p-6 rounded-3xl cursor-pointer transition hover:scale-105 ${
+    //                 selectedAnswers[question.id] === key
+    //                   ? "ring-4 ring-green-tint"
+    //                   : ""
+    //               }`}
+    //             >
+    //               <img
+    //                 src={image} // Directly use the image from options array
+    //                 alt={`Option ${key}`}
+    //                 className="w-full h-[85%] object-contain"
+    //               />
+    //               <input
+    //                 type="radio"
+    //                 name={`question-${question.id}`}
+    //                 value={key}
+    //                 checked={selectedAnswers[question.id] === key}
+    //                 onChange={() => handleOptionSelect(question.id, key)}
+    //                 className="hidden"
+    //               />
+    //               <div className="flex justify-center">
+    //                 {selectedAnswers[question.id] === key ? (
+    //                   <BiCheckCircle className="text-green-tint w-5 h-5 !mt-2" />
+    //                 ) : (
+    //                   <div className="w-4 h-4 border border-gray-400 rounded-full !mt-3"></div>
+    //                 )}
+    //               </div>
+    //             </label>
+    //           );
+    //         })}
+    //       </div>
+    //     </div>
+    //   );
+    // }
 
     return (
       <>
