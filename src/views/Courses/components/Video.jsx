@@ -23,6 +23,7 @@ import {
 } from "react-icons/ri";
 import ChapterCard from "./ChapterCard";
 import profile from "../../../assets/img/dashboards/100minds-logo.png";
+import ailink from "../../../assets/img/dashboards/teams/avatar2.jpg";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -1260,6 +1261,19 @@ const CustomVideoPlayer = ({
                 {calculateTotalDuration(chapterName)}{" "}
               </span>{" "}
             </div>
+          </div>
+        </div>
+        <div className="p-5 bg-white my-4 rounded-3xl flex gap-5 items-center text-green-tint ">
+          <img
+            src={ailink}
+            alt=""
+            className="w-20 h-20 object-cover rounded-full"
+          />
+          <div>
+            <p>Now lets practice with our Ai coach</p>
+            <a href="https://labs.heygen.com/interactive-avatar/share?share=eyJxdWFsaXR5IjoiaGlnaCIsImF2YXRhck5hbWUiOiJKdW5lX0hSX3B1YmxpYyIsInByZXZpZXdJ%0D%0AbWciOiJodHRwczovL2ZpbGVzMi5oZXlnZW4uYWkvYXZhdGFyL3YzLzc0NDQ3YTI3ODU5YTQ1NmM5%0D%0ANTVlMDFmMjFlZjE4MjE2XzQ1NjIwL3ByZXZpZXdfdGFsa18xLndlYnAiLCJuZWVkUmVtb3ZlQmFj%0D%0Aa2dyb3VuZCI6ZmFsc2UsImtub3dsZWRnZUJhc2VJZCI6IjY1NTU0ODQ0ZWJhYzQ5N2Q5NGNhNTQz%0D%0AZmI5YmFhYzRhIiwidXNlcm5hbWUiOiI0MDA1MWMzMTE3MjM0MTMxYjM2MDA3NzkyYjhiMmY1YiJ9">
+              Click here
+            </a>
           </div>
         </div>
       </div>{" "}

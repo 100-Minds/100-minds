@@ -27,7 +27,7 @@ import ProfileModal from "../components/ProfileModal";
 import { AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { RiLogoutCircleLine } from "react-icons/ri";
-
+import clientlogo from "../assets/img/dashboards/quiz/cmpc-logo.svg";
 import { FaBookBible } from "react-icons/fa6";
 import { toast } from "sonner";
 import EventBus from "../utils/EventBus";
@@ -435,6 +435,9 @@ const SideBar = () => {
         </div>
 
         <div className="flex flex-col justify-end  !pb-6   ">
+          <div className="w-full flex items-center pl-6 py-4">
+            <img src={clientlogo} alt="" className="w-32" />
+          </div>
           <div>
             <NavLink
               to="/settings"

@@ -560,11 +560,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Get quiz by chapter
-  const getQuizByChapter = async (courseId, chapterId) => {
+  const getQuizByChapter = async (chapterId) => {
     setQuizLoading(true);
     try {
       const response = await axios.get(
-        `https://backend-5781.onrender.com/api/v1/course/get-lesson?courseId=${courseId}&chapterId=${chapterId}`,
+        // `https://backend-5781.onrender.com/api/v1/course/get-lesson?courseId=${courseId}&chapterId=${chapterId}`,
+        `https://backend-5781.onrender.com/api/v1/quiz/chapter?chapterId=${chapterId}`,
         {
           withCredentials: true,
         }
