@@ -238,7 +238,7 @@ const SideBar = () => {
                 </span>
               )}
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to="/role-play"
               className={({ isActive, isPending }) =>
                 `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
@@ -257,27 +257,27 @@ const SideBar = () => {
                   <img src={power} alt="" /> Role Play
                 </span>
               )}
+            </NavLink> */}
+            <NavLink
+              to="/powerskills"
+              className={({ isActive, isPending }) =>
+                `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
+                  isActive
+                    ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
+                    : ""
+                } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
+              }
+            >
+              {({ isActive }) => (
+                <span
+                  className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
+                    isActive ? "bg-whitish" : ""
+                  }`}
+                >
+                  <img src={power} alt="" /> Power Skills
+                </span>
+              )}
             </NavLink>
-            {/* <NavLink
-            to="/powerskills"
-            className={({ isActive, isPending }) =>
-              `flex items-center gap-1 !mb-2 text-apex_dashboard_blacktext ${
-                isActive
-                  ? "bg-apex_dashbord_active_bg text-apex_dashboard_greentext border-l-5 border-green-tint"
-                  : ""
-              } ${isPending ? "text-apex_dashboard_blacktext" : ""}`
-            }
-          >
-            {({ isActive }) => (
-              <span
-                className={`w-full  items-center  gap-2 flex !mx-4 !p-2 rounded-lg ${
-                  isActive ? "bg-whitish" : ""
-                }`}
-              >
-                <img src={power} alt="" /> Power Skills
-              </span>
-            )}
-          </NavLink> */}
             <NavLink
               to="/ongoing"
               className={({ isActive, isPending }) =>
@@ -622,7 +622,7 @@ const SideBar = () => {
                       isActive ? "bg-whitish" : ""
                     }`}
                   >
-                    <img src={power} alt="" /> Power Skills
+                    <img src={power} alt="" /> Power Skills Library
                   </span>
                 )}
               </NavLink>

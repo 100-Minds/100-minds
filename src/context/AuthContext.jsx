@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }) => {
         formData,
         {
           headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json", // Ensure JSON response
+            // "Content-Type": "application/json",
+            // Accept: "application/json", // Ensure JSON response
           },
         }
       );
@@ -637,6 +637,115 @@ export const AuthProvider = ({ children }) => {
     // );
     // return response.data;
   };
+  const createLearningJourney = async (chapterId) => {
+    const requestBody = { chapterId: chapterId };
+    try {
+      const response = await axios.post(
+        "https://backend-5781.onrender.com/api/v1/journey/create-user",
+        requestBody, // Send an object with chapterId property
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json", // Ensure JSON response
+          },
+        }
+      );
+      console.log("Learning journey created:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error updating learning journey:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  };
+  const getAllAssessments = async (courseId) => {
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/assessment/course?courseId=${courseId}`,
+
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Get All assessment", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching quiz score:", error);
+      throw error;
+    }
+  };
+  const getAllAssessmentsById = async (assessmentId) => {
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/assessment/get-assessment?assessmentId=${assessmentId}`,
+
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Get assessment by id", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching quiz score:", error);
+      throw error;
+    }
+  };
+
+  const submitAssessmentAnswers = async (courseId, assessmentAnswers) => {
+    try {
+      const response = await axios.post(
+        "https://backend-5781.onrender.com/api/v1/assessment-score/create",
+        {
+          courseId,
+          assessmentAnswers,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return response.data; // or handle response as needed
+    } catch (error) {
+      console.error(
+        "Error submitting assessment answers:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  };
+
+  const getAssessmentScore = async (courseId) => {
+    try {
+      const response = await axios.get(
+        `https://backend-5781.onrender.com/api/v1/assessment-score/course/user?courseId=${courseId}`,
+
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Get assessment scores", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching assessment score:", error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
     console.log(storedUser);
@@ -706,6 +815,12 @@ export const AuthProvider = ({ children }) => {
         submitQuizAnswers,
         getQuizScore,
         getAverageCourseScore,
+        createLearningJourney,
+        // Assessment
+        getAllAssessments,
+        getAllAssessmentsById,
+        submitAssessmentAnswers,
+        getAssessmentScore,
       }}
     >
       {children}

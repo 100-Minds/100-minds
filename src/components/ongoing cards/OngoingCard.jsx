@@ -28,7 +28,7 @@ const OngoingCard = ({
     <div
       className={`!p-2 !pb-8 bg-white  font-nueue rounded-xl min-w-[85%] md:min-w-0 snap-start ${className}`}
     >
-      <div className="rounded-xl w-full h-2/3  ">
+      <div className="rounded-xl w-full h-60  ">
         <img
           src={img}
           alt=""
@@ -39,7 +39,7 @@ const OngoingCard = ({
         <img src={icon} alt="icon" className="w-8 h-8" />
         <div className={`text-xs text-wrap ${textsty}`}>
           <p className={`${textsty}`}>{icontext1}</p>
-          <p>{icontext2}</p>
+          <p className="font-bold">Chapter:{icontext2}</p>
         </div>
       </div>
       <div className="flex justify-between items-center gap-4">

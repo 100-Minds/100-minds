@@ -70,18 +70,27 @@ const ChapterCard = ({
   isActive,
   progress,
   onClick,
+  disabled = false,
 }) => {
   // console.log(`Rendering ChapterCard ${chapter} - Active: ${isActive}, Progress: ${progress}`); // Optional: Debug log
-
+  const disabledStyle = disabled
+    ? {
+        opacity: 0.6,
+        cursor: "not-allowed",
+        position: "relative",
+      }
+    : {};
   return (
     <div
-      className={`flex items-center gap-4 p-3 mb-3 rounded-lg shadow-sm cursor-pointer transition-colors duration-150 ${
-        // Adjusted styles slightly
-        isActive
-          ? "bg-[#50999914] border border-green-tint" // Highlight active chapter
-          : "bg-gray-50 hover:bg-gray-100"
+      className={`flex items-center gap-4 p-3 mb-3 rounded-lg shadow-sm transition-colors duration-150 ${
+        disabled
+          ? "bg-gray-100 cursor-not-allowed opacity-60"
+          : isActive
+          ? "bg-[#50999914] border border-green-tint cursor-pointer"
+          : "bg-gray-50 hover:bg-gray-100 cursor-pointer"
       }`}
-      onClick={onClick}
+      style={disabledStyle}
+      onClick={disabled ? undefined : onClick}
     >
       {/* Image Section */}
       <div className="w-16 h-16 flex-shrink-0">

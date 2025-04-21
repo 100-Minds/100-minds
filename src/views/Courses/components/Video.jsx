@@ -7,7 +7,7 @@ import {
   PiPause,
   PiPlayFill,
 } from "react-icons/pi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import ProgressBar from "./ProgressBar";
 import {
@@ -80,14 +80,14 @@ const CustomVideoPlayer = ({
   // --- Hooks ---
   const { courseId, lessonId } = useParams();
   const navigate = useNavigate();
-  // const { user } = useAuth(); // Uncomment if you need user info
-
+  const { createLearningJourney, getQuizScore, getQuizByChapter } = useAuth(); // Uncomment if you need user info
   // --- Refs ---
   const videoRef = useRef(null);
   const playerContainerRef = useRef(null);
   const saveIntervalRef = useRef(null);
   const hasAppliedLastWatched = useRef(false);
   const progressBarRef = useRef(null);
+  const journeyCreatedRef = useRef(false);
 
   // --- State ---
   const [currentChapterId, setCurrentChapterId] = useState(lessonId);
@@ -109,6 +109,10 @@ const CustomVideoPlayer = ({
   const [isFavourite, setIsFavourite] = useState(false);
   const [favourites, setFavourites] = useState([]);
   const [favouriteId, setFavouriteId] = useState("");
+
+  //quiz
+  const [hasQuiz, setHasQuiz] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   const [test, setTest] = useState([]);
   useEffect(() => {
@@ -134,18 +138,19 @@ const CustomVideoPlayer = ({
   const currentChapterDetails = chapterName?.find(
     (chapter) => chapter.id.toString() === currentChapterId
   );
+  console.log("chaptername", chapterName);
   const videoSrc = currentChapterDetails?.videos?.[0]?.videoURL;
   const videoId = currentChapterDetails?.videos?.[0]?.id;
 
-  console.log("Current Chapter ID:", currentChapterId);
-  console.log("Current Video ID:", videoId);
-  console.log("Current Video Src:", videoSrc);
-  console.log("progress", progress);
-  console.log("currentTime", currentTime);
-  console.log("duration", duration);
-  console.log("Chapter progress", chapterProgress);
-  console.log("completed chapters", completedChapters);
-  console.log("last watched data", lastWatchedData);
+  // console.log("Current Chapter ID:", currentChapterId);
+  // console.log("Current Video ID:", videoId);
+  // console.log("Current Video Src:", videoSrc);
+  // console.log("progress", progress);
+  // console.log("currentTime", currentTime);
+  // console.log("duration", duration);
+  // console.log("Chapter progress", chapterProgress);
+  // console.log("completed chapters", completedChapters);
+  // console.log("last watched data", lastWatchedData);
 
   // --- Load Last Watched Info from LocalStorage ---
   useEffect(() => {
@@ -173,10 +178,7 @@ const CustomVideoPlayer = ({
           updatedAt: new Date().toISOString(),
         };
         localStorage.setItem(LAST_WATCHED_KEY, JSON.stringify(lastWatchedInfo));
-        console.log("Saved to localStorage:", lastWatchedInfo);
-      } catch (error) {
-        console.error("Error saving to localStorage:", error);
-      }
+      } catch (error) {}
     },
     [courseId]
   );
@@ -197,7 +199,6 @@ const CustomVideoPlayer = ({
           if (response.data && Array.isArray(response.data)) {
             const watchedData = response.data;
             setLastWatchedData(watchedData);
-            console.log("Last watched data fetched:", watchedData);
 
             // Process the last watched data into chapter progress
             const progressMap = {};
@@ -236,7 +237,6 @@ const CustomVideoPlayer = ({
             });
 
             setChapterProgress(progressMap);
-            console.log("Chapter progress calculated:", progressMap);
 
             // If no lessonId is specified, navigate to the most recently watched chapter
             if (!lessonId && watchedData.length > 0) {
@@ -350,7 +350,6 @@ const CustomVideoPlayer = ({
         setCurrentTime(timestamp);
         setProgress((timestamp / video.duration) * 100);
         hasAppliedLastWatched.current = true;
-        console.log(`Seeked to last watched: ${timestamp}s`);
       } else if (!hasAppliedLastWatched.current) {
         setTimeout(applySeek, 100);
       }
@@ -378,15 +377,24 @@ const CustomVideoPlayer = ({
 
       // Skip saving in edge cases
       if (timestamp <= 0.1 && videoDuration > 1) {
-        console.warn("Skipping save progress: Timestamp near zero.");
         return;
       }
       if (timestamp > videoDuration) {
-        console.warn("Skipping save progress: Timestamp exceeds duration.");
         return;
       }
+      const completionPercentage = (timestamp / videoDuration) * 100;
 
-      console.log(`Saving progress - Video: ${videoId}, Time: ${timestamp}`);
+      // if (
+      //   (completionPercentage >= 25 || markChapterAsCompleted) &&
+      //   !journeyCreatedRef.current
+      // ) {
+      //   journeyCreatedRef.current = true;
+      //   createLearningJourney(lessonId).catch((err) =>
+      //     console.error("Failed to update learning journey:", err)
+      //   );
+
+      // }
+
       axios
         .post(
           `${BASE_URL}/create`,
@@ -401,8 +409,6 @@ const CustomVideoPlayer = ({
           { withCredentials: true }
         )
         .then(() => {
-          console.log(`Saved progress: ${timestamp} for video ${videoId}`);
-
           // Update localStorage with the most recent watched information
           updateLocalStorage(videoId, currentChapterId, timestamp);
 
@@ -489,13 +495,14 @@ const CustomVideoPlayer = ({
     completedChapters,
     markChapterAsCompleted,
     updateLocalStorage,
+    createLearningJourney,
+    lessonId,
   ]);
 
   // --- Effect to manage the save progress interval ---
   useEffect(() => {
     if (playing && videoId && courseId) {
       if (!saveIntervalRef.current) {
-        console.log("Starting save progress interval.");
         saveIntervalRef.current = setInterval(saveProgress, 5000);
 
         // Also save immediately when starting playback
@@ -503,7 +510,6 @@ const CustomVideoPlayer = ({
       }
     } else {
       if (saveIntervalRef.current) {
-        console.log("Clearing save progress interval.");
         clearInterval(saveIntervalRef.current);
         saveIntervalRef.current = null;
 
@@ -516,7 +522,6 @@ const CustomVideoPlayer = ({
 
     return () => {
       if (saveIntervalRef.current) {
-        console.log("Cleaning up save progress interval.");
         clearInterval(saveIntervalRef.current);
         saveIntervalRef.current = null;
 
@@ -562,16 +567,38 @@ const CustomVideoPlayer = ({
       );
     };
   }, []);
+  // Add this effect to handle modal display on revisiting chapters
+  useEffect(() => {
+    if (progress >= 99.5 && !playing) {
+      // If progress is almost complete and video isn't playing, show the modal
+      setShowModal(true);
+    }
+  }, [lessonId, progress, playing]);
 
+  // Modify your loadedmetadata handler to reset modal appropriately
+  // const handleLoadedMetadata = () => {
+  //   if (videoRef.current) {
+  //     setDuration(videoRef.current.duration);
+  //     setIsVideoLoading(false);
+
+  //     // If video is completely watched, show the modal
+  //     if (progress >= 99.5) {
+  //       setShowModal(true);
+  //     } else {
+  //       setShowModal(false);
+  //     }
+  //   }
+  // };
   // --- Video Event Handlers ---
   const handleLoadedMetadata = () => {
     if (videoRef.current) {
-      console.log(
-        "Video metadata loaded. Duration:",
-        videoRef.current.duration
-      );
       setDuration(videoRef.current.duration);
       setIsVideoLoading(false);
+    }
+    if (progress >= 99.5) {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
     }
   };
 
@@ -613,13 +640,35 @@ const CustomVideoPlayer = ({
       setCompletedChapters((prev) => [...prev, currentChapterId]);
       setMarkasCompleted(true); // Set this flag for the next API call
     }
-    // Mark chapter as completed
-    if (!completedChapters.includes(currentChapterId)) {
-      setCompletedChapters((prev) => [...prev, currentChapterId]);
-      setMarkasCompleted(true); // Set this flag for the next API call
-    }
+
     // Save final progress
     saveProgress();
+    console.log("has quiz in save progress", hasQuiz);
+    // if (hasQuiz === true && quizCompleted === false) {
+    //   toast.info("has quiz and should take you to quiz tab");
+    //   console.log("handleEnded triggered");
+
+    //   if (typeof videoCourseLesson?.setActiveTab === "function") {
+    //     videoCourseLesson.setActiveTab("quiz");
+    //   } else {
+    //     const url = new URL(window.location);
+    //     url.searchParams.set("tab", "quiz");
+    //     window.history.pushState({}, "", url);
+
+    //     // Dispatch an event to inform the TabComponent
+    //     const event = new CustomEvent("urlParamChanged", {
+    //       detail: { tab: "quiz" },
+    //     });
+    //     document.dispatchEvent(event);
+    //   }
+    // } else {
+    //   setShowModal(true);
+    // }
+
+    journeyCreatedRef.current = true;
+    createLearningJourney(lessonId).catch((err) =>
+      console.error("Failed to update learning journey:", err)
+    );
   };
 
   const handleVolumeChange = () => {
@@ -631,14 +680,12 @@ const CustomVideoPlayer = ({
 
   const handleWaiting = () => {
     setIsVideoLoading(true);
-    console.log("Video waiting (buffering)...");
   };
 
   const handleCanPlay = () => {
     if (playing) {
       setIsVideoLoading(false);
     }
-    console.log("Video can play.");
   };
 
   const handleError = (e) => {
@@ -742,6 +789,9 @@ const CustomVideoPlayer = ({
 
   const markChapterCompleted = () => {
     if (currentChapterId && videoRef.current) {
+      if (playing) {
+        videoRef.current.pause();
+      }
       setCompletedChapters((prev) =>
         prev.includes(currentChapterId) ? prev : [...prev, currentChapterId]
       );
@@ -775,14 +825,83 @@ const CustomVideoPlayer = ({
 
       saveProgress();
 
+      journeyCreatedRef.current = true;
+      createLearningJourney(lessonId).catch((err) =>
+        console.error("Failed to update learning journey:", err)
+      );
+
       toast.success("Chapter marked as completed!");
       console.log(`Marked chapter ${currentChapterId} as completed`);
     }
   };
   // --- Chapter Navigation ---
+  // const handleChapterClick = (clickedChapterId) => {
+  //   const targetChapterIdStr = clickedChapterId.toString();
+  //   if (targetChapterIdStr !== currentChapterId) {
+  //     if (hasQuiz === true && quizCompleted === false) {
+  //       toast.warning(
+  //         "Please complete the quiz for this chapter before proceeding"
+  //       );
+
+  //       // Switch to quiz tab
+  //       if (typeof videoCourseLesson?.setActiveTab === "function") {
+  //         videoCourseLesson.setActiveTab("quiz");
+  //       } else {
+  //         sessionStorage.setItem("activeTab", "quiz");
+  //         const event = new CustomEvent("switchToQuizTab", {
+  //           detail: { chapterId: currentChapterId },
+  //         });
+  //         console.log("Dispatching event:", event);
+  //         window.dispatchEvent(event);
+  //       }
+  //       return;
+  //     }
+
+  //     // Save progress on current video before navigating
+  //     if (videoRef.current && videoRef.current.currentTime > 0) {
+  //       saveProgress();
+  //     }
+
+  //     console.log(
+  //       `Chapter Clicked: Navigating to lesson ID: ${targetChapterIdStr}`
+  //     );
+  //     navigate(`/courses/${courseId}/lessons/${targetChapterIdStr}`);
+  //   }
+  // };
   const handleChapterClick = (clickedChapterId) => {
     const targetChapterIdStr = clickedChapterId.toString();
     if (targetChapterIdStr !== currentChapterId) {
+      // Don't allow clicking if chapter is not accessible
+      if (!isChapterAccessible(targetChapterIdStr)) {
+        // Find the specific blocking chapter
+        const chapterIndex = chapterName.findIndex(
+          (chapter) => chapter.id.toString() === targetChapterIdStr
+        );
+        const currentIndex = chapterName.findIndex(
+          (chapter) => chapter.id.toString() === currentChapterId
+        );
+
+        if (hasQuiz && !quizCompleted && chapterIndex === currentIndex + 1) {
+          toast.warning(
+            `Please complete the quiz for "${currentChapterDetails?.title}" before proceeding`
+          );
+
+          // Switch to quiz tab
+          if (typeof videoCourseLesson?.setActiveTab === "function") {
+            videoCourseLesson.setActiveTab("quiz");
+          } else {
+            sessionStorage.setItem("activeTab", "quiz");
+            const event = new CustomEvent("switchToQuizTab", {
+              detail: { chapterId: currentChapterId },
+            });
+            window.dispatchEvent(event);
+          }
+        } else {
+          toast.warning("Complete previous chapters before accessing this one");
+        }
+        return;
+      }
+
       // Save progress on current video before navigating
       if (videoRef.current && videoRef.current.currentTime > 0) {
         saveProgress();
@@ -794,10 +913,110 @@ const CustomVideoPlayer = ({
       navigate(`/courses/${courseId}/lessons/${targetChapterIdStr}`);
     }
   };
+  // First, add a helper function to check if a chapter is accessible
+  const isChapterAccessible = (chapterId) => {
+    // Always allow current chapter
+    if (chapterId.toString() === currentChapterId) return true;
 
+    // Find the index of the chapter in the list
+    const chapterIndex = chapterName.findIndex(
+      (chapter) => chapter.id.toString() === chapterId.toString()
+    );
+
+    // Get the index of the current chapter
+    const currentIndex = chapterName.findIndex(
+      (chapter) => chapter.id.toString() === currentChapterId
+    );
+
+    // If trying to access a previous chapter, always allow
+    if (chapterIndex < currentIndex) return true;
+
+    // If trying to access the next chapter, check if current chapter has a completed quiz
+    if (chapterIndex === currentIndex + 1) {
+      // If current chapter has quiz and it's not completed, block access
+      if (hasQuiz && !quizCompleted) {
+        return false;
+      }
+      return true;
+    }
+
+    // If trying to access a chapter further ahead, check all previous chapters
+    for (let i = currentIndex; i < chapterIndex; i++) {
+      // Get chapter ID
+      const prevChapterId = chapterName[i]?.id.toString();
+      // Find if this chapter has quiz data
+      const prevChapterData = test.find(
+        (item) => item.videoId === chapterName[i]?.videos?.[0]?.id
+      );
+
+      // If previous chapter is not completed, block access
+      if (!prevChapterData?.isChapterCompleted) {
+        return false;
+      }
+    }
+
+    return true;
+  };
   // --- Find Next Chapter ---
+  // const findNextChapterAndNavigate = () => {
+  //   if (!chapterName || chapterName.length === 0) return;
+
+  //   // If there's a quiz and it's not completed, don't allow navigation
+  //   if (hasQuiz && !quizCompleted) {
+  //     toast.warning(
+  //       "Please complete the quiz before moving to the next chapter"
+  //     );
+
+  //     // Switch to quiz tab
+  //     if (typeof videoCourseLesson?.setActiveTab === "function") {
+  //       videoCourseLesson.setActiveTab("quiz");
+  //     } else {
+  //       sessionStorage.setItem("activeTab", "quiz");
+  //       // Force page reload to apply the tab change if needed
+  //       // window.location.reload();
+  //     }
+
+  //     setShowModal(false);
+  //     return;
+  //   }
+
+  //   const currentIndex = chapterName.findIndex(
+  //     (chapter) => chapter.id.toString() === currentChapterId
+  //   );
+
+  //   if (currentIndex >= 0 && currentIndex < chapterName.length - 1) {
+  //     const nextChapter = chapterName[currentIndex + 1];
+  //     handleChapterClick(nextChapter.id);
+  //     setShowModal(false);
+  //   } else {
+  //     console.log("This is the last chapter.");
+  //   }
+  // };
   const findNextChapterAndNavigate = () => {
     if (!chapterName || chapterName.length === 0) return;
+
+    // If there's a quiz and it's not completed, don't allow navigation
+    if (hasQuiz && !quizCompleted) {
+      toast.warning(
+        `Please complete the quiz for "${currentChapterDetails?.title}" before moving to the next chapter`
+      );
+
+      // Switch to quiz tab with clearer UI indication
+      setShowModal(false); // Close the modal first
+      setTimeout(() => {
+        // Short timeout to ensure modal closing animation completes
+        if (typeof videoCourseLesson?.setActiveTab === "function") {
+          videoCourseLesson.setActiveTab("quiz");
+        } else {
+          sessionStorage.setItem("activeTab", "quiz");
+          const event = new CustomEvent("switchToQuizTab", {
+            detail: { chapterId: currentChapterId },
+          });
+          window.dispatchEvent(event);
+        }
+      }, 300);
+      return;
+    }
 
     const currentIndex = chapterName.findIndex(
       (chapter) => chapter.id.toString() === currentChapterId
@@ -811,7 +1030,6 @@ const CustomVideoPlayer = ({
       console.log("This is the last chapter.");
     }
   };
-
   // --- Calculate Total Duration ---
   const calculateTotalDuration = (chapters) => {
     if (!chapters || !Array.isArray(chapters)) return "00:00";
@@ -862,7 +1080,7 @@ const CustomVideoPlayer = ({
           `${MAINURL}favourites/user?chapterId=${lessonId}&courseId=${courseId}`,
           { withCredentials: true }
         );
-        console.log("fav res", res);
+
         if (res.status === 200) {
           setIsFavourite(true);
           setFavouriteId(res.data.data[0].id);
@@ -916,8 +1134,41 @@ const CustomVideoPlayer = ({
       console.error("Error updating favourite status:", err);
     }
   };
-  console.log("favour", favourites);
-  // --- Render ---
+
+  // Quiz logic here
+  // Add this effect to check for quiz when chapter changes
+  useEffect(() => {
+    const checkForQuiz = async () => {
+      if (!currentChapterId) return;
+
+      try {
+        const isQuizQuestion = await getQuizByChapter(lessonId);
+        // }
+        console.log("is quiz respo", isQuizQuestion);
+
+        if (isQuizQuestion?.data.length === 0) {
+          setHasQuiz(false);
+        } else {
+          setHasQuiz(true);
+        }
+        const response = await getQuizScore(lessonId);
+        console.log("quiz responseee", response);
+        if (response.status === "success") {
+          setQuizCompleted(true);
+        }
+      } catch (error) {
+        if (error.status === 404) {
+          console.error("Error checking quiz:", error);
+
+          setQuizCompleted(false);
+        }
+      }
+    };
+
+    checkForQuiz();
+  }, [currentChapterId, lessonId]);
+  // --- Render ---//
+  console.log("Quiz status:", { hasQuiz, quizCompleted });
   return (
     <div className="grid lg:grid-cols-5 gap-10" ref={playerContainerRef}>
       {/* Video Player Section */}
@@ -928,7 +1179,7 @@ const CustomVideoPlayer = ({
             {(isVideoLoading || !videoSrc) && (
               <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10">
                 {videoSrc ? (
-                  <div className="loader-spinner border-4 border-t-4 border-gray-200 h-12 w-12 rounded-full animate-spin border-t-blue-500"></div>
+                  <div className="loader-spinner border-4 border-t-4 border-gray-200 h-12 w-12 rounded-full animate-spin border-t-green-tint"></div>
                 ) : (
                   <p className="text-gray-400">Select a chapter</p>
                 )}
@@ -937,7 +1188,7 @@ const CustomVideoPlayer = ({
             {/* Actual Video Player */}
             <video
               key={videoSrc || "no-video"} // Force re-mount on src change
-              className="w-full h-80 max-h-96 object-contain shadow rounded-2xl"
+              className="w-full h-96 max-h-96 object-cover shadow rounded-2xl"
               ref={videoRef}
               src={videoSrc}
               poster={poster}
@@ -956,7 +1207,7 @@ const CustomVideoPlayer = ({
               onDoubleClick={toggleFullScreen}
             />
             {/* Replay Modal */}
-            {showModal && (
+            {/* {showModal && (
               <div className="absolute w-full bottom-0 inset-0 flex items-center justify-center bg-[#00000083] bg-opacity-50 rounded-2xl z-20">
                 <div className="!p-5 rounded-lg shadow-lg text-center">
                   <h4 className="text-white mb-4">Play again?</h4>
@@ -982,6 +1233,68 @@ const CustomVideoPlayer = ({
                         Next Chapter
                       </button>
                     )}
+                  </div>
+                </div>
+              </div>
+            )} */}
+
+            {showModal && (
+              <div className="absolute w-full bottom-0 inset-0 flex items-center justify-center bg-[#00000083] bg-opacity-50 rounded-2xl z-20">
+                <div className="!p-5 rounded-lg shadow-lg text-center">
+                  <h4 className="text-white mb-4">
+                    {hasQuiz && !quizCompleted
+                      ? `Complete the quiz for "${currentChapterDetails?.title}" before continuing`
+                      : "Chapter completed!"}
+                  </h4>
+                  <div className="flex gap-4 justify-center">
+                    <button
+                      className="bg-green-tint text-white !px-4 !py-2 rounded hover:opacity-80"
+                      onClick={replayVideo}
+                    >
+                      <RiReplyAllLine size={20} />
+                    </button>
+                    {hasQuiz && !quizCompleted ? (
+                      <button
+                        className="bg-green-tint text-white !px-4 !py-2 rounded hover:opacity-80"
+                        onClick={() => {
+                          setShowModal(false);
+                          if (
+                            typeof videoCourseLesson?.setActiveTab ===
+                            "function"
+                          ) {
+                            videoCourseLesson.setActiveTab("quiz");
+                          } else {
+                            const url = new URL(window.location);
+                            url.searchParams.set("tab", "quiz");
+                            window.history.pushState({}, "", url);
+                            document.dispatchEvent(
+                              new CustomEvent("urlParamChanged", {
+                                detail: { tab: "quiz" },
+                              })
+                            );
+                          }
+                        }}
+                      >
+                        Take Quiz
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-white text-red-500 !px-4 !py-2 rounded hover:opacity-80"
+                        onClick={() => setShowModal(false)}
+                      >
+                        <RiArrowGoBackLine size={20} />
+                      </button>
+                    )}
+                    {currentChapterId !==
+                      chapterName[chapterName.length - 1]?.id.toString() &&
+                      (!hasQuiz || quizCompleted) && (
+                        <button
+                          className="bg-green-tint text-white !px-4 !py-2 rounded hover:opacity-80"
+                          onClick={findNextChapterAndNavigate}
+                        >
+                          Next Chapter
+                        </button>
+                      )}
                   </div>
                 </div>
               </div>
@@ -1199,15 +1512,15 @@ const CustomVideoPlayer = ({
       </div>{" "}
       {/* End Left Column */}
       {/* Chapters List Section */}
-      <div className="lg:col-span-2 col-span-5 lg:-translate-y-5">
+      <div className="lg:col-span-2 col-span-5 lg:-translate-y-12">
         <h3 className="font-bebas text-2xl flex items-center gap-2.5 !pb-3">
           CHAPTERS{" "}
           <span className="bg-white !p-1 !px-2 rounded-xl text-lg">
             {chapterName?.length || 0}
           </span>
         </h3>
-        <div className="space-y-4 bg-white w-full h-80 max-h-80 !p-5 rounded-2xl relative flex flex-col">
-          <div className="overflow-y-auto overflow-x-hidden no-hide no-scrollbar flex-grow mb-12">
+        <div className="space-y-4 bg-white w-full h-96 max-h-96 !p-5 rounded-2xl relative flex flex-col pb-8">
+          <div className="overflow-y-auto overflow-x-hidden no-hide no-scrollbar flex-grow mb-18">
             {/* ... Mapping chapterName to ChapterCard ... */}
             {isChapterLoading ? (
               <p className="text-gray-500">Loading chapters...</p>
@@ -1224,12 +1537,10 @@ const CustomVideoPlayer = ({
                 );
                 const watchedDuration = parseFloat(matchingData?.duration || 0);
 
-                console.log("watched duration", watchedDuration);
-                console.log("video duration", videoDuration);
-
                 const progressPercent = videoDuration
                   ? Math.min(100, (watchedDuration / videoDuration) * 100)
                   : 0;
+                const isAccessible = isChapterAccessible(chapterIdStr);
 
                 console.log("progress percent", progressPercent);
                 return (
@@ -1243,6 +1554,12 @@ const CustomVideoPlayer = ({
                     isActive={currentChapterId === chapterIdStr}
                     // progress={chapterProgress[chapterIdStr]?.progress || 0}
                     progress={progressPercent}
+                    disabled={!isAccessible}
+                    showQuizIndicator={
+                      hasQuiz &&
+                      chapterIdStr === currentChapterId &&
+                      !quizCompleted
+                    }
                   />
                 );
               })
@@ -1263,14 +1580,14 @@ const CustomVideoPlayer = ({
             </div>
           </div>
         </div>
-        <div className="p-5 bg-white my-4 rounded-3xl flex gap-5 items-center ">
+        <div className="p-5 bg-white my-4 rounded-3xl flex gap-5 items-center font-nueue ">
           <img
             src={ailink}
             alt=""
             className="w-20 h-20 object-cover rounded-full"
           />
           <div>
-            <p>Now lets practice with our Ai coach</p>
+            <p className="pb-2">Now lets practice with our Ai coach</p>
             <a
               className="text-green-tint "
               target="_blank"

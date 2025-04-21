@@ -20,6 +20,7 @@ import PowerskillPage from "../views/Power-skill/PowerskillPage";
 import TeamDetail from "../views/teams/TeamDetail";
 import TeamJoin from "../views/teams/TeamJoin";
 import Home from "../views/Guest/Home";
+import CalendarPage from "../views/Calendar/Components/CalendarPage";
 
 const coreRoutes = [
   {
@@ -75,6 +76,11 @@ const coreRoutes = [
     path: "/ongoing",
     title: "ongoing",
     component: Ongoing,
+  },
+  {
+    path: "/calendar",
+    title: "calendar",
+    component: CalendarPage,
   },
   {
     path: "/settings",

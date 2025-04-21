@@ -2,6 +2,7 @@ import OngoingActivities from "../views/dashboard/components/OngoingActivities";
 import DashboardCard from "../views/dashboard/components/DashboardCard";
 import RolePlaySection from "../views/dashboard/components/RolePlaySection";
 import LearningModule from "../components/Learning Modules/LearningModule";
+import RolePlay from "../views/Role-play/components/RolePlay";
 
 const MainContent = () => {
   return (
@@ -16,7 +17,14 @@ const MainContent = () => {
         <OngoingActivities limit={4} />
       </div>
       <RolePlaySection />
-      <LearningModule />
+
+      {/* <LearningModule /> */}
+      <div>
+        <h1 className="font-bebas tracking-tight text-3xl lg:text-5xl !py-4">
+          LEARNING MODULES
+        </h1>
+        <RolePlay showHeader={false} />
+      </div>
     </div>
   );
 };

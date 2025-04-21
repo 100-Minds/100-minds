@@ -221,7 +221,7 @@ const DashboardCard = () => {
         className="bg-white !p-3 rounded-[20px] flex flex-col justify-center items-center shadow-md"
       >
         <h1 className="font-nueue text-grey-tint tracking-tight !py-2 font-extrabold">
-          YOUR TOP SCORE
+          LEADER BOARD CARD
         </h1>
         <div className="w-full h-full">
           <SegmentedProgressBars />
@@ -266,9 +266,21 @@ const DashboardCard = () => {
         </motion.div>
         <div className="w-full">
           {[
-            { title: "Total role play", color: "#509999", number: "12" },
-            { title: "Total power skills", color: "#4f45f0", number: "09" },
-            { title: "Role minutes played", color: "#EE89DF", number: "45" },
+            {
+              title: "Total Role Playing Sessions",
+              color: "#509999",
+              number: "12",
+            },
+            {
+              title: "Total PowerSkills Trained",
+              color: "#4f45f0",
+              number: "09",
+            },
+            {
+              title: "Role Playing Total Minutes",
+              color: "#EE89DF",
+              number: "45",
+            },
           ].map(({ title, color, number }, index) => (
             <motion.div
               key={index}
@@ -277,9 +289,9 @@ const DashboardCard = () => {
             >
               <div>
                 <p className="font-medium text-sm">{title}</p>
-                <p className="flex items-center gap-1 !pt-1 text-grey-tint text-xs">
+                {/* <p className="flex items-center gap-1 !pt-1 text-grey-tint text-xs">
                   This week <PiCaretRight />
-                </p>
+                </p> */}
               </div>
 
               <p

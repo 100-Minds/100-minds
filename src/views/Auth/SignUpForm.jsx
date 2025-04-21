@@ -33,32 +33,14 @@ const SignUpForm = () => {
   //   const { name, value, files } = e.target;
 
   //   if (name === "organizationLogo" && files && files[0]) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setFormData((prev) => ({
-  //         ...prev,
-  //         organizationLogo: reader.result, // This will be base64 string
-  //       }));
-  //       setLogoPreview(reader.result);
-  //     };
-  //     reader.readAsDataURL(files[0]); // Convert image to base64
-  //   } else {
+  //     const file = files[0];
+
   //     setFormData((prev) => ({
   //       ...prev,
-  //       [name]: value,
+  //       organizationLogo: file.name, // 👈 Just the name of the file
   //     }));
-  //   }
-  // };
 
-  // const handleChange = (e) => {
-  //   const { name, value, files } = e.target;
-
-  //   if (name === "organizationLogo" && files && files[0]) {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       organizationLogo: files[0], // Store the file object
-  //     }));
-  //     setLogoPreview(URL.createObjectURL(files[0])); // Preview the image
+  //     setLogoPreview(URL.createObjectURL(file)); // optional preview
   //   } else {
   //     setFormData((prev) => ({
   //       ...prev,
@@ -73,12 +55,14 @@ const SignUpForm = () => {
     if (name === "organizationLogo" && files && files[0]) {
       const file = files[0];
 
+      // Store the actual File object
       setFormData((prev) => ({
         ...prev,
-        organizationLogo: file.name, // 👈 Just the name of the file
+        organizationLogo: file,
       }));
 
-      setLogoPreview(URL.createObjectURL(file)); // optional preview
+      // Still create a preview URL
+      setLogoPreview(URL.createObjectURL(file));
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -86,11 +70,61 @@ const SignUpForm = () => {
       }));
     }
   };
-
   const handleCheckboxChange = (e) => {
     setAgreeToTerms(e.target.checked);
     setErrors({ ...errors, agreeToTerms: "" });
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!agreeToTerms) {
+  //     setErrors({
+  //       ...errors,
+  //       agreeToTerms: "You must agree to the Terms and Conditions.",
+  //     });
+  //     return;
+  //   }
+
+  //   const formPayload = new FormData();
+  //   Object.entries(formData).forEach(([key, value]) => {
+  //     if (
+  //       formData.accountType === "organization" ||
+  //       ![
+  //         "organizationName",
+  //         "organizationWebsite",
+  //         "organizationDescription",
+  //         "organizationLogo",
+  //       ].includes(key)
+  //     ) {
+  //       if (key === "organizationLogo" && value) {
+  //         formPayload.append(key, value);
+  //       } else {
+  //         formPayload.append(key, value);
+  //       }
+  //     }
+  //   });
+
+  //   try {
+  //     await signUp(formPayload); // signUp must handle multipart/form-data
+  //     toast.success("Signup successful! Redirecting...");
+  //     navigate("/signin");
+  //   } catch (error) {
+  //     if (error.response?.status === 422 && error.response?.data?.error) {
+  //       setErrors(error.response.data.error);
+  //     } else if (
+  //       error.response?.status === 400 ||
+  //       error.response?.status === 401 ||
+  //       error.response?.status === 409
+  //     ) {
+  //       toast.error(error.response.data.message);
+  //     } else {
+  //       setErrors({
+  //         general: "Signup failed. Please check your details and try again.",
+  //       });
+  //     }
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,30 +137,49 @@ const SignUpForm = () => {
       return;
     }
 
+    // Create a new FormData object
     const formPayload = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
+
+    // Append all text fields
+    for (const key in formData) {
+      // Skip organization fields if account type is personal
       if (
-        formData.accountType === "organization" ||
-        ![
+        formData.accountType === "personal" &&
+        [
           "organizationName",
           "organizationWebsite",
           "organizationDescription",
           "organizationLogo",
         ].includes(key)
       ) {
-        if (key === "organizationLogo" && value) {
-          formPayload.append(key, value);
-        } else {
-          formPayload.append(key, value);
-        }
+        continue;
       }
-    });
+
+      // Special handling for file upload
+      if (key === "organizationLogo" && formData[key] instanceof File) {
+        formPayload.append(key, formData[key], formData[key].name);
+      }
+      // Skip null or undefined values
+      else if (formData[key] !== null && formData[key] !== undefined) {
+        formPayload.append(key, formData[key]);
+      }
+    }
 
     try {
-      await signUp(formPayload); // signUp must handle multipart/form-data
+      // Check the payload before sending (for debugging)
+      console.log("Form payload contents:");
+      for (let pair of formPayload.entries()) {
+        console.log(
+          pair[0] + ": " + (pair[1] instanceof File ? "File object" : pair[1])
+        );
+      }
+
+      await signUp(formPayload);
       toast.success("Signup successful! Redirecting...");
       navigate("/signin");
     } catch (error) {
+      console.error("Signup error:", error.response?.data || error);
+
       if (error.response?.status === 422 && error.response?.data?.error) {
         setErrors(error.response.data.error);
       } else if (
@@ -142,7 +195,6 @@ const SignUpForm = () => {
       }
     }
   };
-
   const getIcon = (key) => {
     if (key === "email") return at;
     if (key === "password") return lock;

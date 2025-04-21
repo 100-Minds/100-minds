@@ -134,7 +134,7 @@ import Loader2 from "../../../components/Loaders/Loader2";
 
 const ITEMS_PER_PAGE = 6;
 
-const RolePlay = () => {
+const RolePlay = ({ showHeader = true, limit = null }) => {
   const [journeyCourse, setJourneyCourse] = useState([]);
   const { getLearningJourneyCourses, loading } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
@@ -155,11 +155,14 @@ const RolePlay = () => {
   // Pagination Logic
   const totalPages = Math.ceil(journeyCourse.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentItems = journeyCourse.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
-  console.log("current journey", currentItems);
+  const paginatedCourses = limit
+    ? journeyCourse.slice(0, limit)
+    : journeyCourse.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  // const currentItems = journeyCourse.slice(
+  //   startIndex,
+  //   startIndex + ITEMS_PER_PAGE
+  // );
+  // console.log("current journey", currentItems);
   // Pagination Handlers
   const nextPage = () =>
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
@@ -179,9 +182,14 @@ const RolePlay = () => {
           </div>
         ) : (
           <>
-            <div className="backdrop-blur-xs !py-4 !px-10 sticky top-0 z-40">
+            {/* <div className="backdrop-blur-xs !py-4 !px-10 sticky top-0 z-40">
               <NavHeader header={"LEARNING JOURNEY"} />
-            </div>
+            </div> */}
+            {showHeader && (
+              <div className="backdrop-blur-xs !py-4 !px-10 sticky top-0 z-40">
+                <NavHeader header={"LEARNING JOURNEY"} />
+              </div>
+            )}
 
             {/* Cards Section with Animations */}
             <motion.div
@@ -195,10 +203,12 @@ const RolePlay = () => {
                   transition: { staggerChildren: 0.4 },
                 },
               }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px] !px-10 transition"
+              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]  transition ${
+                showHeader ? "!px-10" : ""
+              }`}
             >
-              {currentItems.length > 0 ? (
-                currentItems.map((module, index) => (
+              {paginatedCourses.length > 0 ? (
+                paginatedCourses.map((module, index) => (
                   <motion.div
                     key={module.courseId}
                     variants={{

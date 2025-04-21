@@ -52,6 +52,7 @@ const Courses = () => {
         )
       : courses?.data;
 
+  console.log("paginated courses", paginatedCourses);
   return (
     <div className="h-full w-full overflow-hidden !py-4 scrollbar-hide no-scrollbar">
       <div className="bg-[#F3F3F3] overflow-scroll h-full rounded-3xl !mx-3 !px-6 !pb-12">
@@ -80,8 +81,9 @@ const Courses = () => {
                   >
                     <OngoingCard
                       img={
+                        course.courseImage ||
                         learningActivities[index % learningActivities.length]
-                          .img
+                          ?.img
                       }
                       icon={
                         learningActivities[index % learningActivities.length]
